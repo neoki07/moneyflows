@@ -9,7 +9,8 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "quality": "bun format:check && npm run lint && npm run typecheck"
   },
   "dependencies": {
     "react": "^19.0.0",
