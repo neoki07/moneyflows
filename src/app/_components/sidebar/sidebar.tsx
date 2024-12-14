@@ -9,7 +9,7 @@ export function Sidebar() {
           alt="Money Flows"
           fill
           priority
-          style={{ objectFit: "contain", objectPosition: "left" }}
+          className="object-contain object-left"
         />
       </div>
       This is Sidebar
