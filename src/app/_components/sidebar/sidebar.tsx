@@ -1,18 +1,66 @@
 import Image from "next/image";
+import { NavItem } from "./nav-item";
+import {
+  IconCategory,
+  IconExchange,
+  IconHome,
+  IconPlus,
+  IconTags,
+} from "@tabler/icons-react";
 
 export function Sidebar() {
   return (
     <nav className="h-screen bg-slate-50 overflow-y-auto px-3">
-      <div className="my-[2.25rem] h-[28px] relative">
-        <Image
-          src="/logo.png"
-          alt="Money Flows"
-          fill
-          priority
-          className="object-contain object-left"
-        />
+      <div className="py-[2.25rem] px-2">
+        <div className="h-[28px] relative">
+          <Image
+            src="/logo.png"
+            alt="Money Flows"
+            fill
+            priority
+            className="object-contain object-left"
+          />
+        </div>
       </div>
-      This is Sidebar
+      <div className="flex flex-col gap-8">
+        <ul>
+          <li>
+            <NavItem link="/" icon={IconHome} active>
+              ホーム
+            </NavItem>
+          </li>
+          <li>
+            <NavItem link="/transactions" icon={IconExchange}>
+              収支
+            </NavItem>
+          </li>
+          <li>
+            <NavItem link="/categories" icon={IconCategory}>
+              カテゴリー
+            </NavItem>
+          </li>
+          <li>
+            <NavItem link="/tags" icon={IconTags}>
+              タグ
+            </NavItem>
+          </li>
+        </ul>
+        <ul>
+          <div className="text-slate-500 text-sm font-bold px-3 h-7 grid grid-cols-[1fr,1rem]">
+            ダッシュボード
+            <IconPlus size={16} />
+          </div>
+          <li>
+            <NavItem link="/">収入全般</NavItem>
+          </li>
+          <li>
+            <NavItem link="/">支出全般</NavItem>
+          </li>
+          <li>
+            <NavItem link="/">カテゴリー別</NavItem>
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 }
