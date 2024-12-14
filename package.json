@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc",
-    "quality": "bun format:check && npm run lint && npm run typecheck"
+    "quality": "bun format:check && npm run lint && npm run typecheck",
+    "postinstall": "lefthook install"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -24,6 +25,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.0.4-canary.47",
+    "lefthook": "^1.9.2",
     "postcss": "^8",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.1",
