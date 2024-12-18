@@ -51,13 +51,13 @@ export function Sidebar() {
             <IconPlus size={16} />
           </div>
           <li>
-            <NavItem link="/">収入全般</NavItem>
+            <NavItem link="/dashboards/dashboard1">収入全般</NavItem>
           </li>
           <li>
-            <NavItem link="/">支出全般</NavItem>
+            <NavItem link="/dashboards/dashboard2">支出全般</NavItem>
           </li>
           <li>
-            <NavItem link="/">カテゴリー別</NavItem>
+            <NavItem link="/dashboards/dashboard3">カテゴリー別</NavItem>
           </li>
         </ul>
       </div>
