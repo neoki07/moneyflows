@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import { NavItem } from "./nav-item";
 import {
@@ -12,15 +13,17 @@ export function Sidebar() {
   return (
     <nav className="h-screen bg-slate-50 overflow-y-auto px-3">
       <div className="py-[2.25rem] px-2">
-        <div className="h-[28px] relative">
-          <Image
-            src="/logo.png"
-            alt="Money Flows"
-            fill
-            priority
-            className="object-contain object-left"
-          />
-        </div>
+        <Link href="/">
+          <div className="h-[28px] relative">
+            <Image
+              src="/logo.png"
+              alt="Money Flows"
+              fill
+              priority
+              className="object-contain object-left"
+            />
+          </div>
+        </Link>
       </div>
       <div className="flex flex-col gap-8">
         <ul>
