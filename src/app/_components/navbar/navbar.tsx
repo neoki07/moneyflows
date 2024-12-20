@@ -9,7 +9,7 @@ import {
   IconTags,
 } from "@tabler/icons-react";
 
-export function Sidebar() {
+export function Navbar() {
   return (
     <nav className="h-screen bg-slate-50 overflow-y-auto px-3">
       <div className="py-[2.25rem] px-2">
