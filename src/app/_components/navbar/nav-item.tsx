@@ -14,7 +14,7 @@ export function NavItem({ link, icon: Icon, children }: NavItemProps) {
       href={link}
     >
       {Icon && <span className="mr-2">{<Icon className="size-5" />}</span>}
-      <span className="text-base font-bold">{children}</span>
+      <span className="text-base font-semibold">{children}</span>
     </Link>
   );
 }
