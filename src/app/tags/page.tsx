@@ -7,7 +7,7 @@ export default function Page() {
       <div className="flex items-center">
         <h1 className="font-bold text-2xl flex-1">タグ</h1>
         <Button>
-          <PlusIcon />
+          <PlusIcon className="-ml-1.5" />
           タグを追加
         </Button>
       </div>
