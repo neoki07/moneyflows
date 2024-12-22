@@ -2,21 +2,21 @@
 
 import { Button } from "@/components/ui/button";
 import { IconPencil } from "@tabler/icons-react";
-import { useState } from "react";
+import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 export function EditButtons() {
-  const [isEditing, setIsEditing] = useState(false);
+  const { isEditing, startEditing, endEditing } = useDashboardStore();
 
   const edit = () => {
-    setIsEditing(true);
+    startEditing();
   };
 
   const cancel = () => {
-    setIsEditing(false);
+    endEditing();
   };
 
   const save = () => {
-    setIsEditing(false);
+    endEditing();
   };
 
   if (isEditing) {
