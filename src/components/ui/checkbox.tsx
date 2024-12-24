@@ -18,7 +18,7 @@ const Checkbox = React.forwardRef<
     )}
     {...props}
   >
-    <CheckboxPrimitive.Indicator className="grid place-content-center [&>:first-child]:data-[state=indeterminate]:hidden [&>:last-child]:data-[state=checked]:hidden">
+    <CheckboxPrimitive.Indicator className="[&>:first-child]:data-[state=indeterminate]:hidden [&>:last-child]:data-[state=checked]:hidden">
       <IconCheck strokeWidth={4} className="size-3.5" />
       <IconMinus strokeWidth={4} className="size-3.5" />
     </CheckboxPrimitive.Indicator>
