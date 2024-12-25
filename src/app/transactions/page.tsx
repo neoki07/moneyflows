@@ -1,3 +1,4 @@
+import { AddTransactionButton } from "./_components/add-transaction-button";
 import { Transaction, columns } from "./columns";
 import { DataTable } from "./data-table";
 
@@ -61,7 +62,13 @@ export default async function Page() {
       <div className="flex items-center">
         <h1 className="font-bold text-2xl">収支</h1>
       </div>
-      <div>
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <div />
+          <div>
+            <AddTransactionButton />
+          </div>
+        </div>
         <DataTable columns={columns} data={data} />
       </div>
     </div>
