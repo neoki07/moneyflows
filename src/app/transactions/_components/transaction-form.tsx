@@ -10,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -82,36 +81,6 @@ export function TransactionForm() {
                 </FormControl>
                 <span className="font-medium text-sm">円</span>
               </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem className="space-y-2">
-              <FormLabel>種別</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex items-center space-x-6"
-                >
-                  <FormItem className="flex items-center space-x-2 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="income" />
-                    </FormControl>
-                    <FormLabel className="text-sm font-medium">収入</FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-2 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="expense" />
-                    </FormControl>
-                    <FormLabel className="text-sm font-medium">支出</FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
               <FormMessage />
             </FormItem>
           )}
