@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import { AddTransactionButton } from "./_components/add-transaction-button";
 import { Transaction, columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -64,7 +65,9 @@ export default async function Page() {
       </div>
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <div />
+          <div>
+            <Input placeholder="キーワード検索" />
+          </div>
           <div>
             <AddTransactionButton />
           </div>
