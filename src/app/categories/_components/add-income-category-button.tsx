@@ -11,18 +11,18 @@ import {
 import { IconPlus } from "@tabler/icons-react";
 import { CategoryForm } from "./category-form";
 
-export function AddCategoryButton() {
+export function AddIncomeCategoryButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button size="sm">
           <IconPlus className="-ml-1.5" />
-          カテゴリーを追加
+          収入カテゴリーを追加
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>カテゴリーの追加</DialogTitle>
+          <DialogTitle>収入カテゴリーの追加</DialogTitle>
         </DialogHeader>
         <CategoryForm />
       </DialogContent>
