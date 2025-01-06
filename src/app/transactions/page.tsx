@@ -64,8 +64,8 @@ export default async function Page() {
         <h1 className="font-bold text-2xl">収支</h1>
       </div>
       <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <div>
+        <div className="flex justify-between items-center gap-4">
+          <div className="flex-1">
             <Input placeholder="キーワード検索" />
           </div>
           <div>
