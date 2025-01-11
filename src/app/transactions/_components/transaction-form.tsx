@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
   FormControl,
@@ -15,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  date: z.string().min(1).max(20),
+  date: z.date(),
   description: z.string().min(1).max(20),
   amount: z.string().min(1).max(20),
   type: z.enum(["income", "expense"]),
@@ -27,7 +28,7 @@ export function TransactionForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: "",
+      date: new Date(),
       description: "",
       amount: "",
       type: "expense",
@@ -47,10 +48,10 @@ export function TransactionForm() {
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
               <FormLabel>日付</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <DatePicker value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
