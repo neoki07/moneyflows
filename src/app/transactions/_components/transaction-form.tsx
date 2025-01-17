@@ -76,12 +76,9 @@ export function TransactionForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>金額</FormLabel>
-              <div className="flex items-center gap-2">
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <span className="font-medium text-sm">円</span>
-              </div>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
