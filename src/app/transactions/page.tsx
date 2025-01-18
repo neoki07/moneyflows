@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { AddTransactionButton } from "./_components/add-transaction-button";
 import { Transaction, columns } from "./columns";
 import { DataTable } from "./data-table";
+import { DataTablePagination } from "./_components/data-table-pagination";
 
 async function getData(): Promise<Transaction[]> {
   return [
@@ -58,6 +59,7 @@ async function getData(): Promise<Transaction[]> {
 
 export default async function Page() {
   const data = await getData();
+
   return (
     <div className="px-6 py-8 gap-8 grid grid-rows-[2.25rem,1fr]">
       <div className="flex items-center">
@@ -73,6 +75,7 @@ export default async function Page() {
           </div>
         </div>
         <DataTable columns={columns} data={data} />
+        <DataTablePagination />
       </div>
     </div>
   );
