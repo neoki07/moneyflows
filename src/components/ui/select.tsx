@@ -129,7 +129,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
             className,
           )}
         >
-          <div className="relative flex h-full items-center">
+          <div className="relative flex h-full items-center pl-3 pr-8 py-1.5">
             <CommandPrimitive.Input
               ref={inputRef}
               value={inputValue || selected?.label || ""}
@@ -155,10 +155,10 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
                 }
               }}
               placeholder={placeholder}
-              className="w-full border-none bg-transparent p-3 outline-none placeholder:text-muted-foreground pr-8"
+              className="w-full border-none bg-transparent outline-none placeholder:text-muted-foreground"
             />
-            <ChevronDown className="absolute right-3 h-4 w-4 opacity-50" />
           </div>
+          <ChevronDown className="absolute top-1/2 -translate-y-1/2 right-2 h-4 w-4 opacity-50" />
         </div>
         <div className="relative mt-2">
           <CommandList

@@ -174,13 +174,12 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
           className={cn(
             "min-h-9 rounded-md border border-input text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring relative",
             {
-              "px-2 py-1.5": selected.length !== 0,
               "cursor-text": !disabled && selected.length !== 0,
             },
             className,
           )}
         >
-          <div className="relative flex h-full flex-wrap items-center gap-1">
+          <div className="relative flex h-full flex-wrap items-center gap-1 pl-3 pr-8 py-1.5 ">
             {selected.map((option) => {
               return (
                 <Badge
@@ -188,7 +187,7 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
                   variant="outline"
                   className={cn(
                     "data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground",
-                    "data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
+                    "data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground shrink-0",
                   )}
                   data-disabled={disabled ?? undefined}
                 >
@@ -227,15 +226,10 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
                 setOpen(true);
               }}
               placeholder={placeholder}
-              className={cn(
-                "flex-1 bg-transparent outline-none placeholder:text-muted-foreground pr-8",
-                {
-                  "px-3 py-1.5": selected.length === 0,
-                },
-              )}
+              className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
             />
-            <ChevronDown className="absolute right-3 h-4 w-4 opacity-50" />
           </div>
+          <ChevronDown className="absolute top-1/2 -translate-y-1/2 right-2 h-4 w-4 opacity-50" />
         </div>
         <div className="relative mt-2">
           <CommandList
