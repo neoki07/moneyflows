@@ -1,7 +1,7 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { X } from "lucide-react";
+import { X, ChevronDown } from "lucide-react";
 import * as React from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -172,7 +172,7 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
         <div
           onKeyDown={handleKeyDown}
           className={cn(
-            "min-h-9 rounded-md border border-input text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring",
+            "min-h-9 rounded-md border border-input text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring relative",
             {
               "px-2 py-1.5": selected.length !== 0,
               "cursor-text": !disabled && selected.length !== 0,
@@ -228,12 +228,13 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
               }}
               placeholder={placeholder}
               className={cn(
-                "flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
+                "flex-1 bg-transparent outline-none placeholder:text-muted-foreground pr-8",
                 {
                   "px-3 py-1.5": selected.length === 0,
                 },
               )}
             />
+            <ChevronDown className="absolute right-3 h-4 w-4 opacity-50" />
           </div>
         </div>
         <div className="relative mt-2">

@@ -11,6 +11,7 @@ import {
   CommandEmpty,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
 
 export interface SelectOption {
   value: string;
@@ -154,8 +155,9 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
                 }
               }}
               placeholder={placeholder}
-              className="w-full border-none bg-transparent p-3 outline-none placeholder:text-muted-foreground"
+              className="w-full border-none bg-transparent p-3 outline-none placeholder:text-muted-foreground pr-8"
             />
+            <ChevronDown className="absolute right-3 h-4 w-4 opacity-50" />
           </div>
         </div>
         <div className="relative mt-2">
