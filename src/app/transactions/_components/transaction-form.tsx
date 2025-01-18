@@ -11,9 +11,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState } from "react";
 
 const formSchema = z.object({
   date: z.date(),
@@ -25,6 +27,21 @@ const formSchema = z.object({
 });
 
 export function TransactionForm() {
+  const [tagOptions, setTagOptions] = useState<MultiSelectOption[]>([
+    {
+      label: "タグ1",
+      value: "1",
+    },
+    {
+      label: "タグ2",
+      value: "2",
+    },
+    {
+      label: "タグ3",
+      value: "3",
+    },
+  ]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,6 +57,19 @@ export function TransactionForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
+
+  const handleCreateTag = async (
+    inputValue: string,
+  ): Promise<MultiSelectOption> => {
+    const newOption = {
+      label: inputValue,
+      value: `${tagOptions.length + 1}`,
+    };
+
+    setTagOptions((prev) => [...prev, newOption]);
+
+    return newOption;
+  };
 
   return (
     <Form {...form}>
@@ -102,9 +132,19 @@ export function TransactionForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>タグ</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
+              <MultiSelect
+                {...field}
+                value={
+                  field.value
+                    ? [{ label: field.value, value: field.value }]
+                    : []
+                }
+                options={tagOptions}
+                onCreateOption={handleCreateTag}
+                onChange={(options) => {
+                  field.onChange(options.map((opt) => opt.value).join(","));
+                }}
+              />
               <FormMessage />
             </FormItem>
           )}
