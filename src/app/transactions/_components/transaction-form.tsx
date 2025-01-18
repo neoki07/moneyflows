@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
+import { Select, SelectOption } from "@/components/ui/select";
 
 const formSchema = z.object({
   date: z.date(),
@@ -39,6 +40,21 @@ export function TransactionForm() {
     {
       label: "タグ3",
       value: "3",
+    },
+  ]);
+
+  const [categoryOptions, setCategoryOptions] = useState<SelectOption[]>([
+    {
+      label: "食費",
+      value: "food",
+    },
+    {
+      label: "交通費",
+      value: "transportation",
+    },
+    {
+      label: "娯楽費",
+      value: "entertainment",
     },
   ]);
 
@@ -67,6 +83,19 @@ export function TransactionForm() {
     };
 
     setTagOptions((prev) => [...prev, newOption]);
+
+    return newOption;
+  };
+
+  const handleCreateCategory = async (
+    inputValue: string,
+  ): Promise<SelectOption> => {
+    const newOption = {
+      label: inputValue,
+      value: `${categoryOptions.length + 1}`,
+    };
+
+    setCategoryOptions((prev) => [...prev, newOption]);
 
     return newOption;
   };
@@ -120,7 +149,19 @@ export function TransactionForm() {
             <FormItem>
               <FormLabel>カテゴリー</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Select
+                  value={
+                    field.value
+                      ? { label: field.value, value: field.value }
+                      : undefined
+                  }
+                  options={categoryOptions}
+                  placeholder="カテゴリーを選択"
+                  onChange={(option) => {
+                    field.onChange(option?.value ?? "");
+                  }}
+                  onCreateOption={handleCreateCategory}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
