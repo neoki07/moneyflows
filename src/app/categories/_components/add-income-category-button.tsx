@@ -15,7 +15,7 @@ export function AddIncomeCategoryButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm">
+        <Button>
           <IconPlus className="-ml-1.5" />
           収入カテゴリーを追加
         </Button>

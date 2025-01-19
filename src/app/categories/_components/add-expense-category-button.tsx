@@ -15,7 +15,7 @@ export function AddExpenseCategoryButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm">
+        <Button>
           <IconPlus className="-ml-1.5" />
           支出カテゴリーを追加
         </Button>
