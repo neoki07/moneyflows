@@ -27,10 +27,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-cols-[18rem,1fr]`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-cols-[18rem,1fr] h-screen`}
       >
         <Navbar />
-        <main>{children}</main>
+        <main className="overflow-auto">{children}</main>
       </body>
     </html>
   );
