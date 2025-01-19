@@ -9,6 +9,7 @@ import {
   GridStackRender,
   GridStackRenderProvider,
 } from "@/lib/gridstack";
+import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 import "gridstack/dist/gridstack-extra.css";
 import "gridstack/dist/gridstack.css";
@@ -129,8 +130,15 @@ interface WidgetsProps {
 }
 
 export function Widgets({ initialOptions = defaultGridOptions }: WidgetsProps) {
+  const { isEditing } = useDashboardStore();
+
+  const options: GridStackOptions = {
+    ...initialOptions,
+    staticGrid: !isEditing,
+  };
+
   return (
-    <GridStackProvider initialOptions={initialOptions}>
+    <GridStackProvider initialOptions={options}>
       <GridStackRenderProvider>
         <GridStackRender componentMap={COMPONENT_MAP} />
       </GridStackRenderProvider>
