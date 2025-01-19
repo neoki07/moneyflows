@@ -13,6 +13,7 @@ import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 import "gridstack/dist/gridstack-extra.css";
 import "gridstack/dist/gridstack.css";
+import { BalanceChart } from "./widgets/charts/balance-chart";
 
 const CELL_HEIGHT = 128;
 const BREAKPOINTS = [
@@ -39,6 +40,7 @@ function BaseWidget({
 
 const COMPONENT_MAP: ComponentMap = {
   BaseWidget,
+  BalanceChart,
 };
 
 const defaultGridOptions: GridStackOptions = {
@@ -52,6 +54,17 @@ const defaultGridOptions: GridStackOptions = {
   margin: 8,
   cellHeight: CELL_HEIGHT,
   children: [
+    {
+      id: "balance-chart",
+      h: 3,
+      w: 12,
+      x: 0,
+      y: 0,
+      content: JSON.stringify({
+        name: "BalanceChart",
+        props: {},
+      } satisfies ComponentDataType<ComponentProps<typeof BalanceChart>>),
+    },
     {
       id: "item1",
       h: 3,
