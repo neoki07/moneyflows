@@ -53,6 +53,9 @@ const defaultGridOptions: GridStackOptions = {
   },
   margin: 8,
   cellHeight: CELL_HEIGHT,
+  resizable: {
+    handles: "all",
+  },
   children: [
     {
       id: "balance-chart",
