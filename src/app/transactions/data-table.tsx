@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { DataTableFloatingBar } from "./_components/data-table-floating-bar";
+import { BulkActionBar } from "./_components/bulk-action-bar";
 import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTableFloatingBar
+      <BulkActionBar
         selectedCount={table.getSelectedRowModel().rows.length}
         onEdit={handleEdit}
         onDelete={handleDelete}

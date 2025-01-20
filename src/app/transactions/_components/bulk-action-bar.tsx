@@ -4,17 +4,17 @@ import { Button } from "@/components/ui/button";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 
-interface DataTableFloatingBarProps {
+interface BulkActionBarProps {
   selectedCount: number;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-export function DataTableFloatingBar({
+export function BulkActionBar({
   selectedCount,
   onEdit,
   onDelete,
-}: DataTableFloatingBarProps) {
+}: BulkActionBarProps) {
   return (
     <AnimatePresence>
       {selectedCount > 0 && (
