@@ -75,3 +75,11 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide GridStack resize arrows */
+.grid-stack-item > .ui-resizable-ne,
+.grid-stack-item > .ui-resizable-nw,
+.grid-stack-item > .ui-resizable-se,
+.grid-stack-item > .ui-resizable-sw {
+  background-image: none !important;
+}
