@@ -54,9 +54,13 @@ function yAxisTickFormatter(value: number) {
   return `${formatter.format(value)}円`;
 }
 
-export function BalanceChart() {
+interface BalanceChartProps {
+  onRemove?: () => void;
+}
+
+export function BalanceChart({ onRemove }: BalanceChartProps) {
   return (
-    <ChartWidgetCard title="月次収支">
+    <ChartWidgetCard title="月次収支" onRemove={onRemove}>
       <ChartContainer config={chartConfig} className="h-full w-full">
         <ComposedChart
           accessibilityLayer
