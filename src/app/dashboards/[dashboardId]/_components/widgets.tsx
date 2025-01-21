@@ -10,10 +10,12 @@ import {
   GridStackRenderProvider,
 } from "@/lib/gridstack";
 import { useDashboardStore } from "../_stores/use-dashboard-store";
+import { useGridStackContext } from "@/lib/gridstack";
 
 import "gridstack/dist/gridstack-extra.css";
 import "gridstack/dist/gridstack.css";
 import { BalanceChart } from "./widgets/charts/balance-chart";
+import { WidgetAddBar } from "./widget-add-bar";
 
 const CELL_HEIGHT = 128;
 const BREAKPOINTS = [
@@ -155,9 +157,71 @@ export function Widgets({ initialOptions = defaultGridOptions }: WidgetsProps) {
 
   return (
     <GridStackProvider initialOptions={options}>
-      <GridStackRenderProvider>
-        <GridStackRender componentMap={COMPONENT_MAP} />
-      </GridStackRenderProvider>
+      <GridStackContent />
     </GridStackProvider>
+  );
+}
+
+function GridStackContent() {
+  const { addWidget } = useGridStackContext();
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const widgetType = e.dataTransfer.getData("widget/type");
+
+    // グリッドの相対位置を計算
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // セルサイズに基づいて位置を計算
+    const cellWidth = rect.width / 12; // 12カラム
+    const cellX = Math.floor(x / cellWidth);
+    const cellY = Math.floor(y / CELL_HEIGHT);
+
+    // ウィジェットを追加
+    addWidget(() => {
+      const baseWidget = {
+        h: 3,
+        x: cellX,
+        y: cellY,
+      };
+
+      if (widgetType === "balance-chart") {
+        return {
+          ...baseWidget,
+          w: 12,
+          content: JSON.stringify({
+            name: "BalanceChart",
+            props: {},
+          } satisfies ComponentDataType<ComponentProps<typeof BalanceChart>>),
+        };
+      } else {
+        return {
+          ...baseWidget,
+          w: 4,
+          content: JSON.stringify({
+            name: "BaseWidget",
+            props: {
+              title: "新しいウィジェット",
+              children: "ウィジェットのコンテンツ",
+            },
+          } satisfies ComponentDataType<ComponentProps<typeof BaseWidget>>),
+        };
+      }
+    });
+  };
+
+  return (
+    <GridStackRenderProvider>
+      <div
+        className="h-full"
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleDrop}
+      >
+        <GridStackRender componentMap={COMPONENT_MAP} />
+      </div>
+      <WidgetAddBar />
+    </GridStackRenderProvider>
   );
 }
