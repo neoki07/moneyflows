@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { IconPencil } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ export function EditCategoryButton() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <IconPencil />
+          <IconEdit />
           <span className="sr-only">編集</span>
         </Button>
       </DialogTrigger>

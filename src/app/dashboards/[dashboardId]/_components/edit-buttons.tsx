@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { IconPencil } from "@tabler/icons-react";
+import { IconEdit } from "@tabler/icons-react";
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 export function EditButtons() {
@@ -32,7 +32,7 @@ export function EditButtons() {
 
   return (
     <Button onClick={edit}>
-      <IconPencil className="-ml-1.5" />
+      <IconEdit className="-ml-1.5" />
       ダッシュボードを編集
     </Button>
   );
