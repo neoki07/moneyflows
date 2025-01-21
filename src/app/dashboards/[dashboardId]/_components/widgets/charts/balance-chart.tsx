@@ -54,6 +54,69 @@ function yAxisTickFormatter(value: number) {
   return `${formatter.format(value)}円`;
 }
 
+export function BalanceChartContent() {
+  return (
+    <ChartContainer config={chartConfig} className="h-full w-full">
+      <ComposedChart
+        accessibilityLayer
+        data={mockData}
+        margin={{ top: 72 }}
+        maxBarSize={48}
+        stackOffset="sign"
+      >
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="month"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          minTickGap={32}
+          tickFormatter={(value) => `${value}月`}
+          interval="preserveStart"
+        />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          tickFormatter={yAxisTickFormatter}
+        />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              labelFormatter={(_, [payload]) => {
+                return `${payload?.payload?.month}月`;
+              }}
+              indicator="dot"
+            />
+          }
+        />
+        <Bar
+          dataKey="income"
+          fill="var(--color-income)"
+          fillOpacity={0.85}
+          radius={[4, 4, 0, 0]}
+          stackId="income-and-expense"
+        />
+        <Bar
+          dataKey="expense"
+          fill="var(--color-expense)"
+          fillOpacity={0.85}
+          radius={[4, 4, 0, 0]}
+          stackId="income-and-expense"
+        />
+        <Line
+          dataKey="balance"
+          stroke="var(--color-balance)"
+          strokeWidth={3}
+          dot={{ r: 4, strokeWidth: 1 }}
+        />
+        <ChartLegend content={<ChartLegendContent />} />
+      </ComposedChart>
+    </ChartContainer>
+  );
+}
+
 interface BalanceChartProps {
   onRemove?: () => void;
 }
@@ -61,64 +124,7 @@ interface BalanceChartProps {
 export function BalanceChart({ onRemove }: BalanceChartProps) {
   return (
     <ChartWidgetCard title="月次収支" onRemove={onRemove}>
-      <ChartContainer config={chartConfig} className="h-full w-full">
-        <ComposedChart
-          accessibilityLayer
-          data={mockData}
-          margin={{ top: 72 }}
-          maxBarSize={48}
-          stackOffset="sign"
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-            minTickGap={32}
-            tickFormatter={(value) => `${value}月`}
-            interval="preserveStart"
-          />
-          <YAxis
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-            tickFormatter={yAxisTickFormatter}
-          />
-          <ChartTooltip
-            cursor={false}
-            content={
-              <ChartTooltipContent
-                labelFormatter={(_, [payload]) => {
-                  return `${payload?.payload?.month}月`;
-                }}
-                indicator="dot"
-              />
-            }
-          />
-          <Bar
-            dataKey="income"
-            fill="var(--color-income)"
-            fillOpacity={0.85}
-            radius={[4, 4, 0, 0]}
-            stackId="income-and-expense"
-          />
-          <Bar
-            dataKey="expense"
-            fill="var(--color-expense)"
-            fillOpacity={0.85}
-            radius={[4, 4, 0, 0]}
-            stackId="income-and-expense"
-          />
-          <Line
-            dataKey="balance"
-            stroke="var(--color-balance)"
-            strokeWidth={3}
-            dot={{ r: 4, strokeWidth: 1 }}
-          />
-          <ChartLegend content={<ChartLegendContent />} />
-        </ComposedChart>
-      </ChartContainer>
+      <BalanceChartContent />
     </ChartWidgetCard>
   );
 }
