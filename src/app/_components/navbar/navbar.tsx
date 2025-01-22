@@ -8,62 +8,66 @@ import {
   IconPlus,
   IconTags,
 } from "@tabler/icons-react";
+import { UserArea } from "./user-area";
 
 export function Navbar() {
   return (
-    <nav className="h-screen bg-slate-50 overflow-y-auto px-3">
-      <div className="py-[2.25rem] px-2">
-        <Link href="/">
-          <div className="h-[28px] relative">
-            <Image
-              src="/logo.png"
-              alt="Money Flows"
-              fill
-              priority
-              className="object-contain object-left"
-            />
-          </div>
-        </Link>
+    <nav className="border-r h-screen flex flex-col">
+      <div className="h-screen bg-slate-50 overflow-y-auto px-3">
+        <div className="py-[2.25rem] px-2">
+          <Link href="/">
+            <div className="h-[28px] relative">
+              <Image
+                src="/logo.png"
+                alt="Money Flows"
+                fill
+                priority
+                className="object-contain object-left"
+              />
+            </div>
+          </Link>
+        </div>
+        <div className="flex flex-col gap-8">
+          <ul>
+            <li>
+              <NavItem link="/" icon={IconHome} active>
+                ホーム
+              </NavItem>
+            </li>
+            <li>
+              <NavItem link="/transactions" icon={IconExchange}>
+                収支
+              </NavItem>
+            </li>
+            <li>
+              <NavItem link="/categories" icon={IconCategory}>
+                カテゴリー
+              </NavItem>
+            </li>
+            <li>
+              <NavItem link="/tags" icon={IconTags}>
+                タグ
+              </NavItem>
+            </li>
+          </ul>
+          <ul>
+            <div className="text-slate-500 text-xs font-semibold px-3 h-7 grid grid-cols-[1fr,1rem]">
+              ダッシュボード
+              <IconPlus size={16} />
+            </div>
+            <li>
+              <NavItem link="/dashboards/dashboard1">収入全般</NavItem>
+            </li>
+            <li>
+              <NavItem link="/dashboards/dashboard2">支出全般</NavItem>
+            </li>
+            <li>
+              <NavItem link="/dashboards/dashboard3">カテゴリー別</NavItem>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className="flex flex-col gap-8">
-        <ul>
-          <li>
-            <NavItem link="/" icon={IconHome} active>
-              ホーム
-            </NavItem>
-          </li>
-          <li>
-            <NavItem link="/transactions" icon={IconExchange}>
-              収支
-            </NavItem>
-          </li>
-          <li>
-            <NavItem link="/categories" icon={IconCategory}>
-              カテゴリー
-            </NavItem>
-          </li>
-          <li>
-            <NavItem link="/tags" icon={IconTags}>
-              タグ
-            </NavItem>
-          </li>
-        </ul>
-        <ul>
-          <div className="text-slate-500 text-xs font-semibold px-3 h-7 grid grid-cols-[1fr,1rem]">
-            ダッシュボード
-            <IconPlus size={16} />
-          </div>
-          <li>
-            <NavItem link="/dashboards/dashboard1">収入全般</NavItem>
-          </li>
-          <li>
-            <NavItem link="/dashboards/dashboard2">支出全般</NavItem>
-          </li>
-          <li>
-            <NavItem link="/dashboards/dashboard3">カテゴリー別</NavItem>
-          </li>
-        </ul>
-      </div>
+      <UserArea />
     </nav>
   );
 }
