@@ -2,7 +2,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "./_components/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +28,9 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="ja">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-cols-[18rem,1fr] h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Navbar />
-          <main className="overflow-auto">{children}</main>
+          {children}
         </body>
       </html>
     </ClerkProvider>

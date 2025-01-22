@@ -1,4 +1,4 @@
-import { BalanceChartContent } from "@/app/dashboards/[dashboardId]/_components/widgets/charts/balance-chart";
+import { BalanceChartContent } from "@/app/(main)/dashboards/[dashboardId]/_components/widgets/charts/balance-chart";
 
 export function TransitionCard() {
   return (

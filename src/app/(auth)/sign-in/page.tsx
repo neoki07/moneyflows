@@ -34,48 +34,46 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen grid place-items-center bg-slate-50">
-      <div className="w-full max-w-sm space-y-8">
-        <div className="text-center">
-          <div className="h-12 relative mb-6">
-            <Image
-              src="/logo.png"
-              alt="Money Flows"
-              fill
-              priority
-              className="object-contain"
-            />
-          </div>
-          <h1 className="text-2xl font-bold">ログイン</h1>
-          <p className="text-slate-600 mt-2">
-            アカウントにサインインして始めましょう
-          </p>
+    <div className="w-full max-w-sm space-y-8">
+      <div className="text-center">
+        <div className="h-12 relative mb-6">
+          <Image
+            src="/logo.png"
+            alt="Money Flows"
+            fill
+            priority
+            className="object-contain"
+          />
         </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Input
-              type="email"
-              placeholder="メールアドレス"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Input
-              type="password"
-              placeholder="パスワード"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "ログイン中..." : "ログイン"}
-          </Button>
-        </form>
+        <h1 className="text-2xl font-bold">ログイン</h1>
+        <p className="text-slate-600 mt-2">
+          アカウントにサインインして始めましょう
+        </p>
       </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-2">
+          <Input
+            type="email"
+            placeholder="メールアドレス"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Input
+            type="password"
+            placeholder="パスワード"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "ログイン中..." : "ログイン"}
+        </Button>
+      </form>
     </div>
   );
 }
