@@ -7,7 +7,7 @@ export function LatestTransactionsCard() {
       <h2 className="font-bold text-xl">最近の収支</h2>
       <div className="space-y-4">
         <ul className="space-y-2">
-          <span className="text-sm text-slate-700">11月23日 (土)</span>
+          <div className="text-sm text-slate-700">11月23日 (土)</div>
           <li className="grid grid-cols-[15rem_1fr_6rem] text-sm">
             <span>給料</span>
             <div className="flex flex-wrap gap-1">
@@ -26,7 +26,7 @@ export function LatestTransactionsCard() {
         </ul>
         <Separator />
         <ul className="space-y-2">
-          <span className="text-sm text-slate-700">11月22日 (金)</span>
+          <div className="text-sm text-slate-700">11月22日 (金)</div>
           <li className="grid grid-cols-[15rem_1fr_6rem] text-sm">
             <span>給料</span>
             <div className="flex flex-wrap gap-1">
