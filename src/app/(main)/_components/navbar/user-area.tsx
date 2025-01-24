@@ -37,7 +37,7 @@ export function UserArea() {
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => signOut()}
+        onClick={() => signOut({ redirectUrl: "/sign-in" })}
         className="text-slate-500 hover:text-slate-900"
       >
         <IconLogout size={20} />
