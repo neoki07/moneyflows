@@ -21,6 +21,7 @@ export function Navbar() {
                 src="/logo.png"
                 alt="Money Flows"
                 fill
+                sizes="247px"
                 priority
                 className="object-contain object-left"
               />

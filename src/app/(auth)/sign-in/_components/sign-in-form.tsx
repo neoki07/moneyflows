@@ -44,6 +44,7 @@ export function SignInForm() {
             src="/logo.png"
             alt="Money Flows"
             fill
+            sizes="384px"
             priority
             className="object-contain"
           />
