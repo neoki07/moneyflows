@@ -18,12 +18,6 @@ import { BalanceChart } from "./widgets/charts/balance-chart";
 import { WidgetAddBar } from "./widget-add-bar";
 
 const CELL_HEIGHT = 128;
-const BREAKPOINTS = [
-  { c: 1, w: 700 },
-  { c: 3, w: 850 },
-  { c: 6, w: 950 },
-  { c: 8, w: 1100 },
-];
 
 function BaseWidget({
   title,
@@ -48,8 +42,6 @@ const COMPONENT_MAP: ComponentMap = {
 const defaultGridOptions: GridStackOptions = {
   acceptWidgets: true,
   columnOpts: {
-    breakpointForWindow: true,
-    breakpoints: BREAKPOINTS,
     layout: "moveScale",
     columnMax: 12,
   },
