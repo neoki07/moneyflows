@@ -32,7 +32,7 @@ export function EditButtons() {
 
   return (
     <Button onClick={edit}>
-      <IconEdit className="-ml-1.5" />
+      <IconEdit className="-ml-1" />
       ダッシュボードを編集
     </Button>
   );
