@@ -52,7 +52,7 @@ export function Navbar() {
             </li>
           </ul>
           <ul>
-            <div className="text-slate-500 text-xs font-semibold px-3 h-7 grid grid-cols-[1fr,1rem]">
+            <div className="text-slate-500 text-xs font-semibold px-3 h-7 grid grid-cols-[1fr_1rem]">
               ダッシュボード
               <IconPlus size={16} />
             </div>

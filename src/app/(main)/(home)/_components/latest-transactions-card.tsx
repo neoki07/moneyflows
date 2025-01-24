@@ -8,14 +8,14 @@ export function LatestTransactionsCard() {
       <div className="space-y-4">
         <ul className="space-y-2">
           <span className="text-sm text-slate-700">11月23日 (土)</span>
-          <li className="grid grid-cols-[15rem,1fr,6rem] text-sm">
+          <li className="grid grid-cols-[15rem_1fr_6rem] text-sm">
             <span>給料</span>
             <div className="flex flex-wrap gap-1">
               <Badge variant="outline">給料</Badge>
             </div>
             <span className="text-right text-emerald-600">123円</span>
           </li>
-          <li className="grid grid-cols-[15rem,1fr,6rem] text-sm">
+          <li className="grid grid-cols-[15rem_1fr_6rem] text-sm">
             <span>ローソン</span>
             <div className="flex flex-wrap gap-1">
               <Badge variant="outline">食費</Badge>
@@ -27,7 +27,7 @@ export function LatestTransactionsCard() {
         <Separator />
         <ul className="space-y-2">
           <span className="text-sm text-slate-700">11月22日 (金)</span>
-          <li className="grid grid-cols-[15rem,1fr,6rem] text-sm">
+          <li className="grid grid-cols-[15rem_1fr_6rem] text-sm">
             <span>給料</span>
             <div className="flex flex-wrap gap-1">
               <Badge variant="outline">給料</Badge>

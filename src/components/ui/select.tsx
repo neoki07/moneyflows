@@ -155,7 +155,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
                 }
               }}
               placeholder={placeholder}
-              className="w-full border-none bg-transparent outline-none placeholder:text-muted-foreground"
+              className="w-full border-none bg-transparent outline-hidden placeholder:text-muted-foreground"
             />
           </div>
           <ChevronDown className="absolute top-1/2 -translate-y-1/2 right-2 h-4 w-4 opacity-50" />
@@ -167,7 +167,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
               e.stopPropagation();
             }}
             className={cn(
-              "absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in",
+              "absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-hidden animate-in",
               !open && "hidden",
             )}
           >
