@@ -166,7 +166,7 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
 
     return (
       <Command
-        className="h-auto overflow-visible bg-transparent"
+        className="h-9 overflow-visible bg-transparent"
         shouldFilter={false}
       >
         <div
