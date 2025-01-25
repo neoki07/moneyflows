@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 
 import { fetchTransactionTableData } from "@/app/(main)/transactions/_lib/fetch";
@@ -32,7 +33,7 @@ export function TransactionTable({
   data: initialData,
   totalCount,
 }: TransactionTableProps) {
-  const [currentPage] = useState(1);
+  const [currentPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [data, setData] = useState(initialData);
   const [rowSelection, setRowSelection] = useState({});
 
