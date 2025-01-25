@@ -1,8 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
+
+import { Button } from "@/components/ui/button";
 
 interface BulkActionBarProps {
   selectedCount: number;

@@ -1,6 +1,6 @@
-import { CategoryCard } from "./_components/category-card";
-import { AddIncomeCategoryButton } from "./_components/add-income-category-button";
 import { AddExpenseCategoryButton } from "./_components/add-expense-category-button";
+import { AddIncomeCategoryButton } from "./_components/add-income-category-button";
+import { CategoryCard } from "./_components/category-card";
 
 export default function Page() {
   return (

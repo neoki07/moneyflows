@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
 import {
   ChartContainer,
   ChartLegend,
@@ -15,6 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+
 import { ChartWidgetCard } from "../../chart-widget-card";
 
 const chartConfig = {

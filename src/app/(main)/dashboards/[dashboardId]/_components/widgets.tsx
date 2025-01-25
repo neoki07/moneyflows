@@ -1,7 +1,11 @@
 "use client";
 
-import { ComponentProps } from "react";
+import "gridstack/dist/gridstack-extra.css";
+import "gridstack/dist/gridstack.css";
+
 import { GridStackOptions } from "gridstack";
+import { ComponentProps } from "react";
+
 import {
   ComponentDataType,
   ComponentMap,
@@ -9,13 +13,11 @@ import {
   GridStackRender,
   GridStackRenderProvider,
 } from "@/lib/gridstack";
-import { useDashboardStore } from "../_stores/use-dashboard-store";
 import { useGridStackContext } from "@/lib/gridstack";
 
-import "gridstack/dist/gridstack-extra.css";
-import "gridstack/dist/gridstack.css";
-import { BalanceChart } from "./widgets/charts/balance-chart";
+import { useDashboardStore } from "../_stores/use-dashboard-store";
 import { WidgetAddBar } from "./widget-add-bar";
+import { BalanceChart } from "./widgets/charts/balance-chart";
 
 const CELL_HEIGHT = 128;
 

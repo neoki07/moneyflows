@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { IconTrashX } from "@tabler/icons-react";
+
+import { Button } from "@/components/ui/button";
+
 import { EditTagButton } from "./edit-tag-button";
 
 export function TagCard() {

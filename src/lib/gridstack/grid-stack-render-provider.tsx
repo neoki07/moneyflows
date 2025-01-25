@@ -1,3 +1,4 @@
+import { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
 import {
   PropsWithChildren,
   useCallback,
@@ -5,10 +6,10 @@ import {
   useMemo,
   useRef,
 } from "react";
-import { useGridStackContext } from "./grid-stack-context";
-import { GridStack, GridStackOptions, GridStackWidget } from "gridstack";
-import { GridStackRenderContext } from "./grid-stack-render-context";
 import isEqual from "react-fast-compare";
+
+import { useGridStackContext } from "./grid-stack-context";
+import { GridStackRenderContext } from "./grid-stack-render-context";
 
 export function GridStackRenderProvider({ children }: PropsWithChildren) {
   const {

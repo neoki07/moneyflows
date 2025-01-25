@@ -1,8 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { IconChartBar, IconLayoutGrid } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
+
+import { Button } from "@/components/ui/button";
+
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 const WIDGET_TYPES = [

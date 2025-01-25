@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { IconX } from "@tabler/icons-react";
+
+import { Button } from "@/components/ui/button";
+
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 interface ChartWidgetCardProps {

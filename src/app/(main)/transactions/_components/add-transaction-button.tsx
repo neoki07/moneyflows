@@ -1,5 +1,7 @@
 "use client";
 
+import { IconPlus } from "@tabler/icons-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { IconPlus } from "@tabler/icons-react";
+
 import { TransactionForm } from "./transaction-form";
 
 export function AddTransactionButton() {

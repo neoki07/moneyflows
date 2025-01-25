@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { IconEdit } from "@tabler/icons-react";
+
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 import { CategoryForm } from "./category-form";
 
 export function EditCategoryButton() {

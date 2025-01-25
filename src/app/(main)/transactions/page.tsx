@@ -1,8 +1,9 @@
 import { Input } from "@/components/ui/input";
+
 import { AddTransactionButton } from "./_components/add-transaction-button";
-import { Transaction, columns } from "./columns";
-import { DataTable } from "./data-table";
 import { DataTablePagination } from "./_components/data-table-pagination";
+import { columns, Transaction } from "./columns";
+import { DataTable } from "./data-table";
 
 async function getData(): Promise<Transaction[]> {
   return [

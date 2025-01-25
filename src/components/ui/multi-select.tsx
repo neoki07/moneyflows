@@ -1,16 +1,16 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { X, ChevronDown } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import * as React from "react";
 
 import { Badge } from "@/components/ui/badge";
 import {
   Command,
+  CommandEmpty,
   CommandGroup,
   CommandItem,
   CommandList,
-  CommandEmpty,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 

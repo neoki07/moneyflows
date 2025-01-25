@@ -1,9 +1,10 @@
 "use client";
 
-import { useUser, SignOutButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import { IconLogout } from "@tabler/icons-react";
 import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
 
 export function UserArea() {
   const { user } = useUser();

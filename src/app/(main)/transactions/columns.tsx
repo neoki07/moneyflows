@@ -1,7 +1,8 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
+
+import { Checkbox } from "@/components/ui/checkbox";
 
 export type Transaction = {
   id: string;

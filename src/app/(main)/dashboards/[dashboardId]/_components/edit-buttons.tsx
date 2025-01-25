@@ -1,7 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { IconEdit } from "@tabler/icons-react";
+
+import { Button } from "@/components/ui/button";
+
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 export function EditButtons() {

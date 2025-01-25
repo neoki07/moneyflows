@@ -1,5 +1,5 @@
-import { TagCard } from "./_components/tag-card";
 import { AddTagButton } from "./_components/add-tag-button";
+import { TagCard } from "./_components/tag-card";
 
 export default function Page() {
   return (

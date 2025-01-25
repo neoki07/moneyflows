@@ -1,6 +1,3 @@
-import Link from "next/link";
-import Image from "next/image";
-import { NavItem } from "./nav-item";
 import {
   IconCategory,
   IconExchange,
@@ -8,6 +5,10 @@ import {
   IconPlus,
   IconTags,
 } from "@tabler/icons-react";
+import Image from "next/image";
+import Link from "next/link";
+
+import { NavItem } from "./nav-item";
 import { UserArea } from "./user-area";
 
 export function Navbar() {
