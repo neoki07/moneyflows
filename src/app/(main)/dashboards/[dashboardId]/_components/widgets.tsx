@@ -137,9 +137,9 @@ const defaultGridOptions: GridStackOptions = {
   ],
 };
 
-interface WidgetsProps {
+type WidgetsProps = {
   initialOptions?: GridStackOptions;
-}
+};
 
 export function Widgets({ initialOptions = defaultGridOptions }: WidgetsProps) {
   const { isEditing } = useDashboardStore();

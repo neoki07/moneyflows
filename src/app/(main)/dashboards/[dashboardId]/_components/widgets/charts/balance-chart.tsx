@@ -119,9 +119,9 @@ export function BalanceChartContent() {
   );
 }
 
-interface BalanceChartProps {
+type BalanceChartProps = {
   onRemove?: () => void;
-}
+};
 
 export function BalanceChart({ onRemove }: BalanceChartProps) {
   return (

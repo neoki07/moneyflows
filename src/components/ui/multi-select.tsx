@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 
-export interface MultiSelectOption {
+export type MultiSelectOption = {
   value: string;
   label: string;
-}
+};
 
-interface MultiSelectProps {
+type MultiSelectProps = {
   value?: MultiSelectOption[];
   options: MultiSelectOption[];
   placeholder?: string;
@@ -29,14 +29,14 @@ interface MultiSelectProps {
   onChange?: (options: MultiSelectOption[]) => void;
   onCreateOption?: (inputValue: string) => Promise<MultiSelectOption>;
   isCreating?: boolean;
-}
+};
 
-export interface MultipleSelectRef {
+export type MultipleSelectRef = {
   selectedValue: MultiSelectOption[];
   input: HTMLInputElement;
   focus: () => void;
   reset: () => void;
-}
+};
 
 const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
   (

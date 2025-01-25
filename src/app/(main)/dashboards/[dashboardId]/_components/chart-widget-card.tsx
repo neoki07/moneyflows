@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
-interface ChartWidgetCardProps {
+type ChartWidgetCardProps = {
   title: string;
   children: React.ReactNode;
   onRemove?: () => void;
-}
+};
 
 export function ChartWidgetCard({
   title,

@@ -13,12 +13,12 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 
-export interface SelectOption {
+export type SelectOption = {
   value: string;
   label: string;
-}
+};
 
-interface SelectProps {
+type SelectProps = {
   value?: SelectOption;
   options: SelectOption[];
   placeholder?: string;
@@ -28,14 +28,14 @@ interface SelectProps {
   onChange?: (option: SelectOption | undefined) => void;
   onCreateOption?: (inputValue: string) => Promise<SelectOption>;
   isCreating?: boolean;
-}
+};
 
-export interface SelectRef {
+export type SelectRef = {
   selectedValue: SelectOption | undefined;
   input: HTMLInputElement;
   focus: () => void;
   reset: () => void;
-}
+};
 
 const Select = React.forwardRef<SelectRef, SelectProps>(
   (

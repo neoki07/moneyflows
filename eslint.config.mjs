@@ -21,6 +21,7 @@ const eslintConfig = [
       "simple-import-sort": simpleImportSort,
     },
     rules: {
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "import/no-extraneous-dependencies": "error",
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",

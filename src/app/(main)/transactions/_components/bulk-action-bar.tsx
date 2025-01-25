@@ -5,11 +5,11 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 
-interface BulkActionBarProps {
+type BulkActionBarProps = {
   selectedCount: number;
   onEdit: () => void;
   onDelete: () => void;
-}
+};
 
 export function BulkActionBar({
   selectedCount,
