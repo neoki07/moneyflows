@@ -1,13 +1,12 @@
 "use client";
 
-import { useUser, useClerk } from "@clerk/nextjs";
+import { useUser, SignOutButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { IconLogout } from "@tabler/icons-react";
 import Image from "next/image";
 
 export function UserArea() {
   const { user } = useUser();
-  const { signOut } = useClerk();
 
   if (!user) return null;
 
@@ -34,14 +33,15 @@ export function UserArea() {
           </span>
         </div>
       </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => signOut({ redirectUrl: "/sign-in" })}
-        className="text-slate-500 hover:text-slate-900"
-      >
-        <IconLogout size={20} />
-      </Button>
+      <SignOutButton>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-slate-500 hover:text-slate-900"
+        >
+          <IconLogout size={20} />
+        </Button>
+      </SignOutButton>
     </div>
   );
 }
