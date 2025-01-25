@@ -2,9 +2,8 @@ import { Input } from "@/components/ui/input";
 
 import { AddTransactionButton } from "./_components/add-transaction-button";
 import { DataTablePagination } from "./_components/data-table-pagination";
+import { TransactionTable } from "./_components/transaction-table";
 import { fetchTransactionTableData } from "./_lib/fetch";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
 
 export default async function Page() {
   const { transactions } = await fetchTransactionTableData(1, 10);
@@ -23,7 +22,7 @@ export default async function Page() {
             <AddTransactionButton />
           </div>
         </div>
-        <DataTable columns={columns} data={transactions} />
+        <TransactionTable data={transactions} />
         <DataTablePagination />
       </div>
     </div>

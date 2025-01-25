@@ -1,12 +1,9 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 
+import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { Transaction } from "./_lib/types";
-
-export const columns: ColumnDef<Transaction>[] = [
+export const columns = [
   {
     id: "select",
     header: ({ table }) => (
@@ -49,4 +46,4 @@ export const columns: ColumnDef<Transaction>[] = [
     accessorKey: "tags",
     header: "タグ",
   },
-];
+] as const satisfies ColumnDef<Transaction>[];

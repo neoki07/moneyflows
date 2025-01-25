@@ -1,13 +1,13 @@
 "use client";
 
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
 
+import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import {
   Table,
   TableBody,
@@ -18,22 +18,19 @@ import {
 } from "@/components/ui/table";
 import { DeepReadonly } from "@/types";
 
-import { BulkActionBar } from "./_components/bulk-action-bar";
+import { BulkActionBar } from "./bulk-action-bar";
+import { columns } from "./columns";
 
-type DataTableProps<TData, TValue> = DeepReadonly<{
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+type TransactionTableProps = DeepReadonly<{
+  data: Transaction[];
 }>;
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function TransactionTable({ data }: TransactionTableProps) {
   const [rowSelection, setRowSelection] = useState({});
 
-  const table = useReactTable<TData>({
-    data: data as TData[],
-    columns: columns as ColumnDef<TData, TValue>[],
+  const table = useReactTable({
+    data: data as Transaction[],
+    columns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
     state: {
