@@ -13,7 +13,7 @@ export default async function AuthLayout({
   }
 
   return (
-    <main className="min-h-screen grid place-items-center bg-slate-50">
+    <main className="grid min-h-screen place-items-center bg-slate-50">
       {children}
     </main>
   );

@@ -172,14 +172,14 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
         <div
           onKeyDown={handleKeyDown}
           className={cn(
-            "min-h-9 rounded-md border border-input text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring relative",
+            "border-input ring-offset-background focus-within:ring-ring relative min-h-9 rounded-md border text-sm focus-within:ring-1",
             {
               "cursor-text": !disabled && selected.length !== 0,
             },
             className,
           )}
         >
-          <div className="relative flex h-full flex-wrap items-center gap-1 pl-3 pr-8 py-1.5 ">
+          <div className="relative flex h-full flex-wrap items-center gap-1 py-1.5 pr-8 pl-3">
             {selected.map((option) => {
               return (
                 <Badge
@@ -194,7 +194,7 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
                   {option.label}
                   <button
                     className={cn(
-                      "ml-1 -mr-0.5 rounded-full outline-hidden ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                      "ring-offset-background focus:ring-ring -mr-0.5 ml-1 rounded-full outline-hidden focus:ring-2 focus:ring-offset-2",
                     )}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") {
@@ -207,7 +207,7 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
                     }}
                     onClick={() => handleUnselect(option)}
                   >
-                    <X className="size-3 text-muted-foreground hover:text-foreground" />
+                    <X className="text-muted-foreground hover:text-foreground size-3" />
                   </button>
                 </Badge>
               );
@@ -226,10 +226,10 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
                 setOpen(true);
               }}
               placeholder={placeholder}
-              className="flex-1 bg-transparent outline-hidden placeholder:text-muted-foreground"
+              className="placeholder:text-muted-foreground flex-1 bg-transparent outline-hidden"
             />
           </div>
-          <ChevronDown className="absolute top-1/2 -translate-y-1/2 right-2 h-4 w-4 opacity-50" />
+          <ChevronDown className="absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 opacity-50" />
         </div>
         <div className="relative mt-2">
           <CommandList
@@ -237,7 +237,7 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
               inputRef.current?.focus();
             }}
             className={cn(
-              "absolute top-1 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-hidden animate-in",
+              "bg-popover text-popover-foreground animate-in absolute top-1 z-10 w-full rounded-md border shadow-md outline-hidden",
               !open && "hidden",
             )}
           >

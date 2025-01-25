@@ -10,7 +10,7 @@ type NavItemProps = Readonly<{
 export function NavItem({ link, icon: Icon, children }: NavItemProps) {
   return (
     <Link
-      className="hover:bg-slate-100 min-h-9 flex items-center px-3 py-1.5 rounded-lg text-slate-700"
+      className="flex min-h-9 items-center rounded-lg px-3 py-1.5 text-slate-700 hover:bg-slate-100"
       href={link}
     >
       {Icon && <span className="mr-1.5">{<Icon className="size-5" />}</span>}

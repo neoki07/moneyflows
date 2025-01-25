@@ -4,14 +4,14 @@ import { AddExpenseCategoryButton } from "./_components/add-expense-category-but
 
 export default function Page() {
   return (
-    <div className="px-6 py-8 gap-8 grid grid-rows-[2.25rem_1fr]">
+    <div className="grid grid-rows-[2.25rem_1fr] gap-8 px-6 py-8">
       <div className="flex items-center gap-4">
-        <h1 className="font-bold text-2xl flex-1">カテゴリー</h1>
+        <h1 className="flex-1 text-2xl font-bold">カテゴリー</h1>
       </div>
       <div className="space-y-8">
         <div className="space-y-4">
           <div className="flex items-center gap-4">
-            <h2 className="font-bold text-xl flex-1">収入</h2>
+            <h2 className="flex-1 text-xl font-bold">収入</h2>
             <AddIncomeCategoryButton />
           </div>
           <div className="grid grid-cols-3 gap-4">
@@ -24,7 +24,7 @@ export default function Page() {
         </div>
         <div className="space-y-4">
           <div className="flex items-center gap-4">
-            <h2 className="font-bold text-xl flex-1">支出</h2>
+            <h2 className="flex-1 text-xl font-bold">支出</h2>
             <AddExpenseCategoryButton />
           </div>
           <div className="grid grid-cols-3 gap-4">

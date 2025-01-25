@@ -13,15 +13,15 @@ export function EditDashboardPanel() {
   }
 
   return (
-    <div className="w-80 min-h-screen border-l py-8 space-y-3">
-      <h2 className="font-bold text-lg px-4">ダッシュボードの編集</h2>
+    <div className="min-h-screen w-80 space-y-3 border-l py-8">
+      <h2 className="px-4 text-lg font-bold">ダッシュボードの編集</h2>
       <div className="space-y-5">
         <div className="px-4">
           <EditDashboardForm />
         </div>
         <Separator />
         <div className="space-y-3">
-          <h3 className="font-bold text-base px-4">
+          <h3 className="px-4 text-base font-bold">
             選択されたウィジェットの編集
           </h3>
           <div className="px-4">

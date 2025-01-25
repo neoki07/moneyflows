@@ -61,12 +61,12 @@ export default async function Page() {
   const data = await getData();
 
   return (
-    <div className="px-6 py-8 gap-8 grid grid-rows-[2.25rem_1fr]">
+    <div className="grid grid-rows-[2.25rem_1fr] gap-8 px-6 py-8">
       <div className="flex items-center">
-        <h1 className="font-bold text-2xl">収支</h1>
+        <h1 className="text-2xl font-bold">収支</h1>
       </div>
       <div className="space-y-4">
-        <div className="flex justify-between items-center gap-4">
+        <div className="flex items-center justify-between gap-4">
           <div className="flex-1">
             <Input placeholder="キーワード検索" />
           </div>

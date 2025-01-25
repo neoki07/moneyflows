@@ -12,11 +12,11 @@ import { UserArea } from "./user-area";
 
 export function Navbar() {
   return (
-    <nav className="border-r h-screen flex flex-col">
-      <div className="h-screen bg-slate-50 overflow-y-auto px-3">
-        <div className="py-[2.25rem] px-2">
+    <nav className="flex h-screen flex-col border-r">
+      <div className="h-screen overflow-y-auto bg-slate-50 px-3">
+        <div className="px-2 py-[2.25rem]">
           <Link href="/">
-            <div className="h-[28px] relative">
+            <div className="relative h-[28px]">
               <Image
                 src="/logo.png"
                 alt="Money Flows"
@@ -52,7 +52,7 @@ export function Navbar() {
             </li>
           </ul>
           <ul>
-            <div className="text-slate-500 text-xs font-semibold px-3 h-6 grid grid-cols-[1fr_1rem]">
+            <div className="grid h-6 grid-cols-[1fr_1rem] px-3 text-xs font-semibold text-slate-500">
               ダッシュボード
               <IconPlus size={16} />
             </div>

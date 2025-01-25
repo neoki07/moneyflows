@@ -125,11 +125,11 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
       >
         <div
           className={cn(
-            "relative h-9 w-full rounded-md border border-input bg-transparent text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring",
+            "border-input ring-offset-background focus-within:ring-ring relative h-9 w-full rounded-md border bg-transparent text-sm focus-within:ring-1",
             className,
           )}
         >
-          <div className="relative flex h-full items-center pl-3 pr-8 py-1.5">
+          <div className="relative flex h-full items-center py-1.5 pr-8 pl-3">
             <CommandPrimitive.Input
               ref={inputRef}
               value={inputValue || selected?.label || ""}
@@ -155,10 +155,10 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
                 }
               }}
               placeholder={placeholder}
-              className="w-full border-none bg-transparent outline-hidden placeholder:text-muted-foreground"
+              className="placeholder:text-muted-foreground w-full border-none bg-transparent outline-hidden"
             />
           </div>
-          <ChevronDown className="absolute top-1/2 -translate-y-1/2 right-2 h-4 w-4 opacity-50" />
+          <ChevronDown className="absolute top-1/2 right-2 h-4 w-4 -translate-y-1/2 opacity-50" />
         </div>
         <div className="relative mt-2">
           <CommandList
@@ -167,7 +167,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
               e.stopPropagation();
             }}
             className={cn(
-              "absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-hidden animate-in",
+              "bg-popover text-popover-foreground animate-in absolute top-0 z-10 w-full rounded-md border shadow-md outline-hidden",
               !open && "hidden",
             )}
           >

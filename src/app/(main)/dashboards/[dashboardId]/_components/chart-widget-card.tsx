@@ -16,18 +16,18 @@ export function ChartWidgetCard({
   const { isEditing } = useDashboardStore();
 
   return (
-    <div className="border rounded-lg p-6 h-full bg-white relative">
+    <div className="relative h-full rounded-lg border bg-white p-6">
       {isEditing && (
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-2 right-2 text-slate-500 hover:text-slate-900 z-10"
+          className="absolute top-2 right-2 z-10 text-slate-500 hover:text-slate-900"
           onClick={onRemove}
         >
           <IconX size={18} />
         </Button>
       )}
-      <h2 className="font-bold text-xl absolute">{title}</h2>
+      <h2 className="absolute text-xl font-bold">{title}</h2>
       <div className="h-full">{children}</div>
     </div>
   );

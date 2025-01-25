@@ -39,7 +39,7 @@ export function SignInForm() {
   return (
     <div className="w-full max-w-sm space-y-8">
       <div className="text-center">
-        <div className="h-12 relative mb-6">
+        <div className="relative mb-6 h-12">
           <Image
             src="/logo.png"
             alt="Money Flows"
@@ -50,7 +50,7 @@ export function SignInForm() {
           />
         </div>
         <h1 className="text-2xl font-bold">ログイン</h1>
-        <p className="text-slate-600 mt-2">
+        <p className="mt-2 text-slate-600">
           アカウントにサインインして始めましょう
         </p>
       </div>

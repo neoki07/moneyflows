@@ -30,9 +30,9 @@ export function WidgetAddBar() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-8 left-[45%] bg-white rounded-xl shadow-lg border p-3 flex items-center gap-6 z-50 w-[30rem]"
+          className="fixed bottom-8 left-[45%] z-50 flex w-[30rem] items-center gap-6 rounded-xl border bg-white p-3 shadow-lg"
         >
-          <p className="text-sm text-slate-700 pl-2 font-medium">
+          <p className="pl-2 text-sm font-medium text-slate-700">
             ウィジェットを追加
           </p>
           <div className="flex items-center gap-3">

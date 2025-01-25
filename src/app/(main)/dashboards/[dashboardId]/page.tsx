@@ -5,9 +5,9 @@ import { Widgets } from "./_components/widgets";
 export default function Page() {
   return (
     <div className="flex">
-      <div className="px-6 py-8 gap-8 grid grid-rows-[2.25rem_1fr] flex-1">
+      <div className="grid flex-1 grid-rows-[2.25rem_1fr] gap-8 px-6 py-8">
         <div className="flex items-center gap-4">
-          <h1 className="font-bold text-2xl flex-1">ダッシュボード</h1>
+          <h1 className="flex-1 text-2xl font-bold">ダッシュボード</h1>
           <EditButtons />
         </div>
         <Widgets />

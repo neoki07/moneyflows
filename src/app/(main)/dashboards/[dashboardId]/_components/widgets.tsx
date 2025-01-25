@@ -27,9 +27,9 @@ function BaseWidget({
   children: React.ReactNode;
 }) {
   return (
-    <div className="border rounded-lg p-6 space-y-6 h-full flex flex-col bg-white">
-      <h2 className="font-bold text-xl">{title}</h2>
-      <div className="rounded-lg bg-slate-100 flex-1">{children}</div>
+    <div className="flex h-full flex-col space-y-6 rounded-lg border bg-white p-6">
+      <h2 className="text-xl font-bold">{title}</h2>
+      <div className="flex-1 rounded-lg bg-slate-100">{children}</div>
     </div>
   );
 }

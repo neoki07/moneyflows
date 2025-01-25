@@ -11,10 +11,10 @@ export function UserArea() {
   if (!user) return null;
 
   return (
-    <div className="p-4 border-t mt-auto flex items-center justify-between">
+    <div className="mt-auto flex items-center justify-between border-t p-4">
       <div className="flex items-center gap-3">
         {user.imageUrl && (
-          <div className="relative w-10 h-10 rounded-full overflow-hidden">
+          <div className="relative h-10 w-10 overflow-hidden rounded-full">
             <Image
               src={user.imageUrl}
               alt=""
@@ -25,7 +25,7 @@ export function UserArea() {
           </div>
         )}
         <div className="flex flex-col">
-          <span className="font-medium text-sm">
+          <span className="text-sm font-medium">
             {user.fullName || "名前未設定"}
           </span>
           <span className="text-sm text-slate-500">

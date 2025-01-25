@@ -3,8 +3,8 @@ import { Separator } from "@/components/ui/separator";
 
 export function LatestTransactionsCard() {
   return (
-    <div className="border rounded-lg p-6 col-span-4 space-y-6">
-      <h2 className="font-bold text-xl">最近の収支</h2>
+    <div className="col-span-4 space-y-6 rounded-lg border p-6">
+      <h2 className="text-xl font-bold">最近の収支</h2>
       <div className="space-y-4">
         <ul className="space-y-2">
           <div className="text-sm text-slate-700">11月23日 (土)</div>

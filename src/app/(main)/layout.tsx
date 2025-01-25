@@ -6,7 +6,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="grid grid-cols-[18rem_1fr] h-screen">
+    <div className="grid h-screen grid-cols-[18rem_1fr]">
       <Navbar />
       <main className="overflow-auto">{children}</main>
     </div>
