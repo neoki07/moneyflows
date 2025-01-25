@@ -5,8 +5,9 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { fetchTransactionTableData } from "@/app/(main)/transactions/_lib/fetch";
 import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import {
   Table,
@@ -20,13 +21,31 @@ import { DeepReadonly } from "@/types";
 
 import { BulkActionBar } from "./bulk-action-bar";
 import { columns } from "./columns";
+import { Pagination } from "./pagination";
 
 type TransactionTableProps = DeepReadonly<{
   data: Transaction[];
+  totalCount: number;
 }>;
 
-export function TransactionTable({ data }: TransactionTableProps) {
+export function TransactionTable({
+  data: initialData,
+  totalCount,
+}: TransactionTableProps) {
+  const [currentPage] = useState(1);
+  const [data, setData] = useState(initialData);
   const [rowSelection, setRowSelection] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { transactions } = await fetchTransactionTableData(currentPage, 10);
+      setData(transactions);
+    };
+
+    if (currentPage > 1) {
+      fetchData();
+    }
+  }, [currentPage]);
 
   const table = useReactTable({
     data: data as Transaction[],
@@ -96,11 +115,18 @@ export function TransactionTable({ data }: TransactionTableProps) {
           </TableBody>
         </Table>
       </div>
-      <BulkActionBar
-        selectedCount={table.getSelectedRowModel().rows.length}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      <div className="flex items-center justify-between">
+        <BulkActionBar
+          selectedCount={table.getSelectedRowModel().rows.length}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+        <Pagination
+          totalCount={totalCount}
+          pageSize={10}
+          currentPage={currentPage}
+        />
+      </div>
     </div>
   );
 }
