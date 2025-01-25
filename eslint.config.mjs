@@ -21,6 +21,7 @@ const eslintConfig = [
       "simple-import-sort": simpleImportSort,
     },
     rules: {
+      "import/no-extraneous-dependencies": "error",
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
     },
