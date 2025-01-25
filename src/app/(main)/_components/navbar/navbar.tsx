@@ -8,7 +8,7 @@ import {
   IconPlus,
   IconTags,
 } from "@tabler/icons-react";
-import { UserButton } from "@clerk/nextjs";
+import { UserArea } from "./user-area";
 
 export function Navbar() {
   return (
@@ -68,9 +68,7 @@ export function Navbar() {
           </ul>
         </div>
       </div>
-      <div className="p-4">
-        <UserButton />
-      </div>
+      <UserArea />
     </nav>
   );
 }
