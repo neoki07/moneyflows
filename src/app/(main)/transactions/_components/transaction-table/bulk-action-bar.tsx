@@ -1,5 +1,3 @@
-"use client";
-
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 
