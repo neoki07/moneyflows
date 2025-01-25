@@ -43,9 +43,7 @@ export function TransactionTable({
       setData(transactions);
     };
 
-    if (currentPage > 1) {
-      fetchData();
-    }
+    fetchData();
   }, [currentPage]);
 
   const table = useReactTable({
