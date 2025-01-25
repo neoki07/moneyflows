@@ -4,14 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Checkbox } from "@/components/ui/checkbox";
 
-export type Transaction = {
-  id: string;
-  amount: number;
-  description: string;
-  date: string;
-  category: string;
-  tag: string;
-};
+import { Transaction } from "./_lib/types";
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -53,7 +46,7 @@ export const columns: ColumnDef<Transaction>[] = [
     header: "カテゴリー",
   },
   {
-    accessorKey: "tag",
+    accessorKey: "tags",
     header: "タグ",
   },
 ];

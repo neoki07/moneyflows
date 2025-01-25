@@ -2,64 +2,12 @@ import { Input } from "@/components/ui/input";
 
 import { AddTransactionButton } from "./_components/add-transaction-button";
 import { DataTablePagination } from "./_components/data-table-pagination";
-import { columns, Transaction } from "./columns";
+import { fetchTransactionTableData } from "./_lib/fetch";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
-async function getData(): Promise<Transaction[]> {
-  return [
-    {
-      id: "728ed52a",
-      amount: 100,
-      description: "pending",
-      date: "2022/01/01 (土)",
-      category: "給料",
-      tag: "給料",
-    },
-    {
-      id: "728ed52b",
-      amount: 100,
-      description: "pending",
-      date: "2022/01/01 (土)",
-      category: "給料",
-      tag: "給料",
-    },
-    {
-      id: "728ed52c",
-      amount: 100,
-      description: "pending",
-      date: "2022/01/01 (土)",
-      category: "給料",
-      tag: "給料",
-    },
-    {
-      id: "728ed52d",
-      amount: 100,
-      description: "pending",
-      date: "2022/01/01 (土)",
-      category: "給料",
-      tag: "給料",
-    },
-    {
-      id: "728ed52e",
-      amount: 100,
-      description: "pending",
-      date: "2022/01/01 (土)",
-      category: "給料",
-      tag: "給料",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      description: "pending",
-      date: "2022/01/01 (土)",
-      category: "給料",
-      tag: "給料",
-    },
-  ];
-}
-
 export default async function Page() {
-  const data = await getData();
+  const { transactions } = await fetchTransactionTableData(1, 10);
 
   return (
     <div className="grid grid-rows-[2.25rem_1fr] gap-8 px-6 py-8">
@@ -75,7 +23,7 @@ export default async function Page() {
             <AddTransactionButton />
           </div>
         </div>
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={transactions} />
         <DataTablePagination />
       </div>
     </div>
