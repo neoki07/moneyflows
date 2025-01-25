@@ -16,13 +16,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { DeepReadonly } from "@/types";
 
 import { BulkActionBar } from "./_components/bulk-action-bar";
 
-interface DataTableProps<TData, TValue> {
+type DataTableProps<TData, TValue> = DeepReadonly<{
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-}
+}>;
 
 export function DataTable<TData, TValue>({
   columns,
@@ -30,9 +31,9 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
 
-  const table = useReactTable({
-    data,
-    columns,
+  const table = useReactTable<TData>({
+    data: data as TData[],
+    columns: columns as ColumnDef<TData, TValue>[],
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
     state: {

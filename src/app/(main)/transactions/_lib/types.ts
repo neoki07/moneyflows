@@ -1,4 +1,6 @@
-export interface Transaction {
+import { DeepReadonly } from "@/types";
+
+export type Transaction = DeepReadonly<{
   id: string;
   type: "income" | "expense";
   amount: number;
@@ -6,11 +8,11 @@ export interface Transaction {
   date: string;
   category: string;
   tags: string[];
-}
+}>;
 
-export interface TransactionTableData {
+export type TransactionTableData = DeepReadonly<{
   transactions: Transaction[];
   pagination: {
     totalCount: number;
   };
-}
+}>;
