@@ -1,13 +1,19 @@
 import { IconTrashX } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
+import { DeepReadonly } from "@/types";
 
+import { Category } from "../_lib/types";
 import { EditCategoryButton } from "./edit-category-button";
 
-export function CategoryCard() {
+type CategoryCardProps = DeepReadonly<{
+  category: Category;
+}>;
+
+export function CategoryCard({ category }: CategoryCardProps) {
   return (
     <div className="flex items-center justify-between rounded-lg border p-2 pl-4 font-medium">
-      給料
+      {category.name}
       <div>
         <EditCategoryButton />
         <Button
