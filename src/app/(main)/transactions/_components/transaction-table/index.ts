@@ -1,1 +1,1 @@
-export { TransactionTable } from "./transaction-table";
+export { TransactionTable } from "./container";

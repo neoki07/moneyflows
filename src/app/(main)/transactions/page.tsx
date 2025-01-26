@@ -1,11 +1,22 @@
+import { SearchParams } from "nuqs/server";
+import { createLoader, parseAsFloat } from "nuqs/server";
+
 import { Input } from "@/components/ui/input";
+import { DeepReadonly } from "@/types";
 
 import { AddTransactionButton } from "./_components/add-transaction-button";
 import { TransactionTable } from "./_components/transaction-table";
-import { fetchTransactionTableData } from "./_lib/fetch";
 
-export default async function Page() {
-  const { transactions, pagination } = await fetchTransactionTableData(1, 10);
+const loadSearchParams = createLoader({
+  page: parseAsFloat.withDefault(1),
+});
+
+type PageProps = DeepReadonly<{
+  searchParams: Promise<SearchParams>;
+}>;
+
+export default async function Page({ searchParams }: PageProps) {
+  const { page } = await loadSearchParams(searchParams);
 
   return (
     <div className="grid grid-rows-[2.25rem_1fr] gap-8 px-6 py-8">
@@ -21,10 +32,7 @@ export default async function Page() {
             <AddTransactionButton />
           </div>
         </div>
-        <TransactionTable
-          data={transactions}
-          totalCount={pagination.totalCount}
-        />
+        <TransactionTable currentPage={page} />
       </div>
     </div>
   );

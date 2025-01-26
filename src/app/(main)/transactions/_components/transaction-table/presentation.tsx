@@ -5,10 +5,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { parseAsInteger, useQueryState } from "nuqs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { fetchTransactionTableData } from "@/app/(main)/transactions/_lib/fetch";
 import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import {
   Table,
@@ -20,31 +18,22 @@ import {
 } from "@/components/ui/table";
 import { DeepReadonly } from "@/types";
 
-import { BulkActionBar } from "./bulk-action-bar";
-import { columns } from "./columns";
-import { Pagination } from "./pagination";
+import { BulkActionBar } from "./components/bulk-action-bar";
+import { Pagination } from "./components/pagination";
+import { columns } from "./lib/columns";
 
-type TransactionTableProps = DeepReadonly<{
+type TransactionTablePresenterProps = DeepReadonly<{
   data: Transaction[];
   totalCount: number;
+  currentPage: number;
 }>;
 
-export function TransactionTable({
-  data: initialData,
+export function TransactionTablePresenter({
+  data,
   totalCount,
-}: TransactionTableProps) {
-  const [currentPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [data, setData] = useState(initialData);
+  currentPage,
+}: TransactionTablePresenterProps) {
   const [rowSelection, setRowSelection] = useState({});
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { transactions } = await fetchTransactionTableData(currentPage, 10);
-      setData(transactions);
-    };
-
-    fetchData();
-  }, [currentPage]);
 
   const table = useReactTable({
     data: data as Transaction[],
