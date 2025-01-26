@@ -30,12 +30,12 @@ function Calendar({
         [UI.PreviousMonthButton]: cn(
           buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-          "absolute left-1 top-0",
+          "absolute top-0 left-1",
         ),
         [UI.NextMonthButton]: cn(
           buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-          "absolute right-1 top-0",
+          "absolute top-0 right-1",
         ),
         [UI.MonthGrid]: "w-full border-collapse space-y-1",
         [UI.Weekdays]: "flex",
