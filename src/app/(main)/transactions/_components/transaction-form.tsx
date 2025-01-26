@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -28,9 +26,13 @@ const formSchema = z.object({
   tags: z.array(z.string()),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
-export function TransactionForm() {
+type TransactionFormProps = {
+  onSubmit: (values: FormValues) => Promise<void>;
+};
+
+export function TransactionForm({ onSubmit }: TransactionFormProps) {
   const [tagOptions, setTagOptions] = useState<MultiSelectOption[]>([
     {
       label: "タグ1",
@@ -72,15 +74,6 @@ export function TransactionForm() {
       tags: [],
     },
   });
-
-  function onSubmit(values: FormValues) {
-    const transaction = {
-      ...values,
-      amount: Number(values.amount),
-      category: values.category || null,
-    };
-    console.log(transaction);
-  }
 
   const handleCreateTag = async (
     inputValue: string,
