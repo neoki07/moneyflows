@@ -24,9 +24,11 @@ const formSchema = z.object({
   description: z.string().min(1).max(20),
   amount: z.string().min(1).max(20),
   type: z.enum(["income", "expense"]),
-  category: z.string().min(1).max(20),
-  tags: z.string().min(1).max(20),
+  category: z.string(),
+  tags: z.array(z.string()),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 export function TransactionForm() {
   const [tagOptions, setTagOptions] = useState<MultiSelectOption[]>([
@@ -59,7 +61,7 @@ export function TransactionForm() {
     },
   ]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       date: new Date(),
@@ -67,12 +69,17 @@ export function TransactionForm() {
       amount: "",
       type: "expense",
       category: "",
-      tags: "",
+      tags: [],
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  function onSubmit(values: FormValues) {
+    const transaction = {
+      ...values,
+      amount: Number(values.amount),
+      category: values.category || null,
+    };
+    console.log(transaction);
   }
 
   const handleCreateTag = async (
@@ -176,15 +183,11 @@ export function TransactionForm() {
               <FormLabel>タグ</FormLabel>
               <MultiSelect
                 {...field}
-                value={
-                  field.value
-                    ? [{ label: field.value, value: field.value }]
-                    : []
-                }
+                value={field.value.map((value) => ({ label: value, value }))}
                 options={tagOptions}
                 onCreateOption={handleCreateTag}
                 onChange={(options) => {
-                  field.onChange(options.map((opt) => opt.value).join(","));
+                  field.onChange(options.map((opt) => opt.value));
                 }}
               />
               <FormMessage />
