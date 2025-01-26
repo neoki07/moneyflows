@@ -11,9 +11,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { CategoryForm } from "./category-form";
+import { createCategory } from "../_actions/create-category";
+import { CategoryForm, FormValues } from "./category-form";
 
 export function AddIncomeCategoryButton() {
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      const result = await createCategory({
+        ...values,
+        type: "income",
+      });
+      console.log("Category created:", result);
+    } catch (error) {
+      console.error("Failed to create category:", error);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -26,7 +39,7 @@ export function AddIncomeCategoryButton() {
         <DialogHeader>
           <DialogTitle>収入カテゴリーの追加</DialogTitle>
         </DialogHeader>
-        <CategoryForm />
+        <CategoryForm onSubmit={handleSubmit} />
       </DialogContent>
     </Dialog>
   );

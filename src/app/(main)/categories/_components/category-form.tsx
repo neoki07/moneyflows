@@ -19,17 +19,19 @@ const formSchema = z.object({
   name: z.string().min(1).max(20),
 });
 
-export function CategoryForm() {
+export type FormValues = z.infer<typeof formSchema>;
+
+type CategoryFormProps = {
+  onSubmit: (values: FormValues) => Promise<void>;
+};
+
+export function CategoryForm({ onSubmit }: CategoryFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
     },
   });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
 
   return (
     <Form {...form}>

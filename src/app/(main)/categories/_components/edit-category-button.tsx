@@ -9,9 +9,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { CategoryForm } from "./category-form";
+import { CategoryForm, FormValues } from "./category-form";
 
 export function EditCategoryButton() {
+  const handleSubmit = async (values: FormValues) => {
+    console.log({ values });
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,7 +28,7 @@ export function EditCategoryButton() {
         <DialogHeader>
           <DialogTitle>カテゴリーの編集</DialogTitle>
         </DialogHeader>
-        <CategoryForm />
+        <CategoryForm onSubmit={handleSubmit} />
       </DialogContent>
     </Dialog>
   );
