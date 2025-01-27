@@ -17,12 +17,7 @@ export type ExpenseCategory = DeepReadonly<
   }
 >;
 
-export type Category = IncomeCategory | ExpenseCategory;
-
-export type IncomeCategoriesData = DeepReadonly<{
-  categories: IncomeCategory[];
-}>;
-
-export type ExpenseCategoriesData = DeepReadonly<{
-  categories: ExpenseCategory[];
-}>;
+export type Categories = {
+  income: IncomeCategory[];
+  expense: ExpenseCategory[];
+};

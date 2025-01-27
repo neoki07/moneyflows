@@ -1,14 +1,10 @@
 import { AddExpenseCategoryButton } from "./_components/add-expense-category-button";
 import { AddIncomeCategoryButton } from "./_components/add-income-category-button";
 import { CategoryCard } from "./_components/category-card";
-import {
-  fetchExpenseCategoriesData,
-  fetchIncomeCategoriesData,
-} from "./_lib/fetch";
+import { fetchCategories } from "./_lib/fetch";
 
 export default async function Page() {
-  const incomeCategoriesData = await fetchIncomeCategoriesData();
-  const expenseCategoriesData = await fetchExpenseCategoriesData();
+  const { categories } = await fetchCategories();
 
   return (
     <div className="grid grid-rows-[2.25rem_1fr] gap-8 px-6 py-8">
@@ -22,7 +18,7 @@ export default async function Page() {
             <AddIncomeCategoryButton />
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {incomeCategoriesData.categories.map((category) => (
+            {categories.income.map((category) => (
               <CategoryCard key={category.id} category={category} />
             ))}
           </div>
@@ -33,7 +29,7 @@ export default async function Page() {
             <AddExpenseCategoryButton />
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {expenseCategoriesData.categories.map((category) => (
+            {categories.expense.map((category) => (
               <CategoryCard key={category.id} category={category} />
             ))}
           </div>

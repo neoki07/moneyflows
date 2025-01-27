@@ -1,22 +1,42 @@
-import { mockCategories } from "./mock";
-import { ExpenseCategoriesData, IncomeCategoriesData } from "./types";
+import { db } from "@/db";
+import { CategoryRecord, categoryTable } from "@/db/schema";
 
-export async function fetchIncomeCategoriesData(): Promise<IncomeCategoriesData> {
-  const incomeCategories = mockCategories.filter(
-    (category) => category.type === "income",
-  );
+import { Categories, ExpenseCategory, IncomeCategory } from "./types";
 
+function toIncomeCategory(record: CategoryRecord): IncomeCategory {
   return {
-    categories: incomeCategories,
+    id: record.id,
+    name: record.name,
+    type: "income",
   };
 }
 
-export async function fetchExpenseCategoriesData(): Promise<ExpenseCategoriesData> {
-  const expenseCategories = mockCategories.filter(
-    (category) => category.type === "expense",
-  );
+function toExpenseCategory(record: CategoryRecord): ExpenseCategory {
+  return {
+    id: record.id,
+    name: record.name,
+    type: "expense",
+  };
+}
+
+type FetchCategoriesResult = {
+  categories: Categories;
+};
+
+export async function fetchCategories(): Promise<FetchCategoriesResult> {
+  const records = await db
+    .select()
+    .from(categoryTable)
+    .orderBy(categoryTable.name);
 
   return {
-    categories: expenseCategories,
+    categories: {
+      income: records
+        .filter((record) => record.type === "income")
+        .map(toIncomeCategory),
+      expense: records
+        .filter((record) => record.type === "expense")
+        .map(toExpenseCategory),
+    },
   };
 }

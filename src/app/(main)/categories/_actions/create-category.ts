@@ -1,6 +1,10 @@
 "use server";
 
+import { createId } from "@paralleldrive/cuid2";
 import { z } from "zod";
+
+import { db } from "@/db";
+import { categoryTable } from "@/db/schema";
 
 const createCategorySchema = z.object({
   name: z.string().min(1).max(20),
@@ -11,11 +15,12 @@ type CreateCategoryInput = z.infer<typeof createCategorySchema>;
 
 export async function createCategory(input: CreateCategoryInput) {
   const parsed = createCategorySchema.parse(input);
+  const id = createId();
 
-  // TODO: Save to DB
-  console.log("Creating category:", parsed);
+  const [category] = await db
+    .insert(categoryTable)
+    .values({ ...parsed, id })
+    .returning();
 
-  return {
-    success: true,
-  };
+  return { category };
 }

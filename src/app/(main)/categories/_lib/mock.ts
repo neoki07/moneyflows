@@ -1,79 +1,89 @@
-import { Category } from "./types";
+import { createId } from "@paralleldrive/cuid2";
 
-export const mockCategories: Category[] = [
+import { ExpenseCategory, IncomeCategory } from "./types";
+
+export const mockIncomeCategories: IncomeCategory[] = [
   {
-    id: "1",
+    id: createId(),
     name: "給与",
     type: "income",
   },
   {
-    id: "2",
+    id: createId(),
     name: "副業",
     type: "income",
   },
   {
-    id: "3",
+    id: createId(),
     name: "投資",
     type: "income",
   },
   {
-    id: "4",
+    id: createId(),
     name: "配当",
     type: "income",
   },
   {
-    id: "5",
+    id: createId(),
     name: "臨時収入",
     type: "income",
   },
+];
+
+export const mockExpenseCategories: ExpenseCategory[] = [
   {
-    id: "6",
+    id: createId(),
     name: "食費",
     type: "expense",
   },
   {
-    id: "7",
+    id: createId(),
     name: "交通費",
     type: "expense",
   },
   {
-    id: "8",
+    id: createId(),
     name: "住居費",
     type: "expense",
   },
   {
-    id: "9",
+    id: createId(),
     name: "光熱費",
     type: "expense",
   },
   {
-    id: "10",
+    id: createId(),
     name: "通信費",
     type: "expense",
   },
   {
-    id: "11",
+    id: createId(),
     name: "娯楽費",
     type: "expense",
   },
   {
-    id: "12",
+    id: createId(),
     name: "教育費",
     type: "expense",
   },
   {
-    id: "13",
+    id: createId(),
     name: "医療費",
     type: "expense",
   },
   {
-    id: "14",
+    id: createId(),
     name: "衣服費",
     type: "expense",
   },
   {
-    id: "15",
+    id: createId(),
     name: "美容費",
     type: "expense",
   },
 ];
+
+export const mockCategories = {
+  income: mockIncomeCategories,
+  expense: mockExpenseCategories,
+};

@@ -3,11 +3,11 @@ import { IconTrashX } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { DeepReadonly } from "@/types";
 
-import { Category } from "../_lib/types";
+import { ExpenseCategory, IncomeCategory } from "../_lib/types";
 import { EditCategoryButton } from "./edit-category-button";
 
 type CategoryCardProps = DeepReadonly<{
-  category: Category;
+  category: IncomeCategory | ExpenseCategory;
 }>;
 
 export function CategoryCard({ category }: CategoryCardProps) {
