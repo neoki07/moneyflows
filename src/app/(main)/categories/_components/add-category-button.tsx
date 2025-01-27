@@ -1,6 +1,7 @@
 "use client";
 
 import { IconPlus } from "@tabler/icons-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +21,8 @@ type Props = DeepReadonly<{
 }>;
 
 export function AddCategoryButton({ type }: Props) {
+  const [open, setOpen] = useState(false);
+
   const handleSubmit = async (values: DeepReadonly<FormValues>) => {
     try {
       const result = await createCategory({
@@ -27,13 +30,14 @@ export function AddCategoryButton({ type }: Props) {
         type,
       });
       console.log("Category created:", result);
+      setOpen(false);
     } catch (error) {
       console.error("Failed to create category:", error);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <IconPlus className="-ml-1.5" />
