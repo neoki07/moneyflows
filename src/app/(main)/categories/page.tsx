@@ -1,5 +1,4 @@
-import { AddExpenseCategoryButton } from "./_components/add-expense-category-button";
-import { AddIncomeCategoryButton } from "./_components/add-income-category-button";
+import { AddCategoryButton } from "./_components/add-category-button";
 import { CategoryCard } from "./_components/category-card";
 import { fetchCategories } from "./_lib/fetch";
 
@@ -15,7 +14,7 @@ export default async function Page() {
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <h2 className="flex-1 text-xl font-bold">収入</h2>
-            <AddIncomeCategoryButton />
+            <AddCategoryButton type="income" />
           </div>
           <div className="grid grid-cols-3 gap-4">
             {categories.income.map((category) => (
@@ -26,7 +25,7 @@ export default async function Page() {
         <div className="space-y-4">
           <div className="flex items-center gap-4">
             <h2 className="flex-1 text-xl font-bold">支出</h2>
-            <AddExpenseCategoryButton />
+            <AddCategoryButton type="expense" />
           </div>
           <div className="grid grid-cols-3 gap-4">
             {categories.expense.map((category) => (

@@ -10,16 +10,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DeepReadonly } from "@/types";
 
 import { createCategory } from "../_actions/create-category";
 import { CategoryForm, FormValues } from "./category-form";
 
-export function AddExpenseCategoryButton() {
-  const handleSubmit = async (values: FormValues) => {
+type Props = DeepReadonly<{
+  type: "income" | "expense";
+}>;
+
+export function AddCategoryButton({ type }: Props) {
+  const handleSubmit = async (values: DeepReadonly<FormValues>) => {
     try {
       const result = await createCategory({
         ...values,
-        type: "expense",
+        type,
       });
       console.log("Category created:", result);
     } catch (error) {
@@ -32,12 +37,14 @@ export function AddExpenseCategoryButton() {
       <DialogTrigger asChild>
         <Button>
           <IconPlus className="-ml-1.5" />
-          支出カテゴリーを追加
+          {type === "income" ? "収入" : "支出"}カテゴリーを追加
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>支出カテゴリーの追加</DialogTitle>
+          <DialogTitle>
+            {type === "income" ? "収入" : "支出"}カテゴリーの追加
+          </DialogTitle>
         </DialogHeader>
         <CategoryForm onSubmit={handleSubmit} />
       </DialogContent>
