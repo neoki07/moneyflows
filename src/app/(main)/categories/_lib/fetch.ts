@@ -1,3 +1,5 @@
+import { asc } from "drizzle-orm";
+
 import { db } from "@/db";
 import { CategoryRecord, categoryTable } from "@/db/schema";
 
@@ -27,7 +29,7 @@ export async function fetchCategories(): Promise<FetchCategoriesResult> {
   const records = await db
     .select()
     .from(categoryTable)
-    .orderBy(categoryTable.name);
+    .orderBy(asc(categoryTable.id));
 
   return {
     categories: {
