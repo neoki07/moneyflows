@@ -1,6 +1,7 @@
 "use server";
 
 import { createId } from "@paralleldrive/cuid2";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { db } from "@/db";
@@ -21,6 +22,8 @@ export async function createCategory(input: CreateCategoryInput) {
     .insert(categoryTable)
     .values({ ...parsed, id })
     .returning();
+
+  revalidatePath("/categories");
 
   return { category };
 }
