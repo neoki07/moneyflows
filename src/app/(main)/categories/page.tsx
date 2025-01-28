@@ -2,8 +2,6 @@ import { AddCategoryButton } from "./_components/add-category-button";
 import { CategoryCard } from "./_components/category-card";
 import { fetchCategories } from "./_lib/fetch";
 
-export const dynamic = "force-dynamic";
-
 export default async function Page() {
   const { categories } = await fetchCategories();
 

@@ -1,4 +1,5 @@
 import { asc } from "drizzle-orm";
+import { connection } from "next/server";
 
 import { db } from "@/db";
 import { CategoryRecord, categoryTable } from "@/db/schema";
@@ -26,6 +27,8 @@ type FetchCategoriesResult = {
 };
 
 export async function fetchCategories(): Promise<FetchCategoriesResult> {
+  await connection();
+
   const records = await db
     .select()
     .from(categoryTable)
