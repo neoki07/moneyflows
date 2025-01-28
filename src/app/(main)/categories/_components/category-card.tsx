@@ -1,9 +1,7 @@
-import { IconTrashX } from "@tabler/icons-react";
-
-import { Button } from "@/components/ui/button";
 import { DeepReadonly } from "@/types";
 
 import { ExpenseCategory, IncomeCategory } from "../_lib/types";
+import { DeleteCategoryButton } from "./delete-category-button";
 import { EditCategoryButton } from "./edit-category-button";
 
 type CategoryCardProps = DeepReadonly<{
@@ -16,13 +14,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
       {category.name}
       <div>
         <EditCategoryButton />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-red-500 hover:bg-red-50 hover:text-red-500"
-        >
-          <IconTrashX />
-        </Button>
+        <DeleteCategoryButton category={category} />
       </div>
     </div>
   );
