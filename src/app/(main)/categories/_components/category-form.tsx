@@ -16,7 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  name: z.string().min(1).max(20),
+  name: z
+    .string()
+    .min(1, "カテゴリー名を入力してください")
+    .max(20, "カテゴリー名は20文字以内で入力してください"),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
