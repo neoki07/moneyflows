@@ -1,5 +1,6 @@
 import { fetchIncomeCategories } from "../_lib/fetch";
 import { AddCategoryButton } from "./add-category-button";
+import { CategoriesEmpty } from "./categories-empty";
 import { CategoryCard } from "./category-card";
 
 export async function IncomeCategories() {
@@ -11,11 +12,15 @@ export async function IncomeCategories() {
         <h2 className="flex-1 text-xl font-bold">収入</h2>
         <AddCategoryButton type="income" />
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        {categories.map((category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))}
-      </div>
+      {categories.length === 0 ? (
+        <CategoriesEmpty type="income" />
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          {categories.map((category) => (
+            <CategoryCard key={category.id} category={category} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
