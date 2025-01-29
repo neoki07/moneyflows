@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 
 import { AddCategoryButton } from "./_components/add-category-button";
+import { Categories } from "./_components/categories";
 import { CategoriesSkeleton } from "./_components/categories-skeleton";
-import { ExpenseCategories } from "./_components/expense-categories";
-import { IncomeCategories } from "./_components/income-categories";
 
 export default function Page() {
   return (
@@ -18,7 +17,7 @@ export default function Page() {
             <AddCategoryButton type="income" />
           </div>
           <Suspense fallback={<CategoriesSkeleton />}>
-            <IncomeCategories />
+            <Categories type="income" />
           </Suspense>
         </div>
         <div className="space-y-4">
@@ -27,7 +26,7 @@ export default function Page() {
             <AddCategoryButton type="expense" />
           </div>
           <Suspense fallback={<CategoriesSkeleton />}>
-            <ExpenseCategories />
+            <Categories type="expense" />
           </Suspense>
         </div>
       </div>
