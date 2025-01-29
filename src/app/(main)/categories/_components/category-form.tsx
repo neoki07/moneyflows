@@ -41,7 +41,7 @@ export function CategoryForm({ onSubmit }: CategoryFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>名前</FormLabel>
+              <FormLabel required>名前</FormLabel>
               <FormControl>
                 <Input placeholder="例：食費、交通費、給料" {...field} />
               </FormControl>

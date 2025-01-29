@@ -15,6 +15,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
+import { RequiredBadge } from "./required-badge";
+
 const Form = FormProvider;
 
 type FormFieldContextValue<
@@ -86,13 +88,24 @@ const FormItem = React.forwardRef<
 });
 FormItem.displayName = "FormItem";
 
+type FormLabelProps = {
+  required?: boolean;
+} & React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>;
+
 const FormLabel = React.forwardRef<
   React.ComponentRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->((props, ref) => {
-  const { formItemId } = useFormField();
-
-  return <Label ref={ref} htmlFor={formItemId} {...props} />;
+  FormLabelProps
+>(({ className, required, children, ...props }, ref) => {
+  return (
+    <Label
+      ref={ref}
+      className={cn("flex items-center gap-1", className)}
+      {...props}
+    >
+      {children}
+      {required && <RequiredBadge />}
+    </Label>
+  );
 });
 FormLabel.displayName = "FormLabel";
 
