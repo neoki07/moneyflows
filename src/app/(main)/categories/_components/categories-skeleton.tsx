@@ -9,8 +9,6 @@ type CategoriesSkeletonProps = DeepReadonly<{
 }>;
 
 export function CategoriesSkeleton({ type }: CategoriesSkeletonProps) {
-  const skeletonCount = type === "income" ? 3 : 6;
-
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4">
@@ -23,7 +21,7 @@ export function CategoriesSkeleton({ type }: CategoriesSkeletonProps) {
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        {Array.from({ length: skeletonCount }).map((_, i) => (
+        {Array.from({ length: 6 }).map((_, i) => (
           <Skeleton key={i} className="bg-muted h-[50px] rounded-lg" />
         ))}
       </div>
