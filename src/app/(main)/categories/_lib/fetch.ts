@@ -1,10 +1,11 @@
 import { asc } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { connection } from "next/server";
 
 import { db } from "@/db";
 import { CategoryRecord, categoryTable } from "@/db/schema";
 
-import { Categories, ExpenseCategory, IncomeCategory } from "./types";
+import { ExpenseCategory, IncomeCategory } from "./types";
 
 function toIncomeCategory(record: CategoryRecord): IncomeCategory {
   return {
@@ -22,26 +23,26 @@ function toExpenseCategory(record: CategoryRecord): ExpenseCategory {
   };
 }
 
-type FetchCategoriesResult = {
-  categories: Categories;
-};
-
-export async function fetchCategories(): Promise<FetchCategoriesResult> {
+export async function fetchIncomeCategories(): Promise<IncomeCategory[]> {
   await connection();
 
   const records = await db
     .select()
     .from(categoryTable)
+    .where(eq(categoryTable.type, "income"))
     .orderBy(asc(categoryTable.id));
 
-  return {
-    categories: {
-      income: records
-        .filter((record) => record.type === "income")
-        .map(toIncomeCategory),
-      expense: records
-        .filter((record) => record.type === "expense")
-        .map(toExpenseCategory),
-    },
-  };
+  return records.map(toIncomeCategory);
+}
+
+export async function fetchExpenseCategories(): Promise<ExpenseCategory[]> {
+  await connection();
+
+  const records = await db
+    .select()
+    .from(categoryTable)
+    .where(eq(categoryTable.type, "expense"))
+    .orderBy(asc(categoryTable.id));
+
+  return records.map(toExpenseCategory);
 }
