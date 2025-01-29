@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DeepReadonly } from "@/types";
 
-type Props = DeepReadonly<{
+type CategoriesSkeletonProps = DeepReadonly<{
   type: "income" | "expense";
 }>;
 
-export function CategoriesSkeleton({ type }: Props) {
+export function CategoriesSkeleton({ type }: CategoriesSkeletonProps) {
   const skeletonCount = type === "income" ? 3 : 6;
 
   return (
