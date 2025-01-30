@@ -1,60 +1,57 @@
 "use server";
 
+import { parseWithZod } from "@conform-to/zod";
 import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 import { db } from "@/db";
 import { categoryTable } from "@/db/schema";
-import { DeepReadonly } from "@/types";
 
-import { FormValues } from "../_components/category-form";
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(1, "カテゴリー名を入力してください")
+    .max(20, "カテゴリー名は20文字以内で入力してください"),
+  type: z.enum(["income", "expense"]),
+});
 
-type CreateCategoryInput = DeepReadonly<
-  FormValues & {
-    type: "income" | "expense";
+export async function createCategory(_prevState: unknown, input: FormData) {
+  const submission = parseWithZod(input, { schema: formSchema });
+
+  if (submission.status !== "success") {
+    return submission.reply({
+      formErrors: ["カテゴリーの作成に失敗しました"],
+    });
   }
->;
 
-type CreateCategoryResult = {
-  success: boolean;
-  errorMessage?: string;
-};
-
-export async function createCategory(
-  _prevState: CreateCategoryResult,
-  input: CreateCategoryInput,
-): Promise<CreateCategoryResult> {
   try {
     const [existing] = await db
       .select()
       .from(categoryTable)
-      .where(eq(categoryTable.name, input.name))
+      .where(eq(categoryTable.name, submission.value.name))
       .limit(1);
 
     if (existing) {
-      return {
-        success: false,
-        errorMessage: "このカテゴリー名は既に使用されています",
-      };
+      return submission.reply({
+        fieldErrors: {
+          name: ["このカテゴリー名は既に使用されています"],
+        },
+      });
     }
 
     await db.insert(categoryTable).values({
-      ...input,
+      ...submission.value,
       id: createId(),
     });
 
     revalidatePath("/categories");
-
-    return {
-      success: true,
-    };
   } catch (error) {
     console.error(error);
 
-    return {
-      success: false,
-      errorMessage: "カテゴリーの作成に失敗しました",
-    };
+    return submission.reply({
+      formErrors: ["カテゴリーの作成に失敗しました"],
+    });
   }
 }

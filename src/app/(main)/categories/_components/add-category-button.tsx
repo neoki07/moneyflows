@@ -1,7 +1,7 @@
 "use client";
 
 import { IconPlus } from "@tabler/icons-react";
-import { startTransition, useActionState, useState } from "react";
+import { useActionState, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +14,7 @@ import {
 import { DeepReadonly } from "@/types";
 
 import { createCategory } from "../_actions/create-category";
-import { CategoryForm, FormValues } from "./category-form";
+import { CategoryForm } from "./category-form";
 
 type Props = DeepReadonly<{
   type: "income" | "expense";
@@ -22,17 +22,14 @@ type Props = DeepReadonly<{
 
 export function AddCategoryButton({ type }: Props) {
   const [open, setOpen] = useState(false);
-  const [state, formAction, isPending] = useActionState(createCategory, {
-    success: false,
-  });
+  const [state, formAction, isPending] = useActionState(
+    createCategory,
+    undefined,
+  );
 
-  const handleSubmit = (values: FormValues) => {
-    startTransition(() => {
-      formAction({
-        ...values,
-        type,
-      });
-    });
+  const handleAction = (formData: FormData) => {
+    formData.set("type", type);
+    return formAction(formData);
   };
 
   return (
@@ -50,9 +47,9 @@ export function AddCategoryButton({ type }: Props) {
           </DialogTitle>
         </DialogHeader>
         <CategoryForm
-          onSubmit={handleSubmit}
-          error={state.errorMessage}
+          action={handleAction}
           disabled={isPending}
+          lastResult={state}
         />
       </DialogContent>
     </Dialog>

@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.10.2",
+    "@conform-to/react": "^1.2.2",
+    "@conform-to/zod": "^1.2.2",
     "@hookform/resolvers": "^3.10.0",
     "@paralleldrive/cuid2": "^2.2.2",
     "@radix-ui/react-checkbox": "^1.1.3",
