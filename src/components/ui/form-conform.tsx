@@ -45,7 +45,7 @@ type FormErrorProps = DeepReadonly<{
   children: React.ReactNode;
 }>;
 
-const FormError = React.forwardRef<
+const FormErrorMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement> & FormErrorProps
 >(({ className, id, children, ...props }, ref) => {
@@ -62,7 +62,7 @@ const FormError = React.forwardRef<
     </p>
   );
 });
-FormError.displayName = "FormError";
+FormErrorMessage.displayName = "FormErrorMessage";
 
 type FormControlProps = {
   field: FieldMetadata<unknown>;
@@ -82,4 +82,11 @@ const FormControl = React.forwardRef<HTMLElement, FormControlProps>(
 );
 FormControl.displayName = "FormControl";
 
-export { Form, type FormAction, FormControl, FormError, FormField, FormLabel };
+export {
+  Form,
+  type FormAction,
+  FormControl,
+  FormErrorMessage,
+  FormField,
+  FormLabel,
+};

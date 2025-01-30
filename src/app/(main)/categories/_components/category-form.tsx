@@ -9,7 +9,7 @@ import {
   Form,
   FormAction,
   FormControl,
-  FormError,
+  FormErrorMessage,
   FormField,
   FormLabel,
 } from "@/components/ui/form-conform";
@@ -57,9 +57,9 @@ export function CategoryForm({
             <Input placeholder="例：食費、交通費、給料" disabled={disabled} />
           </FormControl>
           {fields.name.errors?.map((error) => (
-            <FormError key={error} id={fields.name.errorId}>
+            <FormErrorMessage key={error} id={fields.name.errorId}>
               {error}
-            </FormError>
+            </FormErrorMessage>
           ))}
         </FormField>
         <Button type="submit" className="w-full" disabled={disabled}>
