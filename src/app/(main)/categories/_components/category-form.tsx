@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
+  id: z.string().optional(),
   name: z
     .string({ required_error: "カテゴリー名を入力してください" })
     .min(1, "カテゴリー名を入力してください")
@@ -26,12 +27,17 @@ export type FormValues = z.infer<typeof formSchema>;
 
 type CategoryFormProps = {
   action: FormAction;
+  defaultValues?: {
+    id?: string;
+    name: string;
+  };
   disabled?: boolean;
   lastResult?: SubmissionResult;
 };
 
 export function CategoryForm({
   action,
+  defaultValues,
   disabled,
   lastResult,
 }: CategoryFormProps) {
@@ -41,14 +47,15 @@ export function CategoryForm({
     onValidate: ({ formData }) => {
       return parseWithZod(formData, { schema: formSchema });
     },
-    defaultValue: {
-      name: "",
-    },
+    defaultValue: defaultValues,
   });
 
   return (
     <Form {...getFormProps(form)} action={action}>
       <div className="space-y-6">
+        {defaultValues?.id && (
+          <input type="hidden" name="id" value={defaultValues.id} />
+        )}
         <FormField>
           <FormLabel htmlFor={fields.name.id} required>
             名前

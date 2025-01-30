@@ -13,7 +13,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
     <div className="flex items-center justify-between rounded-lg border p-2 pl-4 font-medium">
       {category.name}
       <div>
-        <EditCategoryButton />
+        <EditCategoryButton category={category} />
         <DeleteCategoryButton category={category} />
       </div>
     </div>
