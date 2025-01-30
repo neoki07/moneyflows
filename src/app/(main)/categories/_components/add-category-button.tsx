@@ -34,8 +34,7 @@ export function AddCategoryButton({ type }: Props) {
   };
 
   React.useEffect(() => {
-    console.log(state);
-    if (!state) {
+    if (state?.status === "success") {
       setOpen(false);
     }
   }, [state]);
