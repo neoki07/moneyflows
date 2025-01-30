@@ -1,7 +1,7 @@
 "use client";
 
 import { IconPlus } from "@tabler/icons-react";
-import { useState } from "react";
+import { startTransition, useActionState, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,24 +22,23 @@ type Props = DeepReadonly<{
 
 export function AddCategoryButton({ type }: Props) {
   const [open, setOpen] = useState(false);
+  const [state, formAction, isPending] = useActionState(createCategory, {
+    success: false,
+  });
 
-  const handleSubmit = async (values: DeepReadonly<FormValues>) => {
-    try {
-      const result = await createCategory({
+  const handleSubmit = (values: FormValues) => {
+    startTransition(() => {
+      formAction({
         ...values,
         type,
       });
-      console.log("Category created:", result);
-      setOpen(false);
-    } catch (error) {
-      console.error("Failed to create category:", error);
-    }
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button disabled={isPending}>
           <IconPlus className="-ml-1.5" />
           {type === "income" ? "収入" : "支出"}カテゴリーを追加
         </Button>
@@ -50,7 +49,11 @@ export function AddCategoryButton({ type }: Props) {
             {type === "income" ? "収入" : "支出"}カテゴリーの追加
           </DialogTitle>
         </DialogHeader>
-        <CategoryForm onSubmit={handleSubmit} />
+        <CategoryForm
+          onSubmit={handleSubmit}
+          error={state.errorMessage}
+          disabled={isPending}
+        />
       </DialogContent>
     </Dialog>
   );

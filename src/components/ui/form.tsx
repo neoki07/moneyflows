@@ -8,7 +8,9 @@ import {
   ControllerProps,
   FieldPath,
   FieldValues,
+  Form,
   FormProvider,
+  useForm,
   useFormContext,
 } from "react-hook-form";
 
@@ -16,8 +18,6 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 import { RequiredBadge } from "./required-badge";
-
-const Form = FormProvider;
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -185,5 +185,7 @@ export {
   FormItem,
   FormLabel,
   FormMessage,
+  FormProvider,
+  useForm,
   useFormField,
 };

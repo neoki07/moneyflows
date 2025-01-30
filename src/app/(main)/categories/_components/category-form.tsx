@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormProvider,
+  useForm,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -25,11 +26,13 @@ const formSchema = z.object({
 export type FormValues = z.infer<typeof formSchema>;
 
 type CategoryFormProps = {
-  onSubmit: (values: FormValues) => Promise<void>;
+  onSubmit: (values: FormValues) => void;
+  error?: string;
+  disabled?: boolean;
 };
 
-export function CategoryForm({ onSubmit }: CategoryFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
+export function CategoryForm({ onSubmit, error, disabled }: CategoryFormProps) {
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -37,8 +40,12 @@ export function CategoryForm({ onSubmit }: CategoryFormProps) {
   });
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+    <FormProvider {...form}>
+      <Form
+        control={form.control}
+        className="space-y-6"
+        onSubmit={({ data }) => onSubmit(data)}
+      >
         <FormField
           control={form.control}
           name="name"
@@ -48,14 +55,14 @@ export function CategoryForm({ onSubmit }: CategoryFormProps) {
               <FormControl>
                 <Input placeholder="例：食費、交通費、給料" {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage>{error}</FormMessage>
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={disabled}>
           保存
         </Button>
-      </form>
-    </Form>
+      </Form>
+    </FormProvider>
   );
 }
