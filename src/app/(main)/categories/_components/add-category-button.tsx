@@ -2,6 +2,7 @@
 
 import { IconPlus } from "@tabler/icons-react";
 import { useActionState, useState } from "react";
+import React from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +32,13 @@ export function AddCategoryButton({ type }: Props) {
     formData.set("type", type);
     return formAction(formData);
   };
+
+  React.useEffect(() => {
+    console.log(state);
+    if (!state) {
+      setOpen(false);
+    }
+  }, [state]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
