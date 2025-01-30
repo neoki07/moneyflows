@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -52,6 +53,10 @@ export function AddCategoryButton({ type }: Props) {
           <DialogTitle>
             {type === "income" ? "収入" : "支出"}カテゴリーの追加
           </DialogTitle>
+          <DialogDescription>
+            収支を管理するための新しい{type === "income" ? "収入" : "支出"}
+            カテゴリーを作成します。
+          </DialogDescription>
         </DialogHeader>
         <CategoryForm
           action={handleAction}
