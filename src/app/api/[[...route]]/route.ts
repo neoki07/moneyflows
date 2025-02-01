@@ -8,7 +8,9 @@ const app = new Hono().basePath("/api");
 
 app.use("*", clerkMiddleware());
 
-export const apiRoutes = app.route("/categories", categories);
+const routes = app.route("/categories", categories);
 
-export const GET = handle(apiRoutes);
-export const POST = handle(apiRoutes);
+export const GET = handle(routes);
+export const POST = handle(routes);
+
+export type AppType = typeof routes;
