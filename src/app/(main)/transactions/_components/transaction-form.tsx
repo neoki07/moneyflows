@@ -2,6 +2,7 @@
 
 import { getFormProps, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 
 import { FormDatePicker } from "@/components/form/date-picker";
@@ -17,6 +18,8 @@ import {
   FormLabel,
 } from "@/components/ui/form-conform";
 import { Input } from "@/components/ui/input";
+import { SelectOption } from "@/components/ui/select";
+import { api } from "@/lib/hono";
 import { DeepReadonly } from "@/types";
 
 const formSchema = z.object({
@@ -35,7 +38,10 @@ type TransactionFormProps = DeepReadonly<{
   action: FormAction;
 }>;
 
-export function TransactionForm({ action }: TransactionFormProps) {
+export function TransactionForm({ type, action }: TransactionFormProps) {
+  const [categories, setCategories] = useState<SelectOption[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+
   const [form, fields] = useForm({
     constraint: getZodConstraint(formSchema),
     onValidate: ({ formData }) => {
@@ -49,6 +55,25 @@ export function TransactionForm({ action }: TransactionFormProps) {
       tags: [],
     },
   });
+
+  useEffect(() => {
+    setIsLoadingCategories(true);
+
+    async function fetchCategories() {
+      const res = await api.categories.$get({ query: { type } });
+      if (res.ok) {
+        const json = await res.json();
+        const options = json.categories.map((c) => ({
+          value: c.id,
+          label: c.name,
+        }));
+        setCategories(options);
+      }
+      setIsLoadingCategories(false);
+    }
+
+    fetchCategories();
+  }, [type]);
 
   return (
     <Form {...getFormProps(form)} action={action}>
@@ -94,10 +119,9 @@ export function TransactionForm({ action }: TransactionFormProps) {
           <FormLabel htmlFor={fields.category.id}>カテゴリー</FormLabel>
           <FormSelect
             field={fields.category}
-            options={[
-              { value: "1", label: "test" },
-              { value: "2", label: "test2" },
-            ]}
+            options={categories}
+            isLoading={isLoadingCategories}
+            placeholder="カテゴリーを選択"
           />
           {fields.category.errors?.map((error) => (
             <FormErrorMessage key={error} id={fields.category.errorId}>

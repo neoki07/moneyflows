@@ -1,7 +1,7 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import * as React from "react";
 
 import {
@@ -28,6 +28,7 @@ type SelectProps = {
   onChange?: (option: SelectOption | undefined) => void;
   onCreateOption?: (inputValue: string) => Promise<SelectOption>;
   isCreating?: boolean;
+  isLoading?: boolean;
 };
 
 export type SelectRef = {
@@ -49,6 +50,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
       onChange,
       onCreateOption,
       isCreating,
+      isLoading,
     }: SelectProps,
     ref: React.Ref<SelectRef>,
   ) => {
@@ -173,31 +175,42 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
           >
             {open && (
               <>
-                {emptyIndicator &&
-                  filteredOptions.length === 0 &&
-                  !inputValue && <CommandEmpty>{emptyIndicator}</CommandEmpty>}
-                <CommandGroup className="h-full overflow-auto">
-                  {filteredOptions.map((option) => (
-                    <CommandItem
-                      key={option.value}
-                      value={option.label}
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                      }}
-                      onSelect={() => {
-                        setSelected(option);
-                        onChange?.(option);
-                        setInputValue("");
-                        setOpen(false);
-                      }}
-                      className="cursor-pointer"
-                    >
-                      {option.label}
-                    </CommandItem>
-                  ))}
-                  {CreatableItem()}
-                </CommandGroup>
+                {isLoading ? (
+                  <div className="text-muted-foreground flex items-center justify-center p-4 text-sm">
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    読み込み中...
+                  </div>
+                ) : (
+                  <>
+                    {emptyIndicator &&
+                      filteredOptions.length === 0 &&
+                      !inputValue && (
+                        <CommandEmpty>{emptyIndicator}</CommandEmpty>
+                      )}
+                    <CommandGroup className="h-full overflow-auto">
+                      {filteredOptions.map((option) => (
+                        <CommandItem
+                          key={option.value}
+                          value={option.label}
+                          onMouseDown={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                          }}
+                          onSelect={() => {
+                            setSelected(option);
+                            onChange?.(option);
+                            setInputValue("");
+                            setOpen(false);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          {option.label}
+                        </CommandItem>
+                      ))}
+                      {CreatableItem()}
+                    </CommandGroup>
+                  </>
+                )}
               </>
             )}
           </CommandList>

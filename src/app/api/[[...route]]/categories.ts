@@ -18,9 +18,7 @@ export const categories = new Hono().get(
     const auth = getAuth(c);
 
     if (!auth?.userId) {
-      return c.json({
-        message: "You are not logged in.",
-      });
+      return c.json({ message: "You are not logged in." }, 401);
     }
 
     const { type } = c.req.valid("query");
