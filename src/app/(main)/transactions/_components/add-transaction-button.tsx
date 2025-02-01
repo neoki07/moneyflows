@@ -26,7 +26,7 @@ import { TransactionForm } from "./transaction-form";
 
 export function AddTransactionButton() {
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState<"income" | "expense">();
+  const [type, setType] = useState<"income" | "expense">("income");
 
   const [state, formAction] = useActionState(createTransaction, undefined);
 
@@ -39,6 +39,11 @@ export function AddTransactionButton() {
   const handleSelect = (selectedType: "income" | "expense") => {
     setType(selectedType);
     setOpen(true);
+  };
+
+  const handleAction = (formData: FormData) => {
+    formData.set("type", type);
+    return formAction(formData);
   };
 
   return (
@@ -68,7 +73,7 @@ export function AddTransactionButton() {
               {type === "income" ? "収入" : "支出"}を追加
             </DialogTitle>
           </DialogHeader>
-          {type && <TransactionForm action={formAction} type={type} />}
+          {type && <TransactionForm action={handleAction} type={type} />}
         </DialogContent>
       </Dialog>
     </>
