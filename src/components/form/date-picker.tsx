@@ -18,7 +18,9 @@ const FormDatePicker = forwardRef<DatePickerRef, FormDatePickerProps>(
     const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputControl(field);
     const date =
-      typeof control.value === "string" ? new Date(control.value) : undefined;
+      typeof control.value === "string" && control.value.length !== 0
+        ? new Date(control.value)
+        : undefined;
 
     return (
       <div>
