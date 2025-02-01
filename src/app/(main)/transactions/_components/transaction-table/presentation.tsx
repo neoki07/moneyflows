@@ -45,6 +45,8 @@ export function TransactionTablePresenter({
     },
   });
 
+  const { rows } = table.getSelectedRowModel();
+
   const handleEdit = () => {
     console.log("Edit selected rows", table.getSelectedRowModel().rows);
   };
@@ -74,8 +76,8 @@ export function TransactionTablePresenter({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {rows?.length ? (
+              rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -94,7 +96,7 @@ export function TransactionTablePresenter({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-48 text-center"
                 >
                   データがありません
                 </TableCell>
@@ -103,18 +105,20 @@ export function TransactionTablePresenter({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between">
-        <BulkActionBar
-          selectedCount={table.getSelectedRowModel().rows.length}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-        <Pagination
-          totalCount={totalCount}
-          pageSize={10}
-          currentPage={currentPage}
-        />
-      </div>
+      {rows.length > 0 && (
+        <div className="flex items-center justify-between">
+          <Pagination
+            totalCount={totalCount}
+            pageSize={10}
+            currentPage={currentPage}
+          />
+        </div>
+      )}
+      <BulkActionBar
+        selectedCount={table.getSelectedRowModel().rows.length}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
     </div>
   );
 }
