@@ -1,6 +1,6 @@
 import { getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -26,7 +26,12 @@ export const categories = new Hono().get(
     const categories = await db
       .select()
       .from(categoryTable)
-      .where(type ? eq(categoryTable.type, type) : undefined);
+      .where(
+        and(
+          eq(categoryTable.userId, auth.userId),
+          type ? eq(categoryTable.type, type) : undefined,
+        ),
+      );
 
     return c.json({ categories });
   },

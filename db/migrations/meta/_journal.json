@@ -8,6 +8,13 @@
       "when": 1737992079748,
       "tag": "0000_nice_iceman",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1738428841635,
+      "tag": "0001_nice_star_brand",
+      "breakpoints": true
     }
   ]
 }

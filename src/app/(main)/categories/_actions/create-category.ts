@@ -1,10 +1,12 @@
 "use server";
 
+import { auth } from "@clerk/nextjs/server";
 import { SubmissionResult } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { createId } from "@paralleldrive/cuid2";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { db } from "@/db";
@@ -23,6 +25,11 @@ export async function createCategory(
   input: FormData,
 ): Promise<SubmissionResult> {
   const submission = parseWithZod(input, { schema: formSchema });
+
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
 
   if (submission.status !== "success") {
     return submission.reply({
@@ -48,6 +55,7 @@ export async function createCategory(
     await db.insert(categoryTable).values({
       ...submission.value,
       id: createId(),
+      userId,
     });
 
     revalidatePath("/categories");

@@ -7,17 +7,19 @@ export const transactionTypeEnum = pgEnum("transaction_type", [
 
 export const categoryTable = pgTable("category", {
   id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
   name: text("name").notNull().unique(),
   type: transactionTypeEnum().notNull(),
 });
 
 export const transactionTable = pgTable("transaction", {
   id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  categoryId: text("category_id").references(() => categoryTable.id),
   date: timestamp("date").notNull(),
   description: text("description").notNull(),
   amount: integer("amount").notNull(),
   type: transactionTypeEnum().notNull(),
-  categoryId: text("category_id").references(() => categoryTable.id),
 });
 
 export type CategoryRecord = typeof categoryTable.$inferSelect;
