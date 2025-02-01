@@ -1,11 +1,13 @@
 import { SearchParams } from "nuqs/server";
 import { createLoader, parseAsFloat } from "nuqs/server";
+import { Suspense } from "react";
 
 import { Input } from "@/components/ui/input";
 import { DeepReadonly } from "@/types";
 
 import { AddTransactionButton } from "./_components/add-transaction-button";
 import { TransactionTable } from "./_components/transaction-table";
+import { TransactionTableSkeleton } from "./_components/transaction-table-skeleton";
 
 const loadSearchParams = createLoader({
   page: parseAsFloat.withDefault(1),
@@ -32,7 +34,9 @@ export default async function Page({ searchParams }: PageProps) {
             <AddTransactionButton />
           </div>
         </div>
-        <TransactionTable currentPage={page} />
+        <Suspense fallback={<TransactionTableSkeleton />}>
+          <TransactionTable currentPage={page} />
+        </Suspense>
       </div>
     </div>
   );
