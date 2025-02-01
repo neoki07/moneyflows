@@ -75,6 +75,24 @@ export function TransactionForm({ type, action }: TransactionFormProps) {
     fetchCategories();
   }, [type]);
 
+  const handleCreateCategory = async (name: string) => {
+    setIsLoadingCategories(true);
+    try {
+      const res = await api.categories.$post({
+        json: { name, type },
+      });
+      if (!res.ok) {
+        throw new Error("カテゴリーの作成に失敗しました");
+      }
+      const { category } = await res.json();
+      const newOption = { value: category.id, label: category.name };
+      setCategories((prev) => [...prev, newOption]);
+      return newOption;
+    } finally {
+      setIsLoadingCategories(false);
+    }
+  };
+
   return (
     <Form {...getFormProps(form)} action={action}>
       <div className="space-y-4">
@@ -121,6 +139,7 @@ export function TransactionForm({ type, action }: TransactionFormProps) {
             field={fields.category}
             options={categories}
             isLoading={isLoadingCategories}
+            onCreate={handleCreateCategory}
             placeholder="カテゴリーを選択"
           />
           {fields.category.errors?.map((error) => (

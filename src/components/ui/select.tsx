@@ -26,8 +26,7 @@ type SelectProps = {
   className?: string;
   emptyIndicator?: React.ReactNode;
   onChange?: (option: SelectOption | undefined) => void;
-  onCreateOption?: (inputValue: string) => Promise<SelectOption>;
-  isCreating?: boolean;
+  onCreate?: (value: string) => Promise<SelectOption>;
   isLoading?: boolean;
 };
 
@@ -48,8 +47,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
       className,
       emptyIndicator,
       onChange,
-      onCreateOption,
-      isCreating,
+      onCreate,
       isLoading,
     }: SelectProps,
     ref: React.Ref<SelectRef>,
@@ -98,9 +96,9 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
             e.stopPropagation();
           }}
           onSelect={async (value: string) => {
-            if (onCreateOption) {
+            if (onCreate) {
               try {
-                const newOption = await onCreateOption(value);
+                const newOption = await onCreate(value);
                 setSelected(newOption);
                 onChange?.(newOption);
               } catch (error) {
@@ -115,7 +113,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
             setOpen(false);
           }}
         >
-          {isCreating ? <span>作成中...</span> : `Create "${inputValue}"`}
+          {isLoading ? <span>作成中...</span> : `"${inputValue}"を作成`}
         </CommandItem>
       );
     };

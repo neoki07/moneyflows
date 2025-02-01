@@ -15,12 +15,12 @@ type FormSelectProps = {
   className?: string;
   emptyIndicator?: React.ReactNode;
   isLoading?: boolean;
-  onCreateOption?: (inputValue: string) => Promise<SelectOption>;
+  onCreate?: (value: string) => Promise<SelectOption>;
   isCreating?: boolean;
 };
 
 const FormSelect = forwardRef<SelectRef, FormSelectProps>(
-  ({ field, options, isLoading, ...props }, ref) => {
+  ({ field, options, isLoading, onCreate, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputControl(field);
 
@@ -40,6 +40,7 @@ const FormSelect = forwardRef<SelectRef, FormSelectProps>(
           value={options.find((opt) => opt.value === control.value)}
           options={options}
           isLoading={isLoading}
+          onCreate={onCreate}
           onChange={(option) => {
             control.change(option?.value ?? "");
           }}
