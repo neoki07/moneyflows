@@ -38,7 +38,6 @@ export function TransactionForm({ action }: TransactionFormProps) {
   const [form, fields] = useForm({
     constraint: getZodConstraint(formSchema),
     onValidate: ({ formData }) => {
-      console.log("onValidate", formData.get("category"));
       return parseWithZod(formData, { schema: formSchema });
     },
     defaultValue: {
@@ -48,12 +47,6 @@ export function TransactionForm({ action }: TransactionFormProps) {
       category: "",
       tags: [],
     },
-  });
-
-  console.log({
-    date: fields.date.value,
-    category: fields.category.value,
-    tags: fields.tags.value,
   });
 
   return (
