@@ -31,6 +31,7 @@ const formSchema = z.object({
 });
 
 type TransactionFormProps = DeepReadonly<{
+  type: "income" | "expense";
   action: FormAction;
 }>;
 
