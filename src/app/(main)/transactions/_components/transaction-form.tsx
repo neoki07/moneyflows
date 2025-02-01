@@ -1,196 +1,136 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+"use client";
+
+import { getFormProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod";
 import { z } from "zod";
 
+import { FormDatePicker } from "@/components/form/date-picker";
+import { FormMultiSelect } from "@/components/form/multi-select";
+import { FormSelect } from "@/components/form/select";
 import { Button } from "@/components/ui/button";
-import { DatePicker } from "@/components/ui/date-picker";
 import {
   Form,
+  FormAction,
   FormControl,
+  FormErrorMessage,
   FormField,
-  FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form-conform";
 import { Input } from "@/components/ui/input";
-import { MultiSelect, MultiSelectOption } from "@/components/ui/multi-select";
-import { Select, SelectOption } from "@/components/ui/select";
+import { DeepReadonly } from "@/types";
 
 const formSchema = z.object({
-  date: z.date(),
-  description: z.string().min(1).max(20),
-  amount: z.string().min(1).max(20),
-  type: z.enum(["income", "expense"]),
-  category: z.string(),
+  date: z.date({ required_error: "日付を入力してください" }),
+  description: z.string({ required_error: "内容を入力してください" }),
+  amount: z
+    .number({ required_error: "金額を入力してください" })
+    .min(1, { message: "金額は1以上で入力してください" }),
+  category: z.string().optional(),
   tags: z.array(z.string()),
+  // TODO: add transaction type
 });
 
-export type FormValues = z.infer<typeof formSchema>;
+type TransactionFormProps = DeepReadonly<{
+  action: FormAction;
+}>;
 
-type TransactionFormProps = {
-  onSubmit: (values: FormValues) => Promise<void>;
-};
-
-export function TransactionForm({ onSubmit }: TransactionFormProps) {
-  const [tagOptions, setTagOptions] = useState<MultiSelectOption[]>([
-    {
-      label: "タグ1",
-      value: "1",
+export function TransactionForm({ action }: TransactionFormProps) {
+  const [form, fields] = useForm({
+    constraint: getZodConstraint(formSchema),
+    onValidate: ({ formData }) => {
+      console.log("onValidate", formData.get("category"));
+      return parseWithZod(formData, { schema: formSchema });
     },
-    {
-      label: "タグ2",
-      value: "2",
-    },
-    {
-      label: "タグ3",
-      value: "3",
-    },
-  ]);
-
-  const [categoryOptions, setCategoryOptions] = useState<SelectOption[]>([
-    {
-      label: "食費",
-      value: "food",
-    },
-    {
-      label: "交通費",
-      value: "transportation",
-    },
-    {
-      label: "娯楽費",
-      value: "entertainment",
-    },
-  ]);
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValue: {
       date: new Date(),
       description: "",
       amount: "",
-      type: "expense",
       category: "",
       tags: [],
     },
   });
 
-  const handleCreateTag = async (
-    inputValue: string,
-  ): Promise<MultiSelectOption> => {
-    const newOption = {
-      label: inputValue,
-      value: `${tagOptions.length + 1}`,
-    };
-
-    setTagOptions((prev) => [...prev, newOption]);
-
-    return newOption;
-  };
-
-  const handleCreateCategory = async (
-    inputValue: string,
-  ): Promise<SelectOption> => {
-    const newOption = {
-      label: inputValue,
-      value: `${categoryOptions.length + 1}`,
-    };
-
-    setCategoryOptions((prev) => [...prev, newOption]);
-
-    return newOption;
-  };
+  console.log({
+    date: fields.date.value,
+    category: fields.category.value,
+    tags: fields.tags.value,
+  });
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>日付</FormLabel>
-              <FormControl>
-                <DatePicker value={field.value} onChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>内容</FormLabel>
-              <FormControl>
-                <Input placeholder="例：コンビニ" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>金額</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>カテゴリー</FormLabel>
-              <FormControl>
-                <Select
-                  value={
-                    field.value
-                      ? { label: field.value, value: field.value }
-                      : undefined
-                  }
-                  options={categoryOptions}
-                  placeholder="カテゴリーを選択"
-                  onChange={(option) => {
-                    field.onChange(option?.value ?? "");
-                  }}
-                  onCreateOption={handleCreateCategory}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="tags"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>タグ</FormLabel>
-              <MultiSelect
-                {...field}
-                value={field.value.map((value) => ({ label: value, value }))}
-                options={tagOptions}
-                onCreateOption={handleCreateTag}
-                onChange={(options) => {
-                  field.onChange(options.map((opt) => opt.value));
-                }}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <Form {...getFormProps(form)} action={action}>
+      <div className="space-y-4">
+        <FormField>
+          <FormLabel htmlFor={fields.date.id} required>
+            日付
+          </FormLabel>
+          <FormDatePicker field={fields.date} />
+          {fields.date.errors?.map((error) => (
+            <FormErrorMessage key={error} id={fields.date.errorId}>
+              {error}
+            </FormErrorMessage>
+          ))}
+        </FormField>
+        <FormField>
+          <FormLabel htmlFor={fields.description.id} required>
+            内容
+          </FormLabel>
+          <FormControl field={fields.description}>
+            <Input />
+          </FormControl>
+          {fields.description.errors?.map((error) => (
+            <FormErrorMessage key={error} id={fields.description.errorId}>
+              {error}
+            </FormErrorMessage>
+          ))}
+        </FormField>
+        <FormField>
+          <FormLabel htmlFor={fields.amount.id} required>
+            金額
+          </FormLabel>
+          <FormControl field={fields.amount}>
+            <Input type="number" />
+          </FormControl>
+          {fields.amount.errors?.map((error) => (
+            <FormErrorMessage key={error} id={fields.amount.errorId}>
+              {error}
+            </FormErrorMessage>
+          ))}
+        </FormField>
+        <FormField>
+          <FormLabel htmlFor={fields.category.id}>カテゴリー</FormLabel>
+          <FormSelect
+            field={fields.category}
+            options={[
+              { value: "1", label: "test" },
+              { value: "2", label: "test2" },
+            ]}
+          />
+          {fields.category.errors?.map((error) => (
+            <FormErrorMessage key={error} id={fields.category.errorId}>
+              {error}
+            </FormErrorMessage>
+          ))}
+        </FormField>
+        <FormField>
+          <FormLabel htmlFor={fields.tags.id}>タグ</FormLabel>
+          <FormMultiSelect
+            field={fields.tags}
+            options={[
+              { value: "1", label: "test" },
+              { value: "2", label: "test2" },
+            ]}
+          />
+          {fields.tags.errors?.map((error) => (
+            <FormErrorMessage key={error} id={fields.tags.errorId}>
+              {error}
+            </FormErrorMessage>
+          ))}
+        </FormField>
+
         <Button type="submit" className="w-full">
           保存
         </Button>
-      </form>
+      </div>
     </Form>
   );
 }

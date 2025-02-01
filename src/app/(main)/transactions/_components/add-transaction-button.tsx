@@ -1,7 +1,7 @@
 "use client";
 
 import { IconPlus } from "@tabler/icons-react";
-import { useState } from "react";
+import React, { useActionState, useState } from "react";
 
 import { createTransaction } from "@/app/(main)/transactions/_actions/create-transaction";
 import { Button } from "@/components/ui/button";
@@ -13,32 +13,25 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import type { FormValues } from "./transaction-form";
 import { TransactionForm } from "./transaction-form";
 
 export function AddTransactionButton() {
   const [open, setOpen] = useState(false);
+  const [state, formAction, isPending] = useActionState(
+    createTransaction,
+    undefined,
+  );
 
-  const handleSubmit = async (values: FormValues) => {
-    const transaction = {
-      ...values,
-      amount: Number(values.amount),
-      category: values.category || null,
-    };
-
-    try {
-      const result = await createTransaction(transaction);
-      console.log("Transaction created:", result);
+  React.useEffect(() => {
+    if (state?.status === "success") {
       setOpen(false);
-    } catch (error) {
-      console.error("Failed to create transaction:", error);
     }
-  };
+  }, [state]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button disabled={isPending}>
           <IconPlus className="-ml-1.5" />
           収支を追加
         </Button>
@@ -47,7 +40,7 @@ export function AddTransactionButton() {
         <DialogHeader>
           <DialogTitle>収支の追加</DialogTitle>
         </DialogHeader>
-        <TransactionForm onSubmit={handleSubmit} />
+        <TransactionForm action={formAction} />
       </DialogContent>
     </Dialog>
   );

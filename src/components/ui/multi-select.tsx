@@ -31,14 +31,14 @@ type MultiSelectProps = {
   isCreating?: boolean;
 };
 
-export type MultipleSelectRef = {
+export type MultiSelectRef = {
   selectedValue: MultiSelectOption[];
   input: HTMLInputElement;
   focus: () => void;
   reset: () => void;
 };
 
-const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
+const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
   (
     {
       value,
@@ -51,7 +51,7 @@ const MultiSelect = React.forwardRef<MultipleSelectRef, MultiSelectProps>(
       onCreateOption,
       isCreating,
     }: MultiSelectProps,
-    ref: React.Ref<MultipleSelectRef>,
+    ref: React.Ref<MultiSelectRef>,
   ) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [open, setOpen] = React.useState(false);
