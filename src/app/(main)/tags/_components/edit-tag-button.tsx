@@ -9,8 +9,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { TagForm } from "./tag-form";
-
 export function EditTagButton() {
   return (
     <Dialog>
@@ -24,7 +22,7 @@ export function EditTagButton() {
         <DialogHeader>
           <DialogTitle>タグの編集</DialogTitle>
         </DialogHeader>
-        <TagForm />
+        {/* TODO: add tag form */}
       </DialogContent>
     </Dialog>
   );

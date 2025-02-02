@@ -1,56 +1,61 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { getFormProps, useForm } from "@conform-to/react";
+import { getZodConstraint, parseWithZod } from "@conform-to/zod";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormAction,
   FormControl,
+  FormErrorMessage,
   FormField,
-  FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/form-conform";
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  name: z.string().min(1).max(20),
+  name: z
+    .string({ required_error: "タグ名を入力してください" })
+    .min(1, "タグ名を入力してください")
+    .max(20, "タグ名は20文字以内で入力してください"),
 });
 
-export function TagForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
+type TagFormProps = {
+  action: FormAction;
+};
+
+export function TagForm({ action }: TagFormProps) {
+  const [form, fields] = useForm({
+    constraint: getZodConstraint(formSchema),
+    onValidate: ({ formData }) =>
+      parseWithZod(formData, { schema: formSchema }),
+    defaultValue: {
       name: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
-
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>名前</FormLabel>
-              <FormControl>
-                <Input placeholder="例：クレジットカード" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <Form {...getFormProps(form)} action={action}>
+      <div className="space-y-4">
+        <FormField>
+          <FormLabel htmlFor={fields.name.id} required>
+            名前
+          </FormLabel>
+          <FormControl field={fields.name}>
+            <Input placeholder="例：固定費、サブスクリプション、旅行" />
+          </FormControl>
+          {fields.name.errors?.map((error) => (
+            <FormErrorMessage key={error} id={fields.name.errorId}>
+              {error}
+            </FormErrorMessage>
+          ))}
+        </FormField>
         <Button type="submit" className="w-full">
           保存
         </Button>
-      </form>
+      </div>
     </Form>
   );
 }
