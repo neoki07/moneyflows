@@ -23,8 +23,6 @@ const formSchema = z.object({
     .max(20, "カテゴリー名は20文字以内で入力してください"),
 });
 
-export type FormValues = z.infer<typeof formSchema>;
-
 type CategoryFormProps = {
   action: FormAction;
   defaultValues?: {
