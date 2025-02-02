@@ -15,6 +15,13 @@
       "when": 1738428841635,
       "tag": "0001_nice_star_brand",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1738475802487,
+      "tag": "0002_marvelous_bucky",
+      "breakpoints": true
     }
   ]
 }

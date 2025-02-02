@@ -22,8 +22,26 @@ export const transactionTable = pgTable("transaction", {
   type: transactionTypeEnum().notNull(),
 });
 
+export const tagTable = pgTable("tag", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  name: text("name").notNull(),
+});
+
+export const transactionTagTable = pgTable("transaction_tag", {
+  transactionId: text("transaction_id")
+    .notNull()
+    .references(() => transactionTable.id, { onDelete: "cascade" }),
+  tagId: text("tag_id")
+    .notNull()
+    .references(() => tagTable.id, { onDelete: "cascade" }),
+});
+
 export type CategoryRecord = typeof categoryTable.$inferSelect;
 export type InsertCategoryRecord = typeof categoryTable.$inferInsert;
 
 export type TransactionRecord = typeof transactionTable.$inferSelect;
 export type InsertTransactionRecord = typeof transactionTable.$inferInsert;
+
+export type TagRecord = typeof tagTable.$inferSelect;
+export type InsertTagRecord = typeof tagTable.$inferInsert;
