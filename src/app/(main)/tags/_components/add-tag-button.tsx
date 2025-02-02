@@ -37,7 +37,7 @@ export function AddTagButton() {
         <DialogHeader>
           <DialogTitle>タグの追加</DialogTitle>
         </DialogHeader>
-        <TagForm action={formAction} />
+        <TagForm action={formAction} lastResult={state} />
       </DialogContent>
     </Dialog>
   );

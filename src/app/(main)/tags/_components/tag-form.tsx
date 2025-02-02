@@ -1,6 +1,6 @@
 "use client";
 
-import { getFormProps, useForm } from "@conform-to/react";
+import { getFormProps, SubmissionResult, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod";
 import { z } from "zod";
 
@@ -24,21 +24,30 @@ const formSchema = z.object({
 
 type TagFormProps = {
   action: FormAction;
+  defaultValues?: {
+    id?: string;
+    name: string;
+  };
+  lastResult?: SubmissionResult;
 };
 
-export function TagForm({ action }: TagFormProps) {
+export function TagForm({ action, defaultValues, lastResult }: TagFormProps) {
   const [form, fields] = useForm({
     constraint: getZodConstraint(formSchema),
+    lastResult,
     onValidate: ({ formData }) =>
       parseWithZod(formData, { schema: formSchema }),
     defaultValue: {
-      name: "",
+      name: defaultValues?.name ?? "",
     },
   });
 
   return (
     <Form {...getFormProps(form)} action={action}>
       <div className="space-y-4">
+        {defaultValues?.id && (
+          <input type="hidden" name="id" value={defaultValues.id} />
+        )}
         <FormField>
           <FormLabel htmlFor={fields.name.id} required>
             名前
@@ -53,7 +62,7 @@ export function TagForm({ action }: TagFormProps) {
           ))}
         </FormField>
         <Button type="submit" className="w-full">
-          保存
+          {defaultValues?.id ? "更新" : "保存"}
         </Button>
       </div>
     </Form>

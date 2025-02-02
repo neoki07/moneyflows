@@ -15,7 +15,7 @@ export function TagCard({ tag }: TagCardProps) {
     <div className="flex items-center justify-between rounded-lg border p-2 pl-4 font-medium">
       {tag.name}
       <div>
-        <EditTagButton />
+        <EditTagButton tag={tag} />
         <Button
           variant="ghost"
           size="icon"
