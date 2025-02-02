@@ -45,7 +45,7 @@ export function TransactionTablePresenter({
     },
   });
 
-  const { rows } = table.getSelectedRowModel();
+  const { rows } = table.getRowModel();
 
   const handleEdit = () => {
     console.log("Edit selected rows", table.getSelectedRowModel().rows);
