@@ -33,7 +33,6 @@ export async function createTransaction(
   }
 
   const submission = parseWithZod(input, { schema: formSchema });
-  console.log({ submission });
 
   if (submission.status !== "success") {
     return submission.reply({
