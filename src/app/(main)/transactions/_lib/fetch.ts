@@ -25,8 +25,8 @@ function toTransaction(record: TransactionWithCategoryRecord): Transaction {
     type: record.type,
     amount: record.amount,
     description: record.description,
-    date: record.date.toISOString().split("T")[0],
-    category: record.category?.name ?? "",
+    date: record.date,
+    category: record.category ?? undefined,
     tags: [], // TODO: add tags when tag feature is implemented
   };
 }

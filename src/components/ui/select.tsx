@@ -57,7 +57,17 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
     const [selected, setSelected] = React.useState<SelectOption | undefined>(
       value,
     );
-    const [inputValue, setInputValue] = React.useState("");
+    const [inputValue, setInputValue] = React.useState(value?.label ?? "");
+
+    React.useEffect(() => {
+      if (value?.value) {
+        const option = options.find((opt) => opt.value === value.value);
+        if (option) {
+          setInputValue(option.label);
+          setSelected(option);
+        }
+      }
+    }, [value?.value, options]);
 
     React.useImperativeHandle(
       ref,

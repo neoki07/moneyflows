@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 
 import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,6 +32,9 @@ export const columns = [
   {
     accessorKey: "date",
     header: "日付",
+    cell: ({ row }) => {
+      return format(row.original.date, "yyyy/MM/dd");
+    },
   },
   {
     accessorKey: "description",
@@ -43,6 +47,9 @@ export const columns = [
   {
     accessorKey: "category",
     header: "カテゴリー",
+    cell: ({ row }) => {
+      return row.original.category?.name ?? "";
+    },
   },
   {
     accessorKey: "tags",
@@ -51,7 +58,7 @@ export const columns = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return <RowActions transactionId={row.original.id} />;
+      return <RowActions transaction={row.original} />;
     },
   },
 ] as const satisfies ColumnDef<Transaction>[];

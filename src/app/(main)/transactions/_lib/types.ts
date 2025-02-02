@@ -5,8 +5,11 @@ export type Transaction = DeepReadonly<{
   type: "income" | "expense";
   amount: number;
   description: string;
-  date: string;
-  category: string;
+  date: Date;
+  category?: {
+    id: string;
+    name: string;
+  };
   tags: string[];
 }>;
 

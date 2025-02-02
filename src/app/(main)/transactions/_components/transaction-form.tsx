@@ -1,12 +1,11 @@
 "use client";
 
-import { getFormProps, useForm } from "@conform-to/react";
+import { getFormProps, SubmissionResult, useForm } from "@conform-to/react";
 import { getZodConstraint, parseWithZod } from "@conform-to/zod";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
 import { FormDatePicker } from "@/components/form/date-picker";
-import { FormMultiSelect } from "@/components/form/multi-select";
 import { FormSelect } from "@/components/form/select";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +19,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { SelectOption } from "@/components/ui/select";
 import { api } from "@/lib/hono";
-import { DeepReadonly } from "@/types";
 
 const formSchema = z.object({
   date: z.date({ required_error: "日付を入力してください" }),
@@ -29,30 +27,44 @@ const formSchema = z.object({
     .number({ required_error: "金額を入力してください" })
     .min(1, { message: "金額は1以上で入力してください" }),
   category: z.string().optional(),
-  tags: z.array(z.string()),
-  // TODO: add transaction type
+  tagIds: z.array(z.string()),
 });
 
-type TransactionFormProps = DeepReadonly<{
+type TransactionFormProps = {
   type: "income" | "expense";
   action: FormAction;
-}>;
+  defaultValues?: {
+    id?: string;
+    date: Date;
+    description: string;
+    amount: number;
+    category?: string;
+    tagIds: string[];
+  };
+  lastResult?: SubmissionResult;
+};
 
-export function TransactionForm({ type, action }: TransactionFormProps) {
+export function TransactionForm({
+  type,
+  action,
+  defaultValues,
+  lastResult,
+}: TransactionFormProps) {
   const [categories, setCategories] = useState<SelectOption[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   const [form, fields] = useForm({
     constraint: getZodConstraint(formSchema),
+    lastResult,
     onValidate: ({ formData }) => {
       return parseWithZod(formData, { schema: formSchema });
     },
     defaultValue: {
-      date: new Date(),
-      description: "",
-      amount: "",
-      category: "",
-      tags: [],
+      date: defaultValues?.date ?? new Date(),
+      description: defaultValues?.description ?? "",
+      amount: defaultValues?.amount ?? undefined,
+      category: defaultValues?.category ?? "",
+      tagIds: defaultValues?.tagIds ?? [],
     },
   });
 
@@ -96,6 +108,10 @@ export function TransactionForm({ type, action }: TransactionFormProps) {
   return (
     <Form {...getFormProps(form)} action={action}>
       <div className="space-y-4">
+        {defaultValues?.id && (
+          <input type="hidden" name="id" value={defaultValues.id} />
+        )}
+        <input type="hidden" name="type" value={type} />
         <FormField>
           <FormLabel htmlFor={fields.date.id} required>
             日付
@@ -148,22 +164,7 @@ export function TransactionForm({ type, action }: TransactionFormProps) {
             </FormErrorMessage>
           ))}
         </FormField>
-        <FormField>
-          <FormLabel htmlFor={fields.tags.id}>タグ</FormLabel>
-          <FormMultiSelect
-            field={fields.tags}
-            options={[
-              { value: "1", label: "test" },
-              { value: "2", label: "test2" },
-            ]}
-          />
-          {fields.tags.errors?.map((error) => (
-            <FormErrorMessage key={error} id={fields.tags.errorId}>
-              {error}
-            </FormErrorMessage>
-          ))}
-        </FormField>
-
+        {/* TODO: add tags */}
         <Button type="submit" className="w-full">
           保存
         </Button>

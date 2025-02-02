@@ -64,14 +64,17 @@ const FormErrorMessage = React.forwardRef<
 });
 FormErrorMessage.displayName = "FormErrorMessage";
 
-type FormControlProps = {
+type FormControlProps = DeepReadonly<{
   field: FieldMetadata<unknown>;
   children: React.ReactNode;
-};
+}>;
 
 const FormControl = React.forwardRef<HTMLElement, FormControlProps>(
   ({ field, children }, ref) => {
-    const { key, ...inputProps } = getInputProps(field, { type: "text" });
+    const { key, ...inputProps } = getInputProps(
+      field as FieldMetadata<unknown>,
+      { type: "text" },
+    );
 
     return (
       <Slot key={key} ref={ref} {...inputProps}>

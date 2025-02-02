@@ -6,8 +6,11 @@ export const mockTransactions: Transaction[] = [
     type: "income",
     amount: 280000,
     description: "1月給与",
-    date: "2024-01-25",
-    category: "給与",
+    date: new Date("2024-01-25"),
+    category: {
+      id: "c1",
+      name: "給与",
+    },
     tags: ["定期収入", "メイン収入"],
   },
   {
@@ -15,8 +18,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 85000,
     description: "1月家賃",
-    date: "2024-01-25",
-    category: "住居費",
+    date: new Date("2024-01-25"),
+    category: {
+      id: "c2",
+      name: "住居費",
+    },
     tags: ["固定費"],
   },
   {
@@ -24,8 +30,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 12000,
     description: "電気代",
-    date: "2024-01-24",
-    category: "光熱費",
+    date: new Date("2024-01-24"),
+    category: {
+      id: "c3",
+      name: "光熱費",
+    },
     tags: ["固定費"],
   },
   {
@@ -33,8 +42,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 8500,
     description: "ガス代",
-    date: "2024-01-24",
-    category: "光熱費",
+    date: new Date("2024-01-24"),
+    category: {
+      id: "c3",
+      name: "光熱費",
+    },
     tags: ["固定費"],
   },
   {
@@ -42,8 +54,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 4500,
     description: "水道代",
-    date: "2024-01-24",
-    category: "光熱費",
+    date: new Date("2024-01-24"),
+    category: {
+      id: "c3",
+      name: "光熱費",
+    },
     tags: ["固定費"],
   },
   {
@@ -51,8 +66,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 5200,
     description: "携帯電話代",
-    date: "2024-01-23",
-    category: "通信費",
+    date: new Date("2024-01-23"),
+    category: {
+      id: "c4",
+      name: "通信費",
+    },
     tags: ["固定費"],
   },
   {
@@ -60,8 +78,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 4800,
     description: "インターネット",
-    date: "2024-01-23",
-    category: "通信費",
+    date: new Date("2024-01-23"),
+    category: {
+      id: "c4",
+      name: "通信費",
+    },
     tags: ["固定費"],
   },
   {
@@ -69,8 +90,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 12000,
     description: "食材（スーパー）",
-    date: "2024-01-22",
-    category: "食費",
+    date: new Date("2024-01-22"),
+    category: {
+      id: "c5",
+      name: "食費",
+    },
     tags: [],
   },
   {
@@ -78,8 +102,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 3500,
     description: "ランチ",
-    date: "2024-01-22",
-    category: "食費",
+    date: new Date("2024-01-22"),
+    category: {
+      id: "c5",
+      name: "食費",
+    },
     tags: ["外食"],
   },
   {
@@ -87,8 +114,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 15000,
     description: "服",
-    date: "2024-01-21",
-    category: "衣服",
+    date: new Date("2024-01-21"),
+    category: {
+      id: "c6",
+      name: "衣服",
+    },
     tags: ["買い物"],
   },
   {
@@ -96,8 +126,11 @@ export const mockTransactions: Transaction[] = [
     type: "income",
     amount: 50000,
     description: "副業収入",
-    date: "2024-01-20",
-    category: "その他収入",
+    date: new Date("2024-01-20"),
+    category: {
+      id: "c7",
+      name: "その他収入",
+    },
     tags: ["副業"],
   },
   {
@@ -105,8 +138,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 2500,
     description: "映画",
-    date: "2024-01-20",
-    category: "娯楽",
+    date: new Date("2024-01-20"),
+    category: {
+      id: "c8",
+      name: "娯楽",
+    },
     tags: ["趣味"],
   },
   {
@@ -114,8 +150,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 4500,
     description: "本",
-    date: "2024-01-19",
-    category: "娯楽",
+    date: new Date("2024-01-19"),
+    category: {
+      id: "c8",
+      name: "娯楽",
+    },
     tags: ["趣味"],
   },
   {
@@ -123,8 +162,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 3000,
     description: "ジム会費",
-    date: "2024-01-19",
-    category: "健康",
+    date: new Date("2024-01-19"),
+    category: {
+      id: "c9",
+      name: "健康",
+    },
     tags: ["固定費"],
   },
   {
@@ -132,8 +174,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 8000,
     description: "美容院",
-    date: "2024-01-18",
-    category: "美容",
+    date: new Date("2024-01-18"),
+    category: {
+      id: "c10",
+      name: "美容",
+    },
     tags: ["生活費", "月次", "自己投資"],
   },
   {
@@ -141,8 +186,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 6500,
     description: "飲み会",
-    date: "2024-01-18",
-    category: "交際費",
+    date: new Date("2024-01-18"),
+    category: {
+      id: "c11",
+      name: "交際費",
+    },
     tags: ["外食"],
   },
   {
@@ -150,8 +198,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 2800,
     description: "文房具",
-    date: "2024-01-17",
-    category: "日用品",
+    date: new Date("2024-01-17"),
+    category: {
+      id: "c12",
+      name: "日用品",
+    },
     tags: ["仕事"],
   },
   {
@@ -159,8 +210,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 1500,
     description: "コーヒー",
-    date: "2024-01-17",
-    category: "食費",
+    date: new Date("2024-01-17"),
+    category: {
+      id: "c5",
+      name: "食費",
+    },
     tags: ["カフェ"],
   },
   {
@@ -168,8 +222,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 35000,
     description: "英会話スクール",
-    date: "2024-01-16",
-    category: "教育",
+    date: new Date("2024-01-16"),
+    category: {
+      id: "c13",
+      name: "教育",
+    },
     tags: ["自己投資"],
   },
   {
@@ -177,8 +234,11 @@ export const mockTransactions: Transaction[] = [
     type: "income",
     amount: 30000,
     description: "株式配当",
-    date: "2024-01-16",
-    category: "投資収入",
+    date: new Date("2024-01-16"),
+    category: {
+      id: "c14",
+      name: "投資収入",
+    },
     tags: ["配当"],
   },
   {
@@ -186,8 +246,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 4200,
     description: "ヘアケア用品",
-    date: "2024-01-15",
-    category: "美容",
+    date: new Date("2024-01-15"),
+    category: {
+      id: "c10",
+      name: "美容",
+    },
     tags: ["日用品"],
   },
   {
@@ -195,8 +258,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 7500,
     description: "友人への誕生日プレゼント",
-    date: "2024-01-15",
-    category: "交際費",
+    date: new Date("2024-01-15"),
+    category: {
+      id: "c11",
+      name: "交際費",
+    },
     tags: ["プレゼント"],
   },
   {
@@ -204,8 +270,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 9800,
     description: "サプリメント",
-    date: "2024-01-14",
-    category: "健康",
+    date: new Date("2024-01-14"),
+    category: {
+      id: "c9",
+      name: "健康",
+    },
     tags: ["日用品"],
   },
   {
@@ -213,8 +282,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 2000,
     description: "駐輪場代",
-    date: "2024-01-14",
-    category: "交通費",
+    date: new Date("2024-01-14"),
+    category: {
+      id: "c15",
+      name: "交通費",
+    },
     tags: ["固定費"],
   },
   {
@@ -222,8 +294,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 4500,
     description: "映画とポップコーン",
-    date: "2024-01-13",
-    category: "娯楽",
+    date: new Date("2024-01-13"),
+    category: {
+      id: "c8",
+      name: "娯楽",
+    },
     tags: ["趣味"],
   },
   {
@@ -231,8 +306,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 13000,
     description: "靴",
-    date: "2024-01-13",
-    category: "衣服",
+    date: new Date("2024-01-13"),
+    category: {
+      id: "c6",
+      name: "衣服",
+    },
     tags: ["買い物"],
   },
   {
@@ -240,8 +318,11 @@ export const mockTransactions: Transaction[] = [
     type: "income",
     amount: 10000,
     description: "フリマアプリ売上",
-    date: "2024-01-12",
-    category: "その他収入",
+    date: new Date("2024-01-12"),
+    category: {
+      id: "c7",
+      name: "その他収入",
+    },
     tags: ["副業"],
   },
   {
@@ -249,8 +330,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 5600,
     description: "洗剤・掃除用品",
-    date: "2024-01-12",
-    category: "日用品",
+    date: new Date("2024-01-12"),
+    category: {
+      id: "c12",
+      name: "日用品",
+    },
     tags: ["生活費"],
   },
   {
@@ -258,8 +342,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 3200,
     description: "ペット用品",
-    date: "2024-01-11",
-    category: "ペット",
+    date: new Date("2024-01-11"),
+    category: {
+      id: "c16",
+      name: "ペット",
+    },
     tags: ["生活費"],
   },
   {
@@ -267,8 +354,11 @@ export const mockTransactions: Transaction[] = [
     type: "expense",
     amount: 4800,
     description: "音楽サブスク年間契約",
-    date: "2024-01-11",
-    category: "娯楽",
+    date: new Date("2024-01-11"),
+    category: {
+      id: "c8",
+      name: "娯楽",
+    },
     tags: ["固定費", "サブスク", "年間契約", "趣味"],
   },
 ];
