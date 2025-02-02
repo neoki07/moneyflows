@@ -90,7 +90,7 @@ export function RowActions({ transaction }: RowActionsProps) {
               description: transaction.description,
               amount: transaction.amount,
               category: transaction.category?.id,
-              tags: [...transaction.tags],
+              tags: transaction.tags.map((tag) => tag.id),
             }}
           />
         </DialogContent>

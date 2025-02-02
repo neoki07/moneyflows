@@ -10,7 +10,10 @@ export type Transaction = DeepReadonly<{
     id: string;
     name: string;
   };
-  tags: string[];
+  tags: {
+    id: string;
+    name: string;
+  }[];
 }>;
 
 export type TransactionTableData = DeepReadonly<{

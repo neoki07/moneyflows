@@ -11,7 +11,16 @@ export const mockTransactions: Transaction[] = [
       id: "c1",
       name: "給与",
     },
-    tags: ["定期収入", "メイン収入"],
+    tags: [
+      {
+        id: "t1",
+        name: "定期収入",
+      },
+      {
+        id: "t2",
+        name: "メイン収入",
+      },
+    ],
   },
   {
     id: "t2",
@@ -23,7 +32,12 @@ export const mockTransactions: Transaction[] = [
       id: "c2",
       name: "住居費",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t3",
@@ -35,7 +49,12 @@ export const mockTransactions: Transaction[] = [
       id: "c3",
       name: "光熱費",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t4",
@@ -47,7 +66,12 @@ export const mockTransactions: Transaction[] = [
       id: "c3",
       name: "光熱費",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t5",
@@ -59,7 +83,12 @@ export const mockTransactions: Transaction[] = [
       id: "c3",
       name: "光熱費",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t6",
@@ -71,7 +100,12 @@ export const mockTransactions: Transaction[] = [
       id: "c4",
       name: "通信費",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t7",
@@ -83,7 +117,12 @@ export const mockTransactions: Transaction[] = [
       id: "c4",
       name: "通信費",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t8",
@@ -107,7 +146,12 @@ export const mockTransactions: Transaction[] = [
       id: "c5",
       name: "食費",
     },
-    tags: ["外食"],
+    tags: [
+      {
+        id: "t10",
+        name: "外食",
+      },
+    ],
   },
   {
     id: "t10",
@@ -119,7 +163,12 @@ export const mockTransactions: Transaction[] = [
       id: "c6",
       name: "衣服",
     },
-    tags: ["買い物"],
+    tags: [
+      {
+        id: "t11",
+        name: "買い物",
+      },
+    ],
   },
   {
     id: "t11",
@@ -131,7 +180,12 @@ export const mockTransactions: Transaction[] = [
       id: "c7",
       name: "その他収入",
     },
-    tags: ["副業"],
+    tags: [
+      {
+        id: "t12",
+        name: "副業",
+      },
+    ],
   },
   {
     id: "t12",
@@ -143,7 +197,12 @@ export const mockTransactions: Transaction[] = [
       id: "c8",
       name: "娯楽",
     },
-    tags: ["趣味"],
+    tags: [
+      {
+        id: "t13",
+        name: "趣味",
+      },
+    ],
   },
   {
     id: "t13",
@@ -155,7 +214,12 @@ export const mockTransactions: Transaction[] = [
       id: "c8",
       name: "娯楽",
     },
-    tags: ["趣味"],
+    tags: [
+      {
+        id: "t13",
+        name: "趣味",
+      },
+    ],
   },
   {
     id: "t14",
@@ -167,7 +231,12 @@ export const mockTransactions: Transaction[] = [
       id: "c9",
       name: "健康",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t15",
@@ -179,7 +248,20 @@ export const mockTransactions: Transaction[] = [
       id: "c10",
       name: "美容",
     },
-    tags: ["生活費", "月次", "自己投資"],
+    tags: [
+      {
+        id: "t16",
+        name: "生活費",
+      },
+      {
+        id: "t17",
+        name: "月次",
+      },
+      {
+        id: "t18",
+        name: "自己投資",
+      },
+    ],
   },
   {
     id: "t16",
@@ -191,7 +273,12 @@ export const mockTransactions: Transaction[] = [
       id: "c11",
       name: "交際費",
     },
-    tags: ["外食"],
+    tags: [
+      {
+        id: "t16",
+        name: "生活費",
+      },
+    ],
   },
   {
     id: "t17",
@@ -203,7 +290,12 @@ export const mockTransactions: Transaction[] = [
       id: "c12",
       name: "日用品",
     },
-    tags: ["仕事"],
+    tags: [
+      {
+        id: "t19",
+        name: "仕事",
+      },
+    ],
   },
   {
     id: "t18",
@@ -215,7 +307,12 @@ export const mockTransactions: Transaction[] = [
       id: "c5",
       name: "食費",
     },
-    tags: ["カフェ"],
+    tags: [
+      {
+        id: "t20",
+        name: "カフェ",
+      },
+    ],
   },
   {
     id: "t19",
@@ -227,7 +324,12 @@ export const mockTransactions: Transaction[] = [
       id: "c13",
       name: "教育",
     },
-    tags: ["自己投資"],
+    tags: [
+      {
+        id: "t18",
+        name: "自己投資",
+      },
+    ],
   },
   {
     id: "t20",
@@ -239,7 +341,12 @@ export const mockTransactions: Transaction[] = [
       id: "c14",
       name: "投資収入",
     },
-    tags: ["配当"],
+    tags: [
+      {
+        id: "t21",
+        name: "配当",
+      },
+    ],
   },
   {
     id: "t21",
@@ -251,7 +358,12 @@ export const mockTransactions: Transaction[] = [
       id: "c10",
       name: "美容",
     },
-    tags: ["日用品"],
+    tags: [
+      {
+        id: "t22",
+        name: "日用品",
+      },
+    ],
   },
   {
     id: "t22",
@@ -263,7 +375,12 @@ export const mockTransactions: Transaction[] = [
       id: "c11",
       name: "交際費",
     },
-    tags: ["プレゼント"],
+    tags: [
+      {
+        id: "t23",
+        name: "プレゼント",
+      },
+    ],
   },
   {
     id: "t23",
@@ -275,7 +392,12 @@ export const mockTransactions: Transaction[] = [
       id: "c9",
       name: "健康",
     },
-    tags: ["日用品"],
+    tags: [
+      {
+        id: "t22",
+        name: "日用品",
+      },
+    ],
   },
   {
     id: "t24",
@@ -287,7 +409,12 @@ export const mockTransactions: Transaction[] = [
       id: "c15",
       name: "交通費",
     },
-    tags: ["固定費"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+    ],
   },
   {
     id: "t25",
@@ -299,7 +426,12 @@ export const mockTransactions: Transaction[] = [
       id: "c8",
       name: "娯楽",
     },
-    tags: ["趣味"],
+    tags: [
+      {
+        id: "t13",
+        name: "趣味",
+      },
+    ],
   },
   {
     id: "t26",
@@ -311,7 +443,12 @@ export const mockTransactions: Transaction[] = [
       id: "c6",
       name: "衣服",
     },
-    tags: ["買い物"],
+    tags: [
+      {
+        id: "t11",
+        name: "買い物",
+      },
+    ],
   },
   {
     id: "t27",
@@ -323,7 +460,12 @@ export const mockTransactions: Transaction[] = [
       id: "c7",
       name: "その他収入",
     },
-    tags: ["副業"],
+    tags: [
+      {
+        id: "t12",
+        name: "副業",
+      },
+    ],
   },
   {
     id: "t28",
@@ -335,7 +477,12 @@ export const mockTransactions: Transaction[] = [
       id: "c12",
       name: "日用品",
     },
-    tags: ["生活費"],
+    tags: [
+      {
+        id: "t16",
+        name: "生活費",
+      },
+    ],
   },
   {
     id: "t29",
@@ -347,7 +494,12 @@ export const mockTransactions: Transaction[] = [
       id: "c16",
       name: "ペット",
     },
-    tags: ["生活費"],
+    tags: [
+      {
+        id: "t16",
+        name: "生活費",
+      },
+    ],
   },
   {
     id: "t30",
@@ -359,6 +511,19 @@ export const mockTransactions: Transaction[] = [
       id: "c8",
       name: "娯楽",
     },
-    tags: ["固定費", "サブスク", "年間契約", "趣味"],
+    tags: [
+      {
+        id: "t3",
+        name: "固定費",
+      },
+      {
+        id: "t24",
+        name: "サブスク",
+      },
+      {
+        id: "t13",
+        name: "趣味",
+      },
+    ],
   },
 ];

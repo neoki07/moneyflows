@@ -54,6 +54,9 @@ export const columns = [
   {
     accessorKey: "tags",
     header: "タグ",
+    cell: ({ row }) => {
+      return row.original.tags.map((tag) => tag.name).join(", ");
+    },
   },
   {
     id: "actions",
