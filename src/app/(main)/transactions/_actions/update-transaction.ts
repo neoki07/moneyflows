@@ -41,34 +41,36 @@ export async function updateTransaction(
   }
 
   try {
-    await db
-      .update(transactionTable)
-      .set({
-        date: submission.value.date,
-        description: submission.value.description,
-        amount: submission.value.amount,
-        categoryId: submission.value.category || null,
-        type: submission.value.type,
-      })
-      .where(
-        and(
-          eq(transactionTable.userId, userId),
-          eq(transactionTable.id, submission.value.id),
-        ),
-      );
+    await db.transaction(async (tx) => {
+      await tx
+        .update(transactionTable)
+        .set({
+          date: submission.value.date,
+          description: submission.value.description,
+          amount: submission.value.amount,
+          categoryId: submission.value.category || null,
+          type: submission.value.type,
+        })
+        .where(
+          and(
+            eq(transactionTable.userId, userId),
+            eq(transactionTable.id, submission.value.id),
+          ),
+        );
 
-    await db
-      .delete(transactionTagTable)
-      .where(eq(transactionTagTable.transactionId, submission.value.id));
+      await tx
+        .delete(transactionTagTable)
+        .where(eq(transactionTagTable.transactionId, submission.value.id));
 
-    if (submission.value.tags.length > 0) {
-      await db.insert(transactionTagTable).values(
-        submission.value.tags.map((tag) => ({
-          transactionId: submission.value.id,
-          tagId: tag,
-        })),
-      );
-    }
+      if (submission.value.tags.length > 0) {
+        await tx.insert(transactionTagTable).values(
+          submission.value.tags.map((tag) => ({
+            transactionId: submission.value.id,
+            tagId: tag,
+          })),
+        );
+      }
+    });
 
     revalidatePath("/transactions");
 

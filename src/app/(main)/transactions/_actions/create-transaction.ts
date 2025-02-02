@@ -41,25 +41,29 @@ export async function createTransaction(
   }
 
   try {
-    const [transaction] = await db
-      .insert(transactionTable)
-      .values({
-        id: createId(),
-        userId,
-        date: submission.value.date,
-        description: submission.value.description,
-        amount: submission.value.amount,
-        categoryId: submission.value.category || null,
-        type: submission.value.type,
-      })
-      .returning();
+    await db.transaction(async (tx) => {
+      const [transaction] = await tx
+        .insert(transactionTable)
+        .values({
+          id: createId(),
+          userId,
+          date: submission.value.date,
+          description: submission.value.description,
+          amount: submission.value.amount,
+          categoryId: submission.value.category || null,
+          type: submission.value.type,
+        })
+        .returning();
 
-    await db.insert(transactionTagTable).values(
-      submission.value.tags.map((tag) => ({
-        transactionId: transaction.id,
-        tagId: tag,
-      })),
-    );
+      if (submission.value.tags.length > 0) {
+        await tx.insert(transactionTagTable).values(
+          submission.value.tags.map((tag) => ({
+            transactionId: transaction.id,
+            tagId: tag,
+          })),
+        );
+      }
+    });
 
     revalidatePath("/transactions");
 
