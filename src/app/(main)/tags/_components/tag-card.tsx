@@ -1,13 +1,19 @@
 import { IconTrashX } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
+import { DeepReadonly } from "@/types";
 
+import { Tag } from "../_lib/types";
 import { EditTagButton } from "./edit-tag-button";
 
-export function TagCard() {
+type TagCardProps = DeepReadonly<{
+  tag: Tag;
+}>;
+
+export function TagCard({ tag }: TagCardProps) {
   return (
     <div className="flex items-center justify-between rounded-lg border p-2 pl-4 font-medium">
-      給料
+      {tag.name}
       <div>
         <EditTagButton />
         <Button
