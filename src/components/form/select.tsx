@@ -16,7 +16,6 @@ type FormSelectProps = {
   emptyIndicator?: React.ReactNode;
   isLoading?: boolean;
   onCreate?: (value: string) => Promise<SelectOption>;
-  isCreating?: boolean;
 };
 
 const FormSelect = forwardRef<SelectRef, FormSelectProps>(
