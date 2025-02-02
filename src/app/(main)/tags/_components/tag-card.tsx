@@ -1,9 +1,7 @@
-import { IconTrashX } from "@tabler/icons-react";
-
-import { Button } from "@/components/ui/button";
 import { DeepReadonly } from "@/types";
 
 import { Tag } from "../_lib/types";
+import { DeleteTagButton } from "./delete-tag-button";
 import { EditTagButton } from "./edit-tag-button";
 
 type TagCardProps = DeepReadonly<{
@@ -16,13 +14,7 @@ export function TagCard({ tag }: TagCardProps) {
       {tag.name}
       <div>
         <EditTagButton tag={tag} />
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-red-500 hover:bg-red-50 hover:text-red-500"
-        >
-          <IconTrashX />
-        </Button>
+        <DeleteTagButton tag={tag} />
       </div>
     </div>
   );
