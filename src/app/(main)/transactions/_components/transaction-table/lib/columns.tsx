@@ -3,6 +3,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import { Checkbox } from "@/components/ui/checkbox";
 
+import { RowActions } from "../components/row-actions";
+
 export const columns = [
   {
     id: "select",
@@ -45,5 +47,11 @@ export const columns = [
   {
     accessorKey: "tags",
     header: "タグ",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return <RowActions transactionId={row.original.id} />;
+    },
   },
 ] as const satisfies ColumnDef<Transaction>[];
