@@ -20,6 +20,7 @@ import { deleteTransaction } from "../../../_actions/delete-transaction";
 import { updateTransaction } from "../../../_actions/update-transaction";
 import { Transaction } from "../../../_lib/types";
 import { TransactionForm } from "../../transaction-form";
+import { DeleteTransactionDialog } from "./delete-transaction-dialog";
 
 type RowActionsProps = DeepReadonly<{
   transaction: Transaction;
@@ -27,6 +28,7 @@ type RowActionsProps = DeepReadonly<{
 
 export function RowActions({ transaction }: RowActionsProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [state, formAction, isEditPending] = useActionState(
     updateTransaction,
     undefined,
@@ -38,6 +40,7 @@ export function RowActions({ transaction }: RowActionsProps) {
   const handleDelete = () => {
     startDeleteTransition(async () => {
       await deleteTransaction(transaction.id);
+      setIsDeleteDialogOpen(false);
     });
   };
 
@@ -63,8 +66,7 @@ export function RowActions({ transaction }: RowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-red-500 focus:bg-red-50 focus:text-red-500"
-            disabled={isPending}
-            onClick={handleDelete}
+            onClick={() => setIsDeleteDialogOpen(true)}
           >
             <IconTrash />
             削除
@@ -93,6 +95,13 @@ export function RowActions({ transaction }: RowActionsProps) {
           />
         </DialogContent>
       </Dialog>
+      <DeleteTransactionDialog
+        isOpen={isDeleteDialogOpen}
+        isDeleting={isDeletePending}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onConfirm={handleDelete}
+        transaction={transaction}
+      />
     </>
   );
 }
