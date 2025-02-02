@@ -14,10 +14,12 @@ type FormMultiSelectProps = {
   disabled?: boolean;
   className?: string;
   emptyIndicator?: React.ReactNode;
+  isLoading?: boolean;
+  onCreate?: (value: string) => Promise<MultiSelectOption>;
 };
 
 const FormMultiSelect = forwardRef<MultiSelectRef, FormMultiSelectProps>(
-  ({ field, options, ...props }, ref) => {
+  ({ field, options, isLoading, onCreate, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputControl(field);
     const values = (control.value ?? []) as string[];
@@ -37,6 +39,8 @@ const FormMultiSelect = forwardRef<MultiSelectRef, FormMultiSelectProps>(
           ref={ref}
           value={options.filter((opt) => values.includes(opt.value))}
           options={options}
+          isLoading={isLoading}
+          onCreate={onCreate}
           onChange={(selectedOptions) => {
             control.change(selectedOptions?.map((opt) => opt.value) ?? []);
           }}

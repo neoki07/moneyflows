@@ -1,7 +1,7 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, Loader2, X } from "lucide-react";
 import * as React from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -27,8 +27,8 @@ type MultiSelectProps = {
   className?: string;
   emptyIndicator?: React.ReactNode;
   onChange?: (options: MultiSelectOption[]) => void;
-  onCreateOption?: (inputValue: string) => Promise<MultiSelectOption>;
-  isCreating?: boolean;
+  onCreate?: (inputValue: string) => Promise<MultiSelectOption>;
+  isLoading?: boolean;
 };
 
 export type MultiSelectRef = {
@@ -48,8 +48,8 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       className,
       emptyIndicator,
       onChange,
-      onCreateOption,
-      isCreating,
+      onCreate,
+      isLoading,
     }: MultiSelectProps,
     ref: React.Ref<MultiSelectRef>,
   ) => {
@@ -142,9 +142,9 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             e.stopPropagation();
           }}
           onSelect={async (value: string) => {
-            if (onCreateOption) {
+            if (onCreate) {
               try {
-                const newOption = await onCreateOption(value);
+                const newOption = await onCreate(value);
                 const newOptions = [...selected, newOption];
                 setSelected(newOptions);
                 onChange?.(newOptions);
@@ -159,7 +159,7 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             setInputValue("");
           }}
         >
-          {isCreating ? <span>作成中...</span> : `Create "${inputValue}"`}
+          {isLoading ? <span>作成中...</span> : `Create "${inputValue}"`}
         </CommandItem>
       );
     };
@@ -243,31 +243,42 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           >
             {open && (
               <>
-                {emptyIndicator &&
-                  filteredOptions.length === 0 &&
-                  !inputValue && <CommandEmpty>{emptyIndicator}</CommandEmpty>}
-                <CommandGroup className="h-full overflow-auto">
-                  {filteredOptions.map((option) => (
-                    <CommandItem
-                      key={option.value}
-                      value={option.label}
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                      }}
-                      onSelect={() => {
-                        const newOptions = [...selected, option];
-                        setInputValue("");
-                        updateSelected(option);
-                        onChange?.(newOptions);
-                      }}
-                      className="cursor-pointer"
-                    >
-                      {option.label}
-                    </CommandItem>
-                  ))}
-                  {CreatableItem()}
-                </CommandGroup>
+                {isLoading ? (
+                  <div className="text-muted-foreground flex items-center justify-center p-4 text-sm">
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    読み込み中...
+                  </div>
+                ) : (
+                  <>
+                    {emptyIndicator &&
+                      filteredOptions.length === 0 &&
+                      !inputValue && (
+                        <CommandEmpty>{emptyIndicator}</CommandEmpty>
+                      )}
+                    <CommandGroup className="h-full overflow-auto">
+                      {filteredOptions.map((option) => (
+                        <CommandItem
+                          key={option.value}
+                          value={option.label}
+                          onMouseDown={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                          }}
+                          onSelect={() => {
+                            const newOptions = [...selected, option];
+                            setInputValue("");
+                            updateSelected(option);
+                            onChange?.(newOptions);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          {option.label}
+                        </CommandItem>
+                      ))}
+                      {CreatableItem()}
+                    </CommandGroup>
+                  </>
+                )}
               </>
             )}
           </CommandList>

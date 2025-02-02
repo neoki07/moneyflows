@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { db } from "@/db";
-import { transactionTable } from "@/db/schema";
+import { transactionTable, transactionTagTable } from "@/db/schema";
 
 const formSchema = z.object({
   date: z.date({ required_error: "日付を入力してください" }),
@@ -33,6 +33,7 @@ export async function createTransaction(
   }
 
   const submission = parseWithZod(input, { schema: formSchema });
+  console.log({ submission });
 
   if (submission.status !== "success") {
     return submission.reply({
@@ -41,15 +42,25 @@ export async function createTransaction(
   }
 
   try {
-    await db.insert(transactionTable).values({
-      id: createId(),
-      userId,
-      date: submission.value.date,
-      description: submission.value.description,
-      amount: submission.value.amount,
-      categoryId: submission.value.category || null,
-      type: submission.value.type,
-    });
+    const [transaction] = await db
+      .insert(transactionTable)
+      .values({
+        id: createId(),
+        userId,
+        date: submission.value.date,
+        description: submission.value.description,
+        amount: submission.value.amount,
+        categoryId: submission.value.category || null,
+        type: submission.value.type,
+      })
+      .returning();
+
+    await db.insert(transactionTagTable).values(
+      submission.value.tags.map((tag) => ({
+        transactionId: transaction.id,
+        tagId: tag,
+      })),
+    );
 
     revalidatePath("/transactions");
 

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { z } from "zod";
 
 import { FormDatePicker } from "@/components/form/date-picker";
+import { FormMultiSelect } from "@/components/form/multi-select";
 import { FormSelect } from "@/components/form/select";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +28,7 @@ const formSchema = z.object({
     .number({ required_error: "金額を入力してください" })
     .min(1, { message: "金額は1以上で入力してください" }),
   category: z.string().optional(),
-  tagIds: z.array(z.string()),
+  tags: z.array(z.string()),
 });
 
 type TransactionFormProps = {
@@ -39,7 +40,7 @@ type TransactionFormProps = {
     description: string;
     amount: number;
     category?: string;
-    tagIds: string[];
+    tags: string[];
   };
   lastResult?: SubmissionResult;
 };
@@ -51,7 +52,9 @@ export function TransactionForm({
   lastResult,
 }: TransactionFormProps) {
   const [categories, setCategories] = useState<SelectOption[]>([]);
+  const [tags, setTags] = useState<SelectOption[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isLoadingTags, setIsLoadingTags] = useState(true);
 
   const [form, fields] = useForm({
     constraint: getZodConstraint(formSchema),
@@ -64,7 +67,7 @@ export function TransactionForm({
       description: defaultValues?.description ?? "",
       amount: defaultValues?.amount ?? undefined,
       category: defaultValues?.category ?? "",
-      tagIds: defaultValues?.tagIds ?? [],
+      tags: defaultValues?.tags ?? [],
     },
   });
 
@@ -86,6 +89,25 @@ export function TransactionForm({
 
     fetchCategories();
   }, [type]);
+
+  useEffect(() => {
+    setIsLoadingTags(true);
+
+    async function fetchTagOptions() {
+      const res = await api.tags.$get();
+      if (res.ok) {
+        const json = await res.json();
+        const options = json.tags.map((t) => ({
+          value: t.id,
+          label: t.name,
+        }));
+        setTags(options);
+      }
+      setIsLoadingTags(false);
+    }
+
+    fetchTagOptions();
+  }, []);
 
   const handleCreateCategory = async (name: string) => {
     setIsLoadingCategories(true);
@@ -164,7 +186,20 @@ export function TransactionForm({
             </FormErrorMessage>
           ))}
         </FormField>
-        {/* TODO: add tags */}
+        <FormField>
+          <FormLabel htmlFor={fields.tags.id}>タグ</FormLabel>
+          <FormMultiSelect
+            field={fields.tags}
+            options={tags}
+            isLoading={isLoadingTags}
+            placeholder="タグを選択"
+          />
+          {fields.tags.errors?.map((error) => (
+            <FormErrorMessage key={error} id={fields.tags.errorId}>
+              {error}
+            </FormErrorMessage>
+          ))}
+        </FormField>
         <Button type="submit" className="w-full">
           保存
         </Button>
