@@ -1,4 +1,5 @@
 import { integer, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { primaryKey } from "drizzle-orm/pg-core";
 
 export const transactionTypeEnum = pgEnum("transaction_type", [
   "income",
@@ -28,14 +29,18 @@ export const tagTable = pgTable("tag", {
   name: text("name").notNull(),
 });
 
-export const transactionTagTable = pgTable("transaction_tag", {
-  transactionId: text("transaction_id")
-    .notNull()
-    .references(() => transactionTable.id, { onDelete: "cascade" }),
-  tagId: text("tag_id")
-    .notNull()
-    .references(() => tagTable.id, { onDelete: "cascade" }),
-});
+export const transactionTagTable = pgTable(
+  "transaction_tag",
+  {
+    transactionId: text("transaction_id")
+      .notNull()
+      .references(() => transactionTable.id, { onDelete: "cascade" }),
+    tagId: text("tag_id")
+      .notNull()
+      .references(() => tagTable.id, { onDelete: "cascade" }),
+  },
+  (table) => [primaryKey({ columns: [table.transactionId, table.tagId] })],
+);
 
 export type CategoryRecord = typeof categoryTable.$inferSelect;
 export type InsertCategoryRecord = typeof categoryTable.$inferInsert;
