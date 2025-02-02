@@ -63,5 +63,6 @@ export const columns = [
     cell: ({ row }) => {
       return <RowActions transaction={row.original} />;
     },
+    size: 64,
   },
 ] as const satisfies ColumnDef<Transaction>[];
