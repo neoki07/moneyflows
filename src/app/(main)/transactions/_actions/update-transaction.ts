@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { db } from "@/db";
-import { transactionTable } from "@/db/schema";
+import { transactionTable, transactionTagTable } from "@/db/schema";
 
 const formSchema = z.object({
   id: z.string(),
@@ -56,6 +56,19 @@ export async function updateTransaction(
           eq(transactionTable.id, submission.value.id),
         ),
       );
+
+    await db
+      .delete(transactionTagTable)
+      .where(eq(transactionTagTable.transactionId, submission.value.id));
+
+    if (submission.value.tags.length > 0) {
+      await db.insert(transactionTagTable).values(
+        submission.value.tags.map((tag) => ({
+          transactionId: submission.value.id,
+          tagId: tag,
+        })),
+      );
+    }
 
     revalidatePath("/transactions");
 

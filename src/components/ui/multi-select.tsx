@@ -69,6 +69,15 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       setSelected(newOptions);
     };
 
+    React.useEffect(() => {
+      if (value) {
+        const filtered = options.filter((opt) =>
+          value.some((v) => v.value === opt.value),
+        );
+        setSelected(filtered);
+      }
+    }, [value, options]);
+
     React.useImperativeHandle(
       ref,
       () => ({
