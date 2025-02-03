@@ -59,3 +59,35 @@ export async function fetchMonthlyIncome(): Promise<MonthlyIncome> {
     monthlyIncome: result.monthlyIncome ?? 0,
   };
 }
+
+type MonthlyExpense = {
+  monthlyExpense: number;
+};
+
+export async function fetchMonthlyExpense(): Promise<MonthlyExpense> {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  const now = new Date();
+  const [result] = await db
+    .select({
+      monthlyExpense: sql<number>`sum(amount)`,
+    })
+    .from(transactionTable)
+    .where(
+      and(
+        eq(transactionTable.userId, userId),
+        eq(transactionTable.type, "expense"),
+        sql`date >= ${format(startOfMonth(now), "yyyy-MM-dd")} and date <= ${format(
+          endOfMonth(now),
+          "yyyy-MM-dd",
+        )}`,
+      ),
+    );
+
+  return {
+    monthlyExpense: result.monthlyExpense ?? 0,
+  };
+}
