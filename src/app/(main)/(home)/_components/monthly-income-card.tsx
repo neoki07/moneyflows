@@ -1,6 +1,6 @@
 export function MonthlyIncomeCard() {
   return (
-    <div className="flex flex-col gap-4 rounded-lg border p-4">
+    <div className="flex flex-col gap-3 rounded-lg border p-4">
       <h2 className="text-[13px] leading-none font-semibold text-slate-700">
         今月の収入
       </h2>
