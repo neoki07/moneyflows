@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 
 import { AddCategoryButton } from "./_components/add-category-button";
-import { Categories } from "./_components/categories";
-import { CategoriesSkeleton } from "./_components/categories-skeleton";
+import { CategoryList } from "./_components/category-list";
+import { CategoryListSkeleton } from "./_components/category-list-skeleton";
 
 export default function Page() {
   return (
@@ -16,8 +16,8 @@ export default function Page() {
             <h2 className="flex-1 text-xl font-bold">収入</h2>
             <AddCategoryButton type="income" />
           </div>
-          <Suspense fallback={<CategoriesSkeleton />}>
-            <Categories type="income" />
+          <Suspense fallback={<CategoryListSkeleton />}>
+            <CategoryList type="income" />
           </Suspense>
         </div>
         <div className="space-y-4">
@@ -25,8 +25,8 @@ export default function Page() {
             <h2 className="flex-1 text-xl font-bold">支出</h2>
             <AddCategoryButton type="expense" />
           </div>
-          <Suspense fallback={<CategoriesSkeleton />}>
-            <Categories type="expense" />
+          <Suspense fallback={<CategoryListSkeleton />}>
+            <CategoryList type="expense" />
           </Suspense>
         </div>
       </div>

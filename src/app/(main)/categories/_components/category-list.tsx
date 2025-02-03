@@ -4,11 +4,11 @@ import { fetchExpenseCategories, fetchIncomeCategories } from "../_lib/fetch";
 import { CategoriesEmpty } from "./categories-empty";
 import { CategoryCard } from "./category-card";
 
-type CategoriesProps = DeepReadonly<{
+type CategoryListProps = DeepReadonly<{
   type: "income" | "expense";
 }>;
 
-export async function Categories({ type }: CategoriesProps) {
+export async function CategoryList({ type }: CategoryListProps) {
   const categories = await (type === "income"
     ? fetchIncomeCategories()
     : fetchExpenseCategories());
