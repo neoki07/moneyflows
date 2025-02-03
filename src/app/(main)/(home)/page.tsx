@@ -4,6 +4,7 @@ import { LatestTransactionsCard } from "./_components/latest-transactions-card";
 import { MonthlyBalanceCard } from "./_components/monthly-balance-card";
 import { MonthlyExpensesCard } from "./_components/monthly-expenses-card";
 import { MonthlyIncomeCard } from "./_components/monthly-income-card";
+import { MonthlyIncomeCardSkeleton } from "./_components/monthly-income-card-skeleton";
 import { TotalBalanceCard } from "./_components/total-balance-card";
 import { TotalBalanceCardSkeleton } from "./_components/total-balance-card-skeleton";
 import { TransitionCard } from "./_components/transition-card";
@@ -19,7 +20,9 @@ export default function Home() {
           <Suspense fallback={<TotalBalanceCardSkeleton />}>
             <TotalBalanceCard />
           </Suspense>
-          <MonthlyIncomeCard />
+          <Suspense fallback={<MonthlyIncomeCardSkeleton />}>
+            <MonthlyIncomeCard />
+          </Suspense>
           <MonthlyExpensesCard />
           <MonthlyBalanceCard />
         </div>

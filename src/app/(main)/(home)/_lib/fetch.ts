@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
-import { eq, sql } from "drizzle-orm";
+import { endOfMonth, format, startOfMonth } from "date-fns";
+import { and, eq, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
@@ -24,5 +25,37 @@ export async function fetchTotalBalance(): Promise<TotalBalance> {
 
   return {
     totalBalance: result.totalBalance ?? 0,
+  };
+}
+
+type MonthlyIncome = {
+  monthlyIncome: number;
+};
+
+export async function fetchMonthlyIncome(): Promise<MonthlyIncome> {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  const now = new Date();
+  const [result] = await db
+    .select({
+      monthlyIncome: sql<number>`sum(amount)`,
+    })
+    .from(transactionTable)
+    .where(
+      and(
+        eq(transactionTable.userId, userId),
+        eq(transactionTable.type, "income"),
+        sql`date >= ${format(startOfMonth(now), "yyyy-MM-dd")} and date <= ${format(
+          endOfMonth(now),
+          "yyyy-MM-dd",
+        )}`,
+      ),
+    );
+
+  return {
+    monthlyIncome: result.monthlyIncome ?? 0,
   };
 }
