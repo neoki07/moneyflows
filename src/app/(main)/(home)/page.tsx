@@ -2,6 +2,7 @@ import { Suspense } from "react";
 
 import { LatestTransactionsCard } from "./_components/latest-transactions-card";
 import { MonthlyBalanceCard } from "./_components/monthly-balance-card";
+import { MonthlyBalanceCardSkeleton } from "./_components/monthly-balance-card-skeleton";
 import { MonthlyExpensesCard } from "./_components/monthly-expenses-card";
 import { MonthlyExpensesCardSkeleton } from "./_components/monthly-expenses-card-skeleton";
 import { MonthlyIncomeCard } from "./_components/monthly-income-card";
@@ -27,7 +28,9 @@ export default function Home() {
           <Suspense fallback={<MonthlyExpensesCardSkeleton />}>
             <MonthlyExpensesCard />
           </Suspense>
-          <MonthlyBalanceCard />
+          <Suspense fallback={<MonthlyBalanceCardSkeleton />}>
+            <MonthlyBalanceCard />
+          </Suspense>
         </div>
         <TransitionCard />
         <LatestTransactionsCard />

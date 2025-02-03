@@ -91,3 +91,34 @@ export async function fetchMonthlyExpense(): Promise<MonthlyExpense> {
     monthlyExpense: result.monthlyExpense ?? 0,
   };
 }
+
+type MonthlyBalance = {
+  monthlyBalance: number;
+};
+
+export async function fetchMonthlyBalance(): Promise<MonthlyBalance> {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  const now = new Date();
+  const [result] = await db
+    .select({
+      monthlyBalance: sql<number>`sum(case when type = 'income' then amount else -amount end)`,
+    })
+    .from(transactionTable)
+    .where(
+      and(
+        eq(transactionTable.userId, userId),
+        sql`date >= ${format(startOfMonth(now), "yyyy-MM-dd")} and date <= ${format(
+          endOfMonth(now),
+          "yyyy-MM-dd",
+        )}`,
+      ),
+    );
+
+  return {
+    monthlyBalance: result.monthlyBalance ?? 0,
+  };
+}
