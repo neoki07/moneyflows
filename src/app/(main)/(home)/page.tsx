@@ -1,8 +1,11 @@
+import { Suspense } from "react";
+
 import { LatestTransactionsCard } from "./_components/latest-transactions-card";
 import { MonthlyBalanceCard } from "./_components/monthly-balance-card";
 import { MonthlyExpensesCard } from "./_components/monthly-expenses-card";
 import { MonthlyIncomeCard } from "./_components/monthly-income-card";
 import { TotalBalanceCard } from "./_components/total-balance-card";
+import { TotalBalanceCardSkeleton } from "./_components/total-balance-card-skeleton";
 import { TransitionCard } from "./_components/transition-card";
 
 export default function Home() {
@@ -13,7 +16,9 @@ export default function Home() {
       </div>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-4 gap-4">
-          <TotalBalanceCard />
+          <Suspense fallback={<TotalBalanceCardSkeleton />}>
+            <TotalBalanceCard />
+          </Suspense>
           <MonthlyIncomeCard />
           <MonthlyExpensesCard />
           <MonthlyBalanceCard />
