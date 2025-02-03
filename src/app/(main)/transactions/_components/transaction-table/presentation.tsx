@@ -26,12 +26,14 @@ type TransactionTablePresenterProps = DeepReadonly<{
   data: Transaction[];
   totalCount: number;
   currentPage: number;
+  pageSize: number;
 }>;
 
 export function TransactionTablePresenter({
   data,
   totalCount,
   currentPage,
+  pageSize,
 }: TransactionTablePresenterProps) {
   const [rowSelection, setRowSelection] = useState({});
 
@@ -115,7 +117,7 @@ export function TransactionTablePresenter({
         <div className="flex items-center justify-between">
           <Pagination
             totalCount={totalCount}
-            pageSize={10}
+            pageSize={pageSize}
             currentPage={currentPage}
           />
         </div>

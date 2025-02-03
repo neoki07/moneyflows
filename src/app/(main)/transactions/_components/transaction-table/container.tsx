@@ -3,20 +3,28 @@ import { fetchTransactionTableData } from "@/app/(main)/transactions/_lib/fetch"
 import { TransactionTablePresenter } from "./presentation";
 
 type TransactionTableProps = {
-  currentPage: number;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export async function TransactionTable({ currentPage }: TransactionTableProps) {
+export async function TransactionTable({
+  searchParams,
+}: TransactionTableProps) {
+  const { page: pageString } = await searchParams;
+
+  const page = Number.isInteger(Number(pageString)) ? Number(pageString) : 1;
+  const pageSize = 10;
+
   const { transactions, pagination } = await fetchTransactionTableData(
-    currentPage,
-    10,
+    page,
+    pageSize,
   );
 
   return (
     <TransactionTablePresenter
       data={transactions}
-      currentPage={currentPage}
       totalCount={pagination.totalCount}
+      currentPage={page}
+      pageSize={pageSize}
     />
   );
 }

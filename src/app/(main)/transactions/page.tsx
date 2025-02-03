@@ -1,5 +1,3 @@
-import { SearchParams } from "nuqs/server";
-import { createLoader, parseAsFloat } from "nuqs/server";
 import { Suspense } from "react";
 
 import { Input } from "@/components/ui/input";
@@ -9,17 +7,11 @@ import { AddTransactionButton } from "./_components/add-transaction-button";
 import { TransactionTable } from "./_components/transaction-table";
 import { TransactionTableSkeleton } from "./_components/transaction-table-skeleton";
 
-const loadSearchParams = createLoader({
-  page: parseAsFloat.withDefault(1),
-});
-
 type PageProps = DeepReadonly<{
-  searchParams: Promise<SearchParams>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }>;
 
 export default async function Page({ searchParams }: PageProps) {
-  const { page } = await loadSearchParams(searchParams);
-
   return (
     <div className="grid grid-rows-[2.25rem_1fr] gap-8 px-6 py-8">
       <div className="flex items-center">
@@ -35,7 +27,7 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         </div>
         <Suspense fallback={<TransactionTableSkeleton />}>
-          <TransactionTable currentPage={page} />
+          <TransactionTable searchParams={searchParams} />
         </Suspense>
       </div>
     </div>
