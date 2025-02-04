@@ -18,7 +18,7 @@ const formSchema = z.object({
     .number({ required_error: "金額を入力してください" })
     .min(1, { message: "金額は1以上で入力してください" }),
   category: z.string().optional(),
-  tags: z.array(z.string()),
+  tags: z.string().transform((value) => (value ? value.split(",") : [])),
   type: z.enum(["income", "expense"]),
 });
 
