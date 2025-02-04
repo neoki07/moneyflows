@@ -13,9 +13,11 @@ export async function CategoryList({ type }: CategoryListProps) {
     ? fetchIncomeCategories()
     : fetchExpenseCategories());
 
-  return categories.length === 0 ? (
-    <CategoriesEmpty type={type} />
-  ) : (
+  if (categories.length === 0) {
+    return <CategoriesEmpty type={type} />;
+  }
+
+  return (
     <div className="grid grid-cols-3 gap-4">
       {categories.map((category) => (
         <CategoryCard key={category.id} category={category} />
