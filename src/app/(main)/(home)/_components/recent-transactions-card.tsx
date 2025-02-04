@@ -9,6 +9,17 @@ import { fetchRecentTransactions } from "../_lib/fetch";
 export async function RecentTransactionsCard() {
   const { transactions } = await fetchRecentTransactions();
 
+  if (transactions.length === 0) {
+    return (
+      <div className="col-span-4 space-y-6 rounded-lg border p-6">
+        <h2 className="text-xl font-bold">最近の収支</h2>
+        <div className="text-muted-foreground py-8 text-center text-sm">
+          収支データがありません
+        </div>
+      </div>
+    );
+  }
+
   const groupedTransactions = groupBy(transactions, (transaction) =>
     formatRecentTransactionDate(transaction.date),
   );
