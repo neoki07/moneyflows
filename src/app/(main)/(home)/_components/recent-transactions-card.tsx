@@ -46,6 +46,11 @@ export async function RecentTransactionsCard() {
                           {transaction.category.name}
                         </Badge>
                       )}
+                      {transaction.tags.map((tag) => (
+                        <Badge key={tag.id} variant="secondary">
+                          {tag.name}
+                        </Badge>
+                      ))}
                     </div>
                     <span
                       className={

@@ -1,10 +1,16 @@
 import { auth } from "@clerk/nextjs/server";
 import { endOfMonth, format, startOfMonth } from "date-fns";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
-import { categoryTable, transactionTable } from "@/db/schema";
+import {
+  categoryTable,
+  tagTable,
+  transactionTable,
+  transactionTagTable,
+} from "@/db/schema";
+import { groupBy } from "@/lib/array";
 
 type TotalBalance = {
   totalBalance: number;
@@ -133,6 +139,10 @@ type RecentTransaction = {
     id: string;
     name: string;
   } | null;
+  tags: {
+    id: string;
+    name: string;
+  }[];
 };
 
 type RecentTransactions = {
@@ -163,7 +173,28 @@ export async function fetchRecentTransactions(): Promise<RecentTransactions> {
     .orderBy(desc(transactionTable.date))
     .limit(5);
 
+  const transactionIds = transactions.map((t) => t.id);
+
+  const tags = await db
+    .select({
+      transactionId: transactionTagTable.transactionId,
+      id: tagTable.id,
+      name: tagTable.name,
+    })
+    .from(transactionTagTable)
+    .innerJoin(tagTable, eq(transactionTagTable.tagId, tagTable.id))
+    .where(inArray(transactionTagTable.transactionId, transactionIds));
+
+  const tagsByTransactionId = groupBy(tags, (tag) => tag.transactionId);
+
   return {
-    transactions,
+    transactions: transactions.map((transaction) => ({
+      ...transaction,
+      tags:
+        tagsByTransactionId[transaction.id]?.map(({ id, name }) => ({
+          id,
+          name,
+        })) ?? [],
+    })),
   };
 }
