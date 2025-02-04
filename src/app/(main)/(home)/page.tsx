@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 
-import { LatestTransactionsCard } from "./_components/latest-transactions-card";
 import { MonthlyBalanceCard } from "./_components/monthly-balance-card";
 import { MonthlyBalanceCardSkeleton } from "./_components/monthly-balance-card-skeleton";
 import { MonthlyExpensesCard } from "./_components/monthly-expenses-card";
 import { MonthlyExpensesCardSkeleton } from "./_components/monthly-expenses-card-skeleton";
 import { MonthlyIncomeCard } from "./_components/monthly-income-card";
 import { MonthlyIncomeCardSkeleton } from "./_components/monthly-income-card-skeleton";
+import { RecentTransactionsCard } from "./_components/recent-transactions-card";
+import { RecentTransactionsCardSkeleton } from "./_components/recent-transactions-card-skeleton";
 import { TotalBalanceCard } from "./_components/total-balance-card";
 import { TotalBalanceCardSkeleton } from "./_components/total-balance-card-skeleton";
 import { TransitionCard } from "./_components/transition-card";
@@ -33,7 +34,9 @@ export default function Home() {
           </Suspense>
         </div>
         <TransitionCard />
-        <LatestTransactionsCard />
+        <Suspense fallback={<RecentTransactionsCardSkeleton />}>
+          <RecentTransactionsCard />
+        </Suspense>
       </div>
     </div>
   );

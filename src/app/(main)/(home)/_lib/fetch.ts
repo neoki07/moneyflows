@@ -1,10 +1,10 @@
 import { auth } from "@clerk/nextjs/server";
 import { endOfMonth, format, startOfMonth } from "date-fns";
-import { and, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
-import { transactionTable } from "@/db/schema";
+import { categoryTable, transactionTable } from "@/db/schema";
 
 type TotalBalance = {
   totalBalance: number;
@@ -120,5 +120,50 @@ export async function fetchMonthlyBalance(): Promise<MonthlyBalance> {
 
   return {
     monthlyBalance: result.monthlyBalance ?? 0,
+  };
+}
+
+type RecentTransaction = {
+  id: string;
+  date: Date;
+  type: "income" | "expense";
+  amount: number;
+  description: string;
+  category: {
+    id: string;
+    name: string;
+  } | null;
+};
+
+type RecentTransactions = {
+  transactions: RecentTransaction[];
+};
+
+export async function fetchRecentTransactions(): Promise<RecentTransactions> {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
+  const transactions = await db
+    .select({
+      id: transactionTable.id,
+      date: transactionTable.date,
+      type: transactionTable.type,
+      amount: transactionTable.amount,
+      description: transactionTable.description,
+      category: {
+        id: categoryTable.id,
+        name: categoryTable.name,
+      },
+    })
+    .from(transactionTable)
+    .leftJoin(categoryTable, eq(transactionTable.categoryId, categoryTable.id))
+    .where(eq(transactionTable.userId, userId))
+    .orderBy(desc(transactionTable.date))
+    .limit(5);
+
+  return {
+    transactions,
   };
 }
