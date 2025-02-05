@@ -6,8 +6,11 @@ import {
 } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { CreateDashboardButton } from "./components/create-dashboard-button";
+import { DashboardListItems } from "./components/dashboard-list-items";
+import { DashboardListItemsSkeleton } from "./components/dashboard-list-items-skeleton";
 import { NavItem } from "./components/nav-item";
 import { UserArea } from "./components/user-area";
 
@@ -57,15 +60,9 @@ export function Navbar() {
               ダッシュボード
               <CreateDashboardButton />
             </div>
-            <li>
-              <NavItem link="/dashboards/dashboard1">収入全般</NavItem>
-            </li>
-            <li>
-              <NavItem link="/dashboards/dashboard2">支出全般</NavItem>
-            </li>
-            <li>
-              <NavItem link="/dashboards/dashboard3">カテゴリー別</NavItem>
-            </li>
+            <Suspense fallback={<DashboardListItemsSkeleton />}>
+              <DashboardListItems />
+            </Suspense>
           </ul>
         </div>
       </div>
