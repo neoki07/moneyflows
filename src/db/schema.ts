@@ -1,4 +1,11 @@
-import { integer, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  integer,
+  jsonb,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { primaryKey } from "drizzle-orm/pg-core";
 
 export const transactionTypeEnum = pgEnum("transaction_type", [
@@ -42,6 +49,13 @@ export const transactionTagTable = pgTable(
   (table) => [primaryKey({ columns: [table.transactionId, table.tagId] })],
 );
 
+export const dashboardTable = pgTable("dashboard", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  name: text("name").notNull().unique(),
+  widgets: jsonb("widgets").notNull().default("[]"),
+});
+
 export type CategoryRecord = typeof categoryTable.$inferSelect;
 export type InsertCategoryRecord = typeof categoryTable.$inferInsert;
 
@@ -50,3 +64,6 @@ export type InsertTransactionRecord = typeof transactionTable.$inferInsert;
 
 export type TagRecord = typeof tagTable.$inferSelect;
 export type InsertTagRecord = typeof tagTable.$inferInsert;
+
+export type DashboardRecord = typeof dashboardTable.$inferSelect;
+export type InsertDashboardRecord = typeof dashboardTable.$inferInsert;

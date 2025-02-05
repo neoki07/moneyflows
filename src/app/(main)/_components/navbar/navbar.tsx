@@ -2,14 +2,14 @@ import {
   IconCategory,
   IconExchange,
   IconHome,
-  IconPlus,
   IconTags,
 } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { NavItem } from "./nav-item";
-import { UserArea } from "./user-area";
+import { CreateDashboardButton } from "./components/create-dashboard-button";
+import { NavItem } from "./components/nav-item";
+import { UserArea } from "./components/user-area";
 
 export function Navbar() {
   return (
@@ -55,7 +55,7 @@ export function Navbar() {
           <ul>
             <div className="grid h-6 grid-cols-[1fr_1rem] px-3 text-xs font-semibold text-slate-500">
               ダッシュボード
-              <IconPlus size={16} />
+              <CreateDashboardButton />
             </div>
             <li>
               <NavItem link="/dashboards/dashboard1">収入全般</NavItem>
