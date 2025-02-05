@@ -5,6 +5,7 @@ import {
   pgTable,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 import { primaryKey } from "drizzle-orm/pg-core";
 
@@ -13,12 +14,16 @@ export const transactionTypeEnum = pgEnum("transaction_type", [
   "expense",
 ] as const);
 
-export const categoryTable = pgTable("category", {
-  id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  name: text("name").notNull().unique(),
-  type: transactionTypeEnum().notNull(),
-});
+export const categoryTable = pgTable(
+  "category",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    name: text("name").notNull(),
+    type: transactionTypeEnum().notNull(),
+  },
+  (table) => [unique().on(table.userId, table.name)],
+);
 
 export const transactionTable = pgTable("transaction", {
   id: text("id").primaryKey(),
@@ -30,11 +35,15 @@ export const transactionTable = pgTable("transaction", {
   type: transactionTypeEnum().notNull(),
 });
 
-export const tagTable = pgTable("tag", {
-  id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  name: text("name").notNull(),
-});
+export const tagTable = pgTable(
+  "tag",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    name: text("name").notNull(),
+  },
+  (table) => [unique().on(table.userId, table.name)],
+);
 
 export const transactionTagTable = pgTable(
   "transaction_tag",
@@ -49,12 +58,16 @@ export const transactionTagTable = pgTable(
   (table) => [primaryKey({ columns: [table.transactionId, table.tagId] })],
 );
 
-export const dashboardTable = pgTable("dashboard", {
-  id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
-  name: text("name").notNull().unique(),
-  widgets: jsonb("widgets").notNull().default("[]"),
-});
+export const dashboardTable = pgTable(
+  "dashboard",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id").notNull(),
+    name: text("name").notNull(),
+    widgets: jsonb("widgets").notNull().default("[]"),
+  },
+  (table) => [unique().on(table.userId, table.name)],
+);
 
 export type CategoryRecord = typeof categoryTable.$inferSelect;
 export type InsertCategoryRecord = typeof categoryTable.$inferInsert;
