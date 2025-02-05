@@ -1,5 +1,5 @@
 import { getDashboards } from "../actions/get-dashboards";
-import { NavItem } from "./nav-item";
+import { DashboardListItem } from "./dashboard-list-item";
 
 export async function DashboardListItems() {
   const dashboards = await getDashboards();
@@ -7,11 +7,11 @@ export async function DashboardListItems() {
   return (
     <>
       {dashboards.map((dashboard) => (
-        <li key={dashboard.id}>
-          <NavItem link={`/dashboards/${dashboard.id}`}>
-            {dashboard.name}
-          </NavItem>
-        </li>
+        <DashboardListItem
+          key={dashboard.id}
+          id={dashboard.id}
+          name={dashboard.name}
+        />
       ))}
     </>
   );
