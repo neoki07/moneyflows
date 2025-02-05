@@ -3,7 +3,6 @@
 import { IconPlus } from "@tabler/icons-react";
 import React, { useActionState, useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -29,21 +28,22 @@ export function CreateDashboardButton() {
   }, [state]);
 
   return (
-    <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size="icon" disabled={isPending}>
-            <IconPlus size={16} />
-            <span className="sr-only">ダッシュボードを作成</span>
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>ダッシュボードの作成</DialogTitle>
-          </DialogHeader>
-          <CreateDashboardForm action={formAction} lastResult={state} />
-        </DialogContent>
-      </Dialog>
-    </>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <button
+          className="flex h-4 w-4 cursor-pointer items-center justify-center text-slate-500 hover:text-slate-700"
+          disabled={isPending}
+        >
+          <IconPlus size={16} />
+          <span className="sr-only">ダッシュボードを作成</span>
+        </button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>ダッシュボードの作成</DialogTitle>
+        </DialogHeader>
+        <CreateDashboardForm action={formAction} lastResult={state} />
+      </DialogContent>
+    </Dialog>
   );
 }
