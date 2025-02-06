@@ -4,7 +4,7 @@ import { DashboardName } from "./_components/dashboard-name";
 import { DashboardNameSkeleton } from "./_components/dashboard-name-skeleton";
 import { EditButtons } from "./_components/edit-buttons";
 import { EditDashboardPanel } from "./_components/edit-dashboard-panel";
-import { Widgets } from "./_components/widgets";
+import { WidgetList } from "./_components/widget-list";
 
 type PageProps = {
   params: Promise<{ dashboardId: string }>;
@@ -22,7 +22,9 @@ export default function Page({ params }: PageProps) {
             <EditButtons />
           </div>
         </div>
-        <Widgets />
+        <Suspense>
+          <WidgetList params={params} />
+        </Suspense>
       </div>
       <EditDashboardPanel />
     </div>

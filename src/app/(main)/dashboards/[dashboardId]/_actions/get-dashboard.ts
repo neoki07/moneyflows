@@ -28,5 +28,6 @@ export async function getDashboard(id: string) {
 
   return {
     ...dashboard,
+    widgets: dashboard.widgets as unknown[],
   };
 }

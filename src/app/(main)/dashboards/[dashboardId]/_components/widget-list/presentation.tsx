@@ -3,7 +3,7 @@
 import "gridstack/dist/gridstack-extra.css";
 import "gridstack/dist/gridstack.css";
 
-import { GridStackOptions } from "gridstack";
+import { GridStackOptions, GridStackWidget } from "gridstack";
 import { ComponentProps } from "react";
 
 import {
@@ -15,9 +15,9 @@ import {
 } from "@/lib/gridstack";
 import { useGridStackContext } from "@/lib/gridstack";
 
-import { useDashboardStore } from "../_stores/use-dashboard-store";
-import { WidgetAddBar } from "./widget-add-bar";
-import { BalanceChart } from "./widgets/charts/balance-chart";
+import { useDashboardStore } from "../../_stores/use-dashboard-store";
+import { WidgetAddBar } from "../widget-add-bar";
+import { BalanceChart } from "../widgets/charts/balance-chart";
 
 const CELL_HEIGHT = 128;
 
@@ -137,15 +137,16 @@ const defaultGridOptions: GridStackOptions = {
   ],
 };
 
-type WidgetsProps = {
-  initialOptions?: GridStackOptions;
+type WidgetListPresenterProps = {
+  widgets: unknown[];
 };
 
-export function Widgets({ initialOptions = defaultGridOptions }: WidgetsProps) {
+export function WidgetListPresenter({ widgets }: WidgetListPresenterProps) {
   const { isEditing } = useDashboardStore();
 
   const options: GridStackOptions = {
-    ...initialOptions,
+    ...defaultGridOptions,
+    children: widgets as GridStackWidget[],
     staticGrid: !isEditing,
   };
 
