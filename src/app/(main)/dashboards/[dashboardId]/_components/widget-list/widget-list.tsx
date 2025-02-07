@@ -137,11 +137,11 @@ const defaultGridOptions: GridStackOptions = {
   ],
 };
 
-type WidgetListPresenterProps = {
+type WidgetListProps = {
   widgets: unknown[];
 };
 
-export function WidgetListPresenter({ widgets }: WidgetListPresenterProps) {
+export function WidgetList({ widgets }: WidgetListProps) {
   const { isEditing } = useDashboardStore();
 
   const options: GridStackOptions = {

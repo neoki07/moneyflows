@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
-export function EditButtons() {
+type EditButtonsProps = {
+  disabled?: boolean;
+};
+
+export function EditButtons({ disabled }: EditButtonsProps) {
   const { isEditing, startEditing, endEditing } = useDashboardStore();
 
   const edit = () => {
@@ -33,7 +37,7 @@ export function EditButtons() {
   }
 
   return (
-    <Button onClick={edit}>
+    <Button disabled={disabled} onClick={edit}>
       <IconEdit className="-ml-1" />
       ダッシュボードを編集
     </Button>
