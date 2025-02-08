@@ -1,6 +1,7 @@
 "use client";
 
 import { IconTrash } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import {
@@ -23,6 +24,7 @@ type DashboardListItemProps = {
 };
 
 export function DashboardListItem({ id, name }: DashboardListItemProps) {
+  const pathname = usePathname();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -31,7 +33,7 @@ export function DashboardListItem({ id, name }: DashboardListItemProps) {
 
     startTransition(async () => {
       try {
-        await deleteDashboard(id);
+        await deleteDashboard(id, pathname);
         setIsDeleteDialogOpen(false);
       } catch (error) {
         console.error("Failed to delete dashboard:", error);
