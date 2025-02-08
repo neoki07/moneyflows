@@ -36,7 +36,11 @@ export function WidgetAddBar() {
       id: createId(),
       ...widgetType.defaultSize,
       x: 0,
-      y: 0,
+      // HACK: Setting y to -1 to avoid duplicate key errors in Recharts v2.
+      // Recharts generates Bar component keys using the pattern `rectangle-${x}-${y}-${value}`,
+      // which can cause conflicts when stacking bars at y=0.
+      // This workaround can be removed once we migrate to Recharts v3 stable.
+      y: -1,
       content: JSON.stringify({
         name: "BalanceChart",
         props: {},
