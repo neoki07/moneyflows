@@ -1,32 +1,42 @@
 "use client";
 
+import { IconBolt } from "@tabler/icons-react";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
 import { useDashboardStore } from "../_stores/use-dashboard-store";
-import { EditDashboardForm } from "./edit-dashboard-form";
-import { EditWidgetForm } from "./edit-widget-form";
 
 export function EditDashboardPanel() {
-  const { isEditing } = useDashboardStore();
-
-  if (!isEditing) {
-    return null;
-  }
+  const { draft, updateDraftName } = useDashboardStore();
+  if (!draft) return null;
 
   return (
-    <div className="min-h-screen w-80 space-y-3 border-l py-8">
+    <div className="min-h-screen w-80 space-y-3 border-l bg-white py-8">
       <h2 className="px-4 text-lg font-bold">ダッシュボードの編集</h2>
       <div className="space-y-5">
         <div className="px-4">
-          <EditDashboardForm />
+          <Label htmlFor="name">ダッシュボード名</Label>
+          <Input
+            id="name"
+            value={draft.name}
+            onChange={(e) => updateDraftName(e.target.value)}
+          />
         </div>
         <Separator />
-        <div className="space-y-3">
+        <div className="space-y-2">
           <h3 className="px-4 text-base font-bold">
             選択されたウィジェットの編集
           </h3>
-          <div className="px-4">
-            <EditWidgetForm />
+          <div className="mx-4 rounded-md border border-yellow-200 bg-yellow-50 px-3 py-2 text-sm">
+            <div className="flex items-center gap-1.5 font-medium text-yellow-800">
+              <IconBolt size={16} className="text-yellow-600" />
+              開発中の機能
+            </div>
+            <p className="mt-1 text-yellow-700">
+              選択されたウィジェットの編集機能は、現在開発中です
+            </p>
           </div>
         </div>
       </div>

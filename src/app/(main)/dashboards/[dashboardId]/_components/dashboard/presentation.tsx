@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { getDashboard } from "../../_actions/get-dashboard";
 import { useDashboardStore } from "../../_stores/use-dashboard-store";
 import { EditButtons } from "../edit-buttons";
+import { EditDashboardPanel } from "../edit-dashboard-panel";
 import { WidgetList } from "../widget-list";
 import { WidgetListEmpty } from "../widget-list-empty";
 
@@ -36,7 +37,7 @@ export function DashboardPresenter({ dashboard }: PresentationProps) {
           <WidgetListEmpty />
         )}
       </div>
-      {/* {isEditing && <EditDashboardPanel />} */}
+      {isEditing && <EditDashboardPanel />}
     </div>
   );
 }
