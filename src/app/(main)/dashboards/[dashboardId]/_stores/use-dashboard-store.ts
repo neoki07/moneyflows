@@ -1,3 +1,4 @@
+import { GridStackWidget } from "gridstack";
 import { create } from "zustand";
 
 import { getDashboard } from "../_actions/get-dashboard";
@@ -7,18 +8,20 @@ type Dashboard = Awaited<ReturnType<typeof getDashboard>>;
 
 type DashboardState = Readonly<{
   dashboard: Dashboard | null;
-  draft: Dashboard | null;
+  draft: {
+    name: string;
+  } | null;
   isEditing: boolean;
   isDirty: boolean;
   errors: {
     name?: string;
   };
+  getCurrentLayout?: () => GridStackWidget[];
+  setGetCurrentLayout: (fn: () => GridStackWidget[]) => void;
   setDashboard: (dashboard: Dashboard) => void;
   startEditing: () => void;
   cancelEditing: () => void;
   updateDraftName: (name: string) => void;
-  updateDraftWidgets: (widgets: Dashboard["widgets"]) => void;
-  resetDraft: () => void;
   validate: () => boolean;
   save: () => Promise<void>;
 }>;
@@ -30,6 +33,9 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   isDirty: false,
   errors: {},
 
+  getCurrentLayout: undefined,
+  setGetCurrentLayout: (fn) => set({ getCurrentLayout: fn }),
+
   setDashboard: (dashboard) => set({ dashboard }),
 
   startEditing: () => {
@@ -38,7 +44,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
 
     set({
       isEditing: true,
-      draft: { ...dashboard },
+      draft: { name: dashboard.name },
       isDirty: false,
     });
   },
@@ -61,26 +67,6 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     });
   },
 
-  updateDraftWidgets: (widgets) => {
-    const { draft } = get();
-    if (!draft) return;
-
-    set({
-      draft: { ...draft, widgets },
-      isDirty: true,
-    });
-  },
-
-  resetDraft: () => {
-    const { dashboard } = get();
-    if (!dashboard) return;
-
-    set({
-      draft: { ...dashboard },
-      isDirty: false,
-    });
-  },
-
   validate: () => {
     const { draft } = get();
     const errors: { name?: string } = {};
@@ -94,19 +80,24 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   },
 
   save: async () => {
-    const { draft, dashboard, validate } = get();
-    if (!draft || !dashboard) return;
+    const { draft, dashboard, validate, getCurrentLayout } = get();
+    if (!draft || !dashboard || !getCurrentLayout) return;
 
     if (!validate()) return;
 
+    const currentLayout = getCurrentLayout();
     await updateDashboard({
       id: dashboard.id,
       name: draft.name,
-      widgets: draft.widgets,
+      widgets: currentLayout,
     });
 
     set({
-      dashboard: draft,
+      dashboard: {
+        ...dashboard,
+        name: draft.name,
+        widgets: currentLayout,
+      },
       isEditing: false,
       draft: null,
       isDirty: false,

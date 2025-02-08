@@ -5,6 +5,7 @@ import "gridstack/dist/gridstack.css";
 
 import { GridStackOptions, GridStackWidget } from "gridstack";
 import { ComponentProps } from "react";
+import { useEffect } from "react";
 
 import {
   ComponentDataType,
@@ -158,7 +159,12 @@ export function WidgetList({ widgets }: WidgetListProps) {
 }
 
 function GridStackContent() {
-  const { addWidget } = useGridStackContext();
+  const { addWidget, saveOptions } = useGridStackContext();
+  const { setGetCurrentLayout } = useDashboardStore();
+
+  useEffect(() => {
+    setGetCurrentLayout(() => saveOptions() as GridStackWidget[]);
+  }, [setGetCurrentLayout, saveOptions]);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
