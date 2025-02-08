@@ -4,12 +4,13 @@ import { IconBolt } from "@tabler/icons-react";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RequiredBadge } from "@/components/ui/required-badge";
 import { Separator } from "@/components/ui/separator";
 
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 export function EditDashboardPanel() {
-  const { draft, updateDraftName } = useDashboardStore();
+  const { draft, errors, updateDraftName } = useDashboardStore();
   if (!draft) return null;
 
   return (
@@ -17,12 +18,19 @@ export function EditDashboardPanel() {
       <h2 className="px-4 text-lg font-bold">ダッシュボードの編集</h2>
       <div className="space-y-5">
         <div className="px-4">
-          <Label htmlFor="name">ダッシュボード名</Label>
+          <div className="flex items-center gap-1">
+            <Label htmlFor="name">ダッシュボード名</Label>
+            <RequiredBadge />
+          </div>
           <Input
             id="name"
             value={draft.name}
             onChange={(e) => updateDraftName(e.target.value)}
+            aria-invalid={!!errors.name}
           />
+          {errors.name && (
+            <p className="text-destructive mt-1.5 text-sm">{errors.name}</p>
+          )}
         </div>
         <Separator />
         <div className="space-y-2">

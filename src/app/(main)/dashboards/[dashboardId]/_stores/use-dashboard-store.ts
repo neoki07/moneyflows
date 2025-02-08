@@ -10,12 +10,16 @@ type DashboardState = Readonly<{
   draft: Dashboard | null;
   isEditing: boolean;
   isDirty: boolean;
+  errors: {
+    name?: string;
+  };
   setDashboard: (dashboard: Dashboard) => void;
   startEditing: () => void;
   cancelEditing: () => void;
   updateDraftName: (name: string) => void;
   updateDraftWidgets: (widgets: Dashboard["widgets"]) => void;
   resetDraft: () => void;
+  validate: () => boolean;
   save: () => Promise<void>;
 }>;
 
@@ -24,6 +28,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   draft: null,
   isEditing: false,
   isDirty: false,
+  errors: {},
 
   setDashboard: (dashboard) => set({ dashboard }),
 
@@ -76,9 +81,23 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     });
   },
 
+  validate: () => {
+    const { draft } = get();
+    const errors: { name?: string } = {};
+
+    if (!draft?.name.trim()) {
+      errors.name = "ダッシュボード名を入力してください";
+    }
+
+    set({ errors });
+    return Object.keys(errors).length === 0;
+  },
+
   save: async () => {
-    const { draft, dashboard } = get();
+    const { draft, dashboard, validate } = get();
     if (!draft || !dashboard) return;
+
+    if (!validate()) return;
 
     await updateDashboard({
       id: dashboard.id,
@@ -91,6 +110,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       isEditing: false,
       draft: null,
       isDirty: false,
+      errors: {},
     });
   },
 }));
