@@ -15,6 +15,7 @@ import {
   GridStackRenderProvider,
 } from "@/lib/gridstack";
 import { useGridStackContext } from "@/lib/gridstack";
+import { useGridStackWidgetContext } from "@/lib/gridstack";
 
 import { useDashboardStore } from "../../_stores/use-dashboard-store";
 import { WidgetAddBar } from "../widget-add-bar";
@@ -29,9 +30,41 @@ function BaseWidget({
   title: string;
   children: React.ReactNode;
 }) {
+  const { widget } = useGridStackWidgetContext();
+  const { removeWidget } = useGridStackContext();
+  const { isEditing } = useDashboardStore();
+
   return (
     <div className="flex h-full flex-col space-y-6 rounded-lg border bg-white p-6">
-      <h2 className="text-xl font-bold">{title}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold">{title}</h2>
+        {isEditing && (
+          <button
+            type="button"
+            className="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
+            onClick={() => {
+              if (widget.id) {
+                removeWidget(widget.id);
+              }
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-5 w-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
       <div className="flex-1 rounded-lg bg-slate-100">{children}</div>
     </div>
   );

@@ -16,6 +16,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import {
+  useGridStackContext,
+  useGridStackWidgetContext,
+} from "@/lib/gridstack";
 
 import { ChartWidgetCard } from "../../chart-widget-card";
 
@@ -119,13 +123,18 @@ export function BalanceChartContent() {
   );
 }
 
-type BalanceChartProps = {
-  onRemove?: () => void;
-};
+export function BalanceChart() {
+  const { widget } = useGridStackWidgetContext();
+  const { removeWidget } = useGridStackContext();
 
-export function BalanceChart({ onRemove }: BalanceChartProps) {
+  const handleRemove = () => {
+    if (widget.id) {
+      removeWidget(widget.id);
+    }
+  };
+
   return (
-    <ChartWidgetCard title="月次収支" onRemove={onRemove}>
+    <ChartWidgetCard title="月次収支" onRemove={handleRemove}>
       <BalanceChartContent />
     </ChartWidgetCard>
   );
