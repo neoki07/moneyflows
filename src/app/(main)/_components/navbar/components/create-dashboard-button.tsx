@@ -42,7 +42,11 @@ export function CreateDashboardButton() {
         <DialogHeader>
           <DialogTitle>ダッシュボードの作成</DialogTitle>
         </DialogHeader>
-        <CreateDashboardForm action={formAction} lastResult={state} />
+        <CreateDashboardForm
+          action={formAction}
+          lastResult={state}
+          isPending={isPending}
+        />
       </DialogContent>
     </Dialog>
   );

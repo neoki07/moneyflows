@@ -28,12 +28,14 @@ type CreateDashboardFormProps = {
     name: string;
   };
   lastResult?: SubmissionResult;
+  isPending?: boolean;
 };
 
 export function CreateDashboardForm({
   action,
   defaultValues,
   lastResult,
+  isPending,
 }: CreateDashboardFormProps) {
   const [form, fields] = useForm({
     constraint: getZodConstraint(formSchema),
@@ -61,8 +63,8 @@ export function CreateDashboardForm({
             </FormErrorMessage>
           ))}
         </FormField>
-        <Button type="submit" className="w-full">
-          保存
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "保存中..." : "保存"}
         </Button>
       </div>
     </Form>
