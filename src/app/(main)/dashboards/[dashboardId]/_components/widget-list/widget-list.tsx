@@ -59,22 +59,45 @@ type WidgetListProps = {
 export function WidgetList({ widgets }: WidgetListProps) {
   const { isEditing } = useDashboardStore();
 
+  if (isEditing) {
+    return <EditableWidgetList widgets={widgets} />;
+  }
+
+  return <StaticWidgetList widgets={widgets} />;
+}
+
+function EditableWidgetList({ widgets }: WidgetListProps) {
   const options: GridStackOptions = {
     ...defaultGridOptions,
     children: widgets as GridStackWidget[],
-    staticGrid: !isEditing,
   };
 
   return (
     <GridStackProvider initialOptions={options}>
       <GridStackRenderProvider>
-        <GridStackContent />
+        <EditableGridStackContent />
       </GridStackRenderProvider>
     </GridStackProvider>
   );
 }
 
-function GridStackContent() {
+function StaticWidgetList({ widgets }: WidgetListProps) {
+  const options: GridStackOptions = {
+    ...defaultGridOptions,
+    children: widgets as GridStackWidget[],
+    staticGrid: true,
+  };
+
+  return (
+    <GridStackProvider initialOptions={options}>
+      <GridStackRenderProvider>
+        <StaticGridStackContent />
+      </GridStackRenderProvider>
+    </GridStackProvider>
+  );
+}
+
+function EditableGridStackContent() {
   const { saveOptions } = useGridStackContext();
   const { setGetCurrentLayout } = useDashboardStore();
 
@@ -89,5 +112,13 @@ function GridStackContent() {
       </div>
       <WidgetAddBar />
     </>
+  );
+}
+
+function StaticGridStackContent() {
+  return (
+    <div className="h-full">
+      <GridStackRender componentMap={COMPONENT_MAP} />
+    </div>
   );
 }
