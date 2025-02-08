@@ -67,66 +67,27 @@ export function WidgetList({ widgets }: WidgetListProps) {
 
   return (
     <GridStackProvider initialOptions={options}>
-      <GridStackContent />
+      <GridStackRenderProvider>
+        <GridStackContent />
+      </GridStackRenderProvider>
     </GridStackProvider>
   );
 }
 
 function GridStackContent() {
-  const { addWidget, saveOptions } = useGridStackContext();
+  const { saveOptions } = useGridStackContext();
   const { setGetCurrentLayout } = useDashboardStore();
 
   useEffect(() => {
     setGetCurrentLayout(() => saveOptions() as GridStackWidget[]);
   }, [setGetCurrentLayout, saveOptions]);
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const widgetType = e.dataTransfer.getData("widget/type");
-
-    // グリッドの相対位置を計算
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    // セルサイズに基づいて位置を計算
-    const cellWidth = rect.width / 12; // 12カラム
-    const cellX = Math.floor(x / cellWidth);
-    const cellY = Math.floor(y / CELL_HEIGHT);
-
-    // ウィジェットを追加
-    addWidget(() => {
-      const baseWidget = {
-        h: 3,
-        x: cellX,
-        y: cellY,
-      };
-
-      if (widgetType === "balance-chart") {
-        return {
-          ...baseWidget,
-          w: 12,
-          content: JSON.stringify({
-            name: "BalanceChart",
-            props: {},
-          } satisfies ComponentDataType<ComponentProps<typeof BalanceChart>>),
-        };
-      }
-
-      throw new Error(`Unknown widget type: ${widgetType}`);
-    });
-  };
-
   return (
-    <GridStackRenderProvider>
-      <div
-        className="h-full"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDrop}
-      >
+    <>
+      <div className="h-full">
         <GridStackRender componentMap={COMPONENT_MAP} />
       </div>
       <WidgetAddBar />
-    </GridStackRenderProvider>
+    </>
   );
 }
