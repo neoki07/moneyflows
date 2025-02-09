@@ -33,6 +33,10 @@ export function Dashboard() {
   const { data: dashboard, isValidating } = useSWR<Dashboard>(
     ["dashboard", dashboardId],
     fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
   );
 
   if (isValidating) {
