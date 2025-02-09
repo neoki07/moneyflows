@@ -38,16 +38,18 @@ export const transactions = new Hono()
       .groupBy(sql`to_char(${transactionTable.date}, 'YYYY-MM')`)
       .orderBy(desc(sql`to_char(${transactionTable.date}, 'YYYY-MM')`));
 
-    const monthlyBalances = result.map((row) => {
-      const balance = row.income - row.expense;
-      const month = parseInt(row.month.split("-")[1]);
-      return {
-        month,
-        income: row.income,
-        expense: -row.expense,
-        balance,
-      };
-    });
+    const monthlyBalances = result
+      .map((row) => {
+        const balance = row.income - row.expense;
+        const month = parseInt(row.month.split("-")[1]);
+        return {
+          month,
+          income: row.income,
+          expense: -row.expense,
+          balance,
+        };
+      })
+      .toReversed();
 
     return c.json({ monthlyBalances });
   })
