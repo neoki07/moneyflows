@@ -47,7 +47,7 @@ export async function RecentTransactionsCard() {
                         </Badge>
                       )}
                       {transaction.tags.map((tag) => (
-                        <Badge key={tag.id} variant="secondary">
+                        <Badge key={tag.id} variant="outline">
                           {tag.name}
                         </Badge>
                       ))}
