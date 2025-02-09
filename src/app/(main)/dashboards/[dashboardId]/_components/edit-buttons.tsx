@@ -2,13 +2,15 @@ import { IconEdit } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
 
+import { getDashboard } from "../_actions/get-dashboard";
 import { useDashboardStore } from "../_stores/use-dashboard-store";
 
 type EditButtonsProps = {
+  dashboard: Awaited<ReturnType<typeof getDashboard>>;
   disabled?: boolean;
 };
 
-export function EditButtons({ disabled }: EditButtonsProps) {
+export function EditButtons({ dashboard, disabled }: EditButtonsProps) {
   const { isEditing, startEditing, cancelEditing, save } = useDashboardStore();
 
   if (isEditing) {
@@ -23,7 +25,7 @@ export function EditButtons({ disabled }: EditButtonsProps) {
   }
 
   return (
-    <Button disabled={disabled} onClick={startEditing}>
+    <Button disabled={disabled} onClick={() => startEditing(dashboard)}>
       <IconEdit className="-ml-1" />
       ダッシュボードを編集
     </Button>

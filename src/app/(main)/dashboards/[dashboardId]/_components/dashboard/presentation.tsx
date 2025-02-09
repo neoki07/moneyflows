@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-
 import { getDashboard } from "../../_actions/get-dashboard";
 import { useDashboardStore } from "../../_stores/use-dashboard-store";
 import { EditButtons } from "../edit-buttons";
@@ -13,11 +11,7 @@ type PresentationProps = {
 };
 
 export function DashboardPresenter({ dashboard }: PresentationProps) {
-  const { isEditing, setDashboard, draft } = useDashboardStore();
-
-  useEffect(() => {
-    setDashboard(dashboard);
-  }, [dashboard, setDashboard]);
+  const { isEditing, draft } = useDashboardStore();
 
   const displayName = isEditing
     ? (draft?.name ?? dashboard.name)
@@ -29,7 +23,7 @@ export function DashboardPresenter({ dashboard }: PresentationProps) {
         <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold">{displayName}</h1>
           <div className="ml-auto">
-            <EditButtons />
+            <EditButtons dashboard={dashboard} />
           </div>
         </div>
         <WidgetList widgets={dashboard.widgets} />

@@ -1,14 +1,11 @@
-import { GridStackWidget } from "gridstack";
+import { GridStackOptions } from "gridstack";
 import { create } from "zustand";
 
-import { getDashboard } from "../_actions/get-dashboard";
 import { updateDashboard } from "../_actions/update-dashboard";
 
-type Dashboard = Awaited<ReturnType<typeof getDashboard>>;
-
 type DashboardState = Readonly<{
-  dashboard: Dashboard | null;
   draft: {
+    id: string;
     name: string;
   } | null;
   isEditing: boolean;
@@ -16,10 +13,9 @@ type DashboardState = Readonly<{
   errors: {
     name?: string;
   };
-  getCurrentLayout?: () => GridStackWidget[];
-  setGetCurrentLayout: (fn: () => GridStackWidget[]) => void;
-  setDashboard: (dashboard: Dashboard) => void;
-  startEditing: () => void;
+  getCurrentLayout?: () => GridStackOptions;
+  setGetCurrentLayout: (fn: () => GridStackOptions) => void;
+  startEditing: (initialState: { id: string; name: string }) => void;
   cancelEditing: () => void;
   updateDraftName: (name: string) => void;
   validate: () => boolean;
@@ -36,15 +32,10 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   getCurrentLayout: undefined,
   setGetCurrentLayout: (fn) => set({ getCurrentLayout: fn }),
 
-  setDashboard: (dashboard) => set({ dashboard }),
-
-  startEditing: () => {
-    const { dashboard } = get();
-    if (!dashboard) return;
-
+  startEditing: (initialState) => {
     set({
       isEditing: true,
-      draft: { name: dashboard.name },
+      draft: { id: initialState.id, name: initialState.name },
       isDirty: false,
     });
   },
@@ -80,24 +71,19 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   },
 
   save: async () => {
-    const { draft, dashboard, validate, getCurrentLayout } = get();
-    if (!draft || !dashboard || !getCurrentLayout) return;
+    const { draft, validate, getCurrentLayout } = get();
+    if (!draft || !getCurrentLayout) return;
 
     if (!validate()) return;
 
     const currentLayout = getCurrentLayout();
     await updateDashboard({
-      id: dashboard.id,
+      id: draft.id,
       name: draft.name,
-      widgets: currentLayout,
+      widgets: currentLayout.children ?? [],
     });
 
     set({
-      dashboard: {
-        ...dashboard,
-        name: draft.name,
-        widgets: currentLayout,
-      },
       isEditing: false,
       draft: null,
       isDirty: false,

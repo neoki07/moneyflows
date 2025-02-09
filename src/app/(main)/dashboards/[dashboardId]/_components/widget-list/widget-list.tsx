@@ -102,7 +102,7 @@ function EditableGridStackContent() {
   const { setGetCurrentLayout } = useDashboardStore();
 
   useEffect(() => {
-    setGetCurrentLayout(() => saveOptions() as GridStackWidget[]);
+    setGetCurrentLayout(() => saveOptions() as GridStackOptions);
   }, [setGetCurrentLayout, saveOptions]);
 
   return (
