@@ -171,7 +171,7 @@ export async function fetchRecentTransactions(): Promise<RecentTransactions> {
     .leftJoin(categoryTable, eq(transactionTable.categoryId, categoryTable.id))
     .where(eq(transactionTable.userId, userId))
     .orderBy(desc(transactionTable.date), desc(transactionTable.createdAt))
-    .limit(5);
+    .limit(10);
 
   const transactionIds = transactions.map((t) => t.id);
 
