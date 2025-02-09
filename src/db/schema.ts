@@ -29,7 +29,9 @@ export const categoryTable = pgTable(
 export const transactionTable = pgTable("transaction", {
   id: text("id").primaryKey(),
   userId: text("user_id").notNull(),
-  categoryId: text("category_id").references(() => categoryTable.id),
+  categoryId: text("category_id").references(() => categoryTable.id, {
+    onDelete: "set null",
+  }),
   date: timestamp("date").notNull(),
   description: text("description").notNull(),
   amount: integer("amount").notNull(),
