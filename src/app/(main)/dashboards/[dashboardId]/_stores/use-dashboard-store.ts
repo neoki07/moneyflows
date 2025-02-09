@@ -1,4 +1,4 @@
-import { GridStackOptions } from "gridstack";
+import { GridStackOptions, GridStackWidget } from "gridstack";
 import { create } from "zustand";
 
 import { updateDashboard } from "../_actions/update-dashboard";
@@ -19,6 +19,9 @@ type DashboardState = Readonly<{
   };
   getCurrentLayout?: () => GridStackOptions;
   setGetCurrentLayout: (fn: () => GridStackOptions) => void;
+  getCurrentWidgets?: () => GridStackWidget[];
+  setGetCurrentWidgets: (fn: () => GridStackWidget[]) => void;
+
   startEditing: (initialState: { id: string; name: string }) => void;
   cancelEditing: () => void;
   updateDraftName: (name: string) => void;
@@ -35,6 +38,9 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
 
   getCurrentLayout: undefined,
   setGetCurrentLayout: (fn) => set({ getCurrentLayout: fn }),
+
+  getCurrentWidgets: undefined,
+  setGetCurrentWidgets: (fn) => set({ getCurrentWidgets: fn }),
 
   startEditing: (initialState) => {
     set({

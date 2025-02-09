@@ -18,6 +18,7 @@ import { useGridStackContext } from "@/lib/gridstack";
 
 import { useDashboardStore } from "../../_stores/use-dashboard-store";
 import { WidgetAddBar } from "../widget-add-bar";
+import { WidgetListEmpty } from "../widget-list-empty";
 import { BalanceChart } from "../widgets/charts/balance-chart";
 
 const CELL_HEIGHT = 128;
@@ -82,6 +83,10 @@ function EditableWidgetList({ widgets }: WidgetListProps) {
 }
 
 function StaticWidgetList({ widgets }: WidgetListProps) {
+  if (widgets.length === 0) {
+    return <WidgetListEmpty />;
+  }
+
   const options: GridStackOptions = {
     ...defaultGridOptions,
     children: widgets as GridStackWidget[],
@@ -99,17 +104,30 @@ function StaticWidgetList({ widgets }: WidgetListProps) {
 
 function EditableGridStackContent() {
   const { saveOptions } = useGridStackContext();
-  const { setGetCurrentLayout } = useDashboardStore();
+  const { getCurrentWidgets, setGetCurrentLayout, setGetCurrentWidgets } =
+    useDashboardStore();
+
+  const widgets = getCurrentWidgets?.() ?? [];
 
   useEffect(() => {
     setGetCurrentLayout(() => saveOptions() as GridStackOptions);
   }, [setGetCurrentLayout, saveOptions]);
 
+  useEffect(() => {
+    setGetCurrentWidgets(
+      () => (saveOptions() as GridStackOptions).children ?? [],
+    );
+  }, [setGetCurrentWidgets, saveOptions]);
+
   return (
     <>
-      <div className="h-full">
-        <GridStackRender componentMap={COMPONENT_MAP} />
-      </div>
+      {widgets.length > 0 ? (
+        <div className="h-full">
+          <GridStackRender componentMap={COMPONENT_MAP} />
+        </div>
+      ) : (
+        <WidgetListEmpty />
+      )}
       <WidgetAddBar />
     </>
   );
