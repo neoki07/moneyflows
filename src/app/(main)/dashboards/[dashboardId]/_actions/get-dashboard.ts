@@ -20,7 +20,8 @@ export async function getDashboard(id: string) {
       widgets: dashboardTable.widgets,
     })
     .from(dashboardTable)
-    .where(and(eq(dashboardTable.id, id), eq(dashboardTable.userId, userId)));
+    .where(and(eq(dashboardTable.id, id), eq(dashboardTable.userId, userId)))
+    .limit(1);
 
   if (!dashboard) {
     throw new Error("Dashboard not found");

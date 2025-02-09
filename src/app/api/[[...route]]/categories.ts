@@ -1,7 +1,7 @@
 import { getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -38,7 +38,8 @@ export const categories = new Hono()
           eq(categoryTable.userId, auth.userId),
           type ? eq(categoryTable.type, type) : undefined,
         ),
-      );
+      )
+      .orderBy(asc(categoryTable.createdAt));
 
     return c.json({ categories });
   })

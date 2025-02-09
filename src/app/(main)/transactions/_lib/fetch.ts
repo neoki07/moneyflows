@@ -69,7 +69,7 @@ export async function fetchTransactionTableData(
     .from(transactionTable)
     .leftJoin(categoryTable, eq(transactionTable.categoryId, categoryTable.id))
     .where(eq(transactionTable.userId, userId))
-    .orderBy(desc(transactionTable.date))
+    .orderBy(desc(transactionTable.date), desc(transactionTable.createdAt))
     .limit(pageSize)
     .offset(start);
 

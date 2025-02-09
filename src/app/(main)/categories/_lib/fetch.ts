@@ -39,7 +39,7 @@ export async function fetchIncomeCategories(): Promise<IncomeCategory[]> {
     .where(
       and(eq(categoryTable.userId, userId), eq(categoryTable.type, "income")),
     )
-    .orderBy(asc(categoryTable.id));
+    .orderBy(asc(categoryTable.createdAt));
 
   return records.map(toIncomeCategory);
 }
@@ -58,7 +58,7 @@ export async function fetchExpenseCategories(): Promise<ExpenseCategory[]> {
     .where(
       and(eq(categoryTable.userId, userId), eq(categoryTable.type, "expense")),
     )
-    .orderBy(asc(categoryTable.id));
+    .orderBy(asc(categoryTable.createdAt));
 
   return records.map(toExpenseCategory);
 }

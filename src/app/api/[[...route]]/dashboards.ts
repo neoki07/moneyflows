@@ -26,7 +26,8 @@ export const dashboards = new Hono().get("/:dashboardId", async (c) => {
         eq(dashboardTable.userId, auth.userId),
         eq(dashboardTable.id, dashboardId),
       ),
-    );
+    )
+    .limit(1);
 
   if (!dashboard) {
     return c.json({ message: "ダッシュボードが見つかりません" }, 404);

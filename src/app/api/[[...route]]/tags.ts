@@ -1,7 +1,7 @@
 import { getAuth } from "@hono/clerk-auth";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { z } from "zod";
 
@@ -26,7 +26,7 @@ export const tags = new Hono()
       .select()
       .from(tagTable)
       .where(eq(tagTable.userId, auth.userId))
-      .orderBy(tagTable.name);
+      .orderBy(asc(tagTable.createdAt));
 
     return c.json({ tags });
   })

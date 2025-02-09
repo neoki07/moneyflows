@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
@@ -27,7 +27,7 @@ export async function fetchTags() {
     })
     .from(tagTable)
     .where(eq(tagTable.userId, userId))
-    .orderBy(tagTable.name);
+    .orderBy(asc(tagTable.createdAt));
 
   return records.map(toTag);
 }

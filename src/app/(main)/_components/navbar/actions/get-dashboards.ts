@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
@@ -19,7 +19,8 @@ export async function getDashboards() {
       name: dashboardTable.name,
     })
     .from(dashboardTable)
-    .where(eq(dashboardTable.userId, userId));
+    .where(eq(dashboardTable.userId, userId))
+    .orderBy(asc(dashboardTable.createdAt));
 
   return dashboards;
 }
