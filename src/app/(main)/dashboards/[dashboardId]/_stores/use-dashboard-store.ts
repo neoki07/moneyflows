@@ -49,6 +49,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       isEditing: false,
       draft: null,
       isDirty: false,
+      errors: {},
     });
   },
 
@@ -97,8 +98,10 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       });
 
       options?.onSuccess?.();
-    } catch (error) {
-      console.error(error);
+    } catch {
+      set({
+        errors: { name: "このダッシュボード名は既に使用されています" },
+      });
     }
   },
 }));

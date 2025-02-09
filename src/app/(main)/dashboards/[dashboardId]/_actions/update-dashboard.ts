@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, eq, not } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
@@ -21,6 +21,22 @@ export async function updateDashboard({
   const { userId } = await auth();
   if (!userId) {
     redirect("/sign-in");
+  }
+
+  const [existing] = await db
+    .select()
+    .from(dashboardTable)
+    .where(
+      and(
+        eq(dashboardTable.userId, userId),
+        eq(dashboardTable.name, name),
+        not(eq(dashboardTable.id, id)),
+      ),
+    )
+    .limit(1);
+
+  if (existing) {
+    throw new Error("このダッシュボード名は既に使用されています");
   }
 
   await db
