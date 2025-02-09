@@ -21,6 +21,7 @@ export const categoryTable = pgTable(
     userId: text("user_id").notNull(),
     name: text("name").notNull(),
     type: transactionTypeEnum().notNull(),
+    createdAt: timestamp("created_at").notNull(),
   },
   (table) => [unique().on(table.userId, table.name)],
 );
@@ -33,6 +34,7 @@ export const transactionTable = pgTable("transaction", {
   description: text("description").notNull(),
   amount: integer("amount").notNull(),
   type: transactionTypeEnum().notNull(),
+  createdAt: timestamp("created_at").notNull(),
 });
 
 export const tagTable = pgTable(
@@ -41,6 +43,7 @@ export const tagTable = pgTable(
     id: text("id").primaryKey(),
     userId: text("user_id").notNull(),
     name: text("name").notNull(),
+    createdAt: timestamp("created_at").notNull(),
   },
   (table) => [unique().on(table.userId, table.name)],
 );
@@ -54,6 +57,7 @@ export const transactionTagTable = pgTable(
     tagId: text("tag_id")
       .notNull()
       .references(() => tagTable.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull(),
   },
   (table) => [primaryKey({ columns: [table.transactionId, table.tagId] })],
 );
@@ -65,6 +69,7 @@ export const dashboardTable = pgTable(
     userId: text("user_id").notNull(),
     name: text("name").notNull(),
     widgets: jsonb("widgets").notNull().default("[]"),
+    createdAt: timestamp("created_at").notNull(),
   },
   (table) => [unique().on(table.userId, table.name)],
 );

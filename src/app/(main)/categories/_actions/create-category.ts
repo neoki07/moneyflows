@@ -53,9 +53,11 @@ export async function createCategory(
     }
 
     await db.insert(categoryTable).values({
-      ...submission.value,
       id: createId(),
       userId,
+      name: submission.value.name,
+      type: submission.value.type,
+      createdAt: new Date(),
     });
 
     revalidatePath("/categories");

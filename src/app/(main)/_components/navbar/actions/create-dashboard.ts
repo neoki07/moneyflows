@@ -47,9 +47,10 @@ export async function createDashboard(
     }
 
     await db.insert(dashboardTable).values({
-      ...submission.value,
       id: createId(),
       userId,
+      name: submission.value.name,
+      createdAt: new Date(),
     });
 
     revalidatePath("/");

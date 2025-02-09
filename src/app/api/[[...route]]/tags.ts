@@ -43,8 +43,9 @@ export const tags = new Hono()
       .insert(tagTable)
       .values({
         id: createId(),
-        ...input,
         userId: auth.userId,
+        name: input.name,
+        createdAt: new Date(),
       })
       .returning();
 

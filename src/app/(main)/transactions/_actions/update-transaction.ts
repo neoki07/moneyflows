@@ -67,6 +67,7 @@ export async function updateTransaction(
           submission.value.tags.map((tag) => ({
             transactionId: submission.value.id,
             tagId: tag,
+            createdAt: new Date(),
           })),
         );
       }

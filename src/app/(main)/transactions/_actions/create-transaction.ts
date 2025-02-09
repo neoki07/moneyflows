@@ -52,6 +52,7 @@ export async function createTransaction(
           amount: submission.value.amount,
           categoryId: submission.value.category || null,
           type: submission.value.type,
+          createdAt: new Date(),
         })
         .returning();
 
@@ -60,6 +61,7 @@ export async function createTransaction(
           submission.value.tags.map((tag) => ({
             transactionId: transaction.id,
             tagId: tag,
+            createdAt: new Date(),
           })),
         );
       }

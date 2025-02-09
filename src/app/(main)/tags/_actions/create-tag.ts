@@ -47,9 +47,10 @@ export async function createTag(
     }
 
     await db.insert(tagTable).values({
-      ...submission.value,
       id: createId(),
       userId,
+      name: submission.value.name,
+      createdAt: new Date(),
     });
 
     revalidatePath("/tags");

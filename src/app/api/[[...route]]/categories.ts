@@ -70,8 +70,10 @@ export const categories = new Hono()
       .insert(categoryTable)
       .values({
         id: createId(),
-        ...input,
         userId: auth.userId,
+        name: input.name,
+        type: input.type,
+        createdAt: new Date(),
       })
       .returning();
 
