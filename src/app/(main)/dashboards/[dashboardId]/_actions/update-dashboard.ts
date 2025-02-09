@@ -2,7 +2,6 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
@@ -31,6 +30,4 @@ export async function updateDashboard({
       widgets,
     })
     .where(and(eq(dashboardTable.id, id), eq(dashboardTable.userId, userId)));
-
-  revalidatePath(`/dashboards/${id}`);
 }
