@@ -5,12 +5,14 @@ import { handle } from "hono/vercel";
 import { categories } from "./categories";
 import { dashboards } from "./dashboards";
 import { tags } from "./tags";
+import { transactions } from "./transactions";
 
 const app = new Hono().basePath("/api");
 
 app.use("*", clerkMiddleware());
 
 const routes = app
+  .route("/transactions", transactions)
   .route("/categories", categories)
   .route("/tags", tags)
   .route("/dashboards", dashboards);

@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   Bar,
   CartesianGrid,
@@ -8,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import useSWR from "swr";
 
 import {
   ChartContainer,
@@ -20,6 +22,7 @@ import {
   useGridStackContext,
   useGridStackWidgetContext,
 } from "@/lib/gridstack";
+import { api } from "@/lib/hono";
 
 import { ChartWidgetCard } from "../../chart-widget-card";
 
@@ -38,20 +41,16 @@ const chartConfig = {
   },
 };
 
-const mockData = [
-  { month: 1, income: 300000, expense: -250000, balance: 50000 },
-  { month: 2, income: 320000, expense: -240000, balance: 80000 },
-  { month: 3, income: 310000, expense: -260000, balance: 50000 },
-  { month: 4, income: 350000, expense: -270000, balance: 80000 },
-  { month: 5, income: 300000, expense: -240000, balance: 60000 },
-  { month: 6, income: 330000, expense: -280000, balance: 50000 },
-  { month: 7, income: 340000, expense: -260000, balance: 80000 },
-  { month: 8, income: 360000, expense: -290000, balance: 70000 },
-  { month: 9, income: 320000, expense: -250000, balance: 70000 },
-  { month: 10, income: 340000, expense: -260000, balance: 80000 },
-  { month: 11, income: 350000, expense: -270000, balance: 80000 },
-  { month: 12, income: 400000, expense: -300000, balance: 100000 },
-];
+type MonthlyBalance = {
+  month: number;
+  income: number;
+  expense: number;
+  balance: number;
+};
+
+type MonthlyBalanceResponse = {
+  monthlyBalances: MonthlyBalance[];
+};
 
 function yAxisTickFormatter(value: number) {
   const formatter = new Intl.NumberFormat("ja-JP", {
@@ -60,12 +59,16 @@ function yAxisTickFormatter(value: number) {
   return `${formatter.format(value)}円`;
 }
 
-export function BalanceChartContent() {
+type BalanceChartContentProps = {
+  data: MonthlyBalance[];
+};
+
+export function BalanceChartContent({ data }: BalanceChartContentProps) {
   return (
     <ChartContainer config={chartConfig} className="h-full w-full">
       <ComposedChart
         accessibilityLayer
-        data={mockData}
+        data={data}
         margin={{ top: 72 }}
         maxBarSize={48}
         stackOffset="sign"
@@ -127,15 +130,36 @@ export function BalanceChart() {
   const { widget } = useGridStackWidgetContext();
   const { removeWidget } = useGridStackContext();
 
+  const fetcher = async () => {
+    const response = await api.transactions["monthly-balances"].$get();
+    if (!response.ok) {
+      throw new Error("Failed to fetch balance data");
+    }
+    return response.json();
+  };
+
+  const { data, isLoading } = useSWR<MonthlyBalanceResponse>(
+    widget.id,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  );
+
   const handleRemove = () => {
     if (widget.id) {
       removeWidget(widget.id);
     }
   };
 
+  if (isLoading || !data) {
+    return null;
+  }
+
   return (
     <ChartWidgetCard title="月次収支" onRemove={handleRemove}>
-      <BalanceChartContent />
+      <BalanceChartContent data={data.monthlyBalances} />
     </ChartWidgetCard>
   );
 }
