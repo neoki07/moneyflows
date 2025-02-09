@@ -4,6 +4,7 @@ import {
   IconArrowDownRight,
   IconArrowUpRight,
   IconPlus,
+  IconUpload,
 } from "@tabler/icons-react";
 import React, { useActionState, useState } from "react";
 
@@ -18,27 +19,31 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 import { createTransaction } from "../_actions/create-transaction";
+import { ImportFromZaimDialog } from "./import-from-zaim-dialog";
 import { TransactionForm } from "./transaction-form";
 
 export function AddTransactionButton() {
-  const [open, setOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isImportFromZaimDialogOpen, setIsImportFromZaimDialogOpen] =
+    useState(false);
   const [type, setType] = useState<"income" | "expense">("income");
 
   const [state, formAction] = useActionState(createTransaction, undefined);
 
   React.useEffect(() => {
     if (state?.status === "success") {
-      setOpen(false);
+      setIsAddDialogOpen(false);
     }
   }, [state]);
 
   const handleSelect = (selectedType: "income" | "expense") => {
     setType(selectedType);
-    setOpen(true);
+    setIsAddDialogOpen(true);
   };
 
   const handleAction = (formData: FormData) => {
@@ -57,16 +62,21 @@ export function AddTransactionButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => handleSelect("income")}>
-            <IconArrowUpRight className="h-4 w-4" />
+            <IconArrowUpRight />
             収入を追加
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleSelect("expense")}>
-            <IconArrowDownRight className="h-4 w-4" />
+            <IconArrowDownRight />
             支出を追加
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setIsImportFromZaimDialogOpen(true)}>
+            <IconUpload />
+            ZaimのCSVから取り込み
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
@@ -76,6 +86,10 @@ export function AddTransactionButton() {
           {type && <TransactionForm action={handleAction} type={type} />}
         </DialogContent>
       </Dialog>
+      <ImportFromZaimDialog
+        open={isImportFromZaimDialogOpen}
+        onOpenChange={setIsImportFromZaimDialogOpen}
+      />
     </>
   );
 }
