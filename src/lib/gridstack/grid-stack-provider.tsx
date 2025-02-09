@@ -73,12 +73,18 @@ export function GridStackProvider({
 
   const removeWidget = useCallback(
     (id: string) => {
-      gridStack?.removeWidget(id);
-      setRawWidgetMetaMap((prev) => {
-        const newMap = new Map<string, GridStackWidget>(prev);
-        newMap.delete(id);
-        return newMap;
-      });
+      const node = gridStack
+        ?.getGridItems()
+        ?.find((item) => item.gridstackNode?.id === id);
+
+      if (node) {
+        gridStack?.removeWidget(node);
+        setRawWidgetMetaMap((prev) => {
+          const newMap = new Map<string, GridStackWidget>(prev);
+          newMap.delete(id);
+          return newMap;
+        });
+      }
     },
     [gridStack],
   );
