@@ -6,15 +6,9 @@ import {
   IconPlus,
   IconUpload,
 } from "@tabler/icons-react";
-import React, { useActionState, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,9 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { createTransaction } from "../_actions/create-transaction";
+import { AddTransactionDialog } from "./add-transaction-dialog";
 import { ImportFromZaimDialog } from "./import-from-zaim-dialog";
-import { TransactionForm } from "./transaction-form";
 
 export function AddTransactionButton() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -33,22 +26,9 @@ export function AddTransactionButton() {
     useState(false);
   const [type, setType] = useState<"income" | "expense">("income");
 
-  const [state, formAction] = useActionState(createTransaction, undefined);
-
-  React.useEffect(() => {
-    if (state?.status === "success") {
-      setIsAddDialogOpen(false);
-    }
-  }, [state]);
-
   const handleSelect = (selectedType: "income" | "expense") => {
     setType(selectedType);
     setIsAddDialogOpen(true);
-  };
-
-  const handleAction = (formData: FormData) => {
-    formData.set("type", type);
-    return formAction(formData);
   };
 
   return (
@@ -76,16 +56,12 @@ export function AddTransactionButton() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {type === "income" ? "収入" : "支出"}を追加
-            </DialogTitle>
-          </DialogHeader>
-          {type && <TransactionForm action={handleAction} type={type} />}
-        </DialogContent>
-      </Dialog>
+
+      <AddTransactionDialog
+        open={isAddDialogOpen}
+        onOpenChange={setIsAddDialogOpen}
+        type={type}
+      />
       <ImportFromZaimDialog
         open={isImportFromZaimDialogOpen}
         onOpenChange={setIsImportFromZaimDialogOpen}
