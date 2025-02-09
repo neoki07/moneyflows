@@ -3,6 +3,10 @@ import { create } from "zustand";
 
 import { updateDashboard } from "../_actions/update-dashboard";
 
+type SaveOptions = {
+  onSuccess?: () => void;
+};
+
 type DashboardState = Readonly<{
   draft: {
     id: string;
@@ -19,7 +23,7 @@ type DashboardState = Readonly<{
   cancelEditing: () => void;
   updateDraftName: (name: string) => void;
   validate: () => boolean;
-  save: () => Promise<void>;
+  save: (options?: SaveOptions) => Promise<void>;
 }>;
 
 export const useDashboardStore = create<DashboardState>((set, get) => ({
@@ -70,24 +74,31 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     return Object.keys(errors).length === 0;
   },
 
-  save: async () => {
+  save: async (options) => {
     const { draft, validate, getCurrentLayout } = get();
     if (!draft || !getCurrentLayout) return;
 
     if (!validate()) return;
 
     const currentLayout = getCurrentLayout();
-    await updateDashboard({
-      id: draft.id,
-      name: draft.name,
-      widgets: currentLayout.children ?? [],
-    });
 
-    set({
-      isEditing: false,
-      draft: null,
-      isDirty: false,
-      errors: {},
-    });
+    try {
+      await updateDashboard({
+        id: draft.id,
+        name: draft.name,
+        widgets: currentLayout.children ?? [],
+      });
+
+      set({
+        isEditing: false,
+        draft: null,
+        isDirty: false,
+        errors: {},
+      });
+
+      options?.onSuccess?.();
+    } catch (error) {
+      console.error(error);
+    }
   },
 }));

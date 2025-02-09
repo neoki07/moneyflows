@@ -15,8 +15,11 @@ export function EditButtons({ dashboard, disabled }: EditButtonsProps) {
   const { isEditing, startEditing, cancelEditing, save } = useDashboardStore();
 
   const handleSave = async () => {
-    await save();
-    mutate(["dashboard", dashboard.id]);
+    save({
+      onSuccess: () => {
+        mutate(["dashboard", dashboard.id]);
+      },
+    });
   };
 
   if (isEditing) {
