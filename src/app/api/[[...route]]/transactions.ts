@@ -16,9 +16,17 @@ export const transactions = new Hono()
 
     const result = await db
       .select({
-        month: sql<string>`to_char(${transactionTable.date}, 'YYYY-MM')`,
-        income: sql<number>`sum(case when type = 'income' then amount else 0 end)`,
-        expense: sql<number>`sum(case when type = 'expense' then amount else 0 end)`,
+        month: sql`to_char(${transactionTable.date}, 'YYYY-MM')`.mapWith(
+          String,
+        ),
+        income:
+          sql`sum(case when type = 'income' then amount else 0 end)`.mapWith(
+            Number,
+          ),
+        expense:
+          sql`sum(case when type = 'expense' then amount else 0 end)`.mapWith(
+            Number,
+          ),
       })
       .from(transactionTable)
       .where(
