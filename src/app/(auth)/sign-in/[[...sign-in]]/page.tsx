@@ -9,16 +9,5 @@ export default async function SignInPage() {
     redirect("/");
   }
 
-  return (
-    <SignIn
-      appearance={{
-        elements: {
-          rootBox: "w-full",
-          card: "shadow-none p-0",
-          header: "hidden",
-          footer: "hidden",
-        },
-      }}
-    />
-  );
+  return <SignIn />;
 }
