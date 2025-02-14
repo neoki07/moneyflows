@@ -13,7 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc",
-    "test:e2e": "playwright test",
+    "test:e2e": "bun --env-file=.env.test playwright test",
     "quality": "bun format:check && npm run lint && npm run typecheck",
     "postinstall": "lefthook install && playwright install"
   },
@@ -63,11 +63,13 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@clerk/testing": "^1.4.22",
     "@dotenvx/dotenvx": "^1.34.0",
     "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.19.0",
     "@playwright/test": "^1.50.1",
     "@tailwindcss/postcss": "^4.0.0",
+    "@testcontainers/postgresql": "^10.18.0",
     "@types/node": "^22",
     "@types/papaparse": "^5.3.15",
     "@types/react": "^19",
