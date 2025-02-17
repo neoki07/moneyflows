@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { and, count, desc, eq, inArray } from "drizzle-orm";
+import { and, count, desc, eq, ilike, inArray, or } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/db";
@@ -46,6 +46,7 @@ function toTransaction(
 export async function fetchTransactionTableData(
   page: number,
   pageSize: number,
+  query?: string,
 ): Promise<TransactionTableData> {
   const { userId } = await auth();
   if (!userId) {
@@ -53,6 +54,17 @@ export async function fetchTransactionTableData(
   }
 
   const start = (page - 1) * pageSize;
+
+  const buildSearchCondition = (query: string) =>
+    or(
+      ilike(transactionTable.description, `%${query}%`),
+      ilike(categoryTable.name, `%${query}%`),
+    );
+
+  const whereConditions = and(
+    eq(transactionTable.userId, userId),
+    query ? buildSearchCondition(query) : undefined,
+  );
 
   const transactions = await db
     .select({
@@ -68,7 +80,7 @@ export async function fetchTransactionTableData(
     })
     .from(transactionTable)
     .leftJoin(categoryTable, eq(transactionTable.categoryId, categoryTable.id))
-    .where(eq(transactionTable.userId, userId))
+    .where(whereConditions)
     .orderBy(desc(transactionTable.date), desc(transactionTable.createdAt))
     .limit(pageSize)
     .offset(start);
@@ -99,7 +111,8 @@ export async function fetchTransactionTableData(
   const [{ totalCount }] = await db
     .select({ totalCount: count() })
     .from(transactionTable)
-    .where(eq(transactionTable.userId, userId));
+    .leftJoin(categoryTable, eq(transactionTable.categoryId, categoryTable.id))
+    .where(whereConditions);
 
   return {
     transactions: transactionsWithTags.map(toTransaction),

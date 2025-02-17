@@ -9,7 +9,7 @@ type TransactionTableProps = {
 export async function TransactionTable({
   searchParams,
 }: TransactionTableProps) {
-  const { page: pageString } = await searchParams;
+  const { page: pageString, q: query } = await searchParams;
 
   const page = Number.isInteger(Number(pageString)) ? Number(pageString) : 1;
   const pageSize = 10;
@@ -17,6 +17,7 @@ export async function TransactionTable({
   const { transactions, pagination } = await fetchTransactionTableData(
     page,
     pageSize,
+    typeof query === "string" ? query : undefined,
   );
 
   return (
