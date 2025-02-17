@@ -3,6 +3,8 @@ import { format } from "date-fns";
 
 import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import { Checkbox } from "@/components/ui/checkbox";
+import { formatAmount } from "@/lib/amount";
+import { cn } from "@/lib/utils";
 
 import { RowActions } from "../components/row-actions";
 
@@ -43,6 +45,23 @@ export const columns = [
   {
     accessorKey: "amount",
     header: "金額",
+    cell: ({ row }) => {
+      const amount =
+        row.original.type === "expense"
+          ? -row.original.amount
+          : row.original.amount;
+      return (
+        <span
+          className={cn(
+            row.original.type === "expense"
+              ? "text-red-500"
+              : "text-emerald-500",
+          )}
+        >
+          {formatAmount(amount)}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "category",
