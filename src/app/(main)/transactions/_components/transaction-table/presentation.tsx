@@ -57,8 +57,8 @@ export function TransactionTablePresenter({
     console.log("Edit selected rows", table.getSelectedRowModel().rows);
   };
 
-  const handleDelete = () => {
-    console.log("Delete selected rows", table.getSelectedRowModel().rows);
+  const handleDeleteSuccess = () => {
+    setRowSelection({});
   };
 
   return (
@@ -127,9 +127,11 @@ export function TransactionTablePresenter({
         </div>
       )}
       <BulkActionBar
-        selectedCount={table.getSelectedRowModel().rows.length}
+        selectedTransactions={table
+          .getSelectedRowModel()
+          .rows.map((row) => row.original)}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onDeleteSuccess={handleDeleteSuccess}
       />
     </div>
   );
