@@ -28,6 +28,7 @@ export const columns = [
         aria-label="Select row"
       />
     ),
+    size: 32,
     enableSorting: false,
     enableHiding: false,
   },
