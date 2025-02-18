@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Transaction } from "@/app/(main)/transactions/_lib/types";
 import {
@@ -37,6 +37,10 @@ export function TransactionTablePresenter({
 }: TransactionTablePresenterProps) {
   const [rowSelection, setRowSelection] = useState({});
 
+  useEffect(() => {
+    setRowSelection({});
+  }, [currentPage]);
+
   const table = useReactTable({
     data: data as Transaction[],
     columns,
@@ -59,7 +63,7 @@ export function TransactionTablePresenter({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border">
+      <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -104,7 +108,7 @@ export function TransactionTablePresenter({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-48 text-center"
+                  className="h-32 text-center"
                 >
                   データがありません
                 </TableCell>
