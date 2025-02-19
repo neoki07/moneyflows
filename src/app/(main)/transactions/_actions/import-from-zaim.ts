@@ -98,7 +98,7 @@ export async function importFromZaim(
       categoriesWithType.map(({ originalName, type }) => {
         const name =
           originalName === "その他"
-            ? `その他（${type === "income" ? "収入" : "支出"}）`
+            ? `その他${type === "income" ? "収入" : "支出"}`
             : originalName;
         return [name, { name, type }];
       }),
@@ -169,7 +169,7 @@ export async function importFromZaim(
       const transactionsWithTags = filteredResult.map((row) => {
         const categoryName =
           row.カテゴリ === "その他"
-            ? `その他（${row.方法 === "income" ? "収入" : "支出"}）`
+            ? `その他${row.方法 === "income" ? "収入" : "支出"}`
             : row.カテゴリ;
 
         return {
