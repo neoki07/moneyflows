@@ -86,22 +86,39 @@ export async function importFromZaim(
     .filter((row) => row.方法 !== "balance")
     .filter((row) => row.集計の設定 === "常に集計に含める");
 
+  const categoriesWithType = filteredResult
+    .map((row) => ({
+      originalName: row.カテゴリ,
+      type: row.方法 === "income" ? ("income" as const) : ("expense" as const),
+    }))
+    .filter(({ originalName }) => originalName !== "-");
+
   const uniqueCategories = [
-    ...new Set(filteredResult.map((row) => row.カテゴリ)),
+    ...new Map(
+      categoriesWithType.map(({ originalName, type }) => {
+        const name =
+          originalName === "その他"
+            ? `その他（${type === "income" ? "収入" : "支出"}）`
+            : originalName;
+        return [name, { name, type }];
+      }),
+    ).values(),
   ];
+
   const uniqueTags = [
     ...new Set(filteredResult.map((row) => row.カテゴリの内訳)),
-  ];
+  ].filter((tag) => tag !== "-");
 
   try {
     await db.transaction(async (tx) => {
-      const categoryInsertValues = uniqueCategories.map((categoryName) => ({
+      const categoryInsertValues = uniqueCategories.map(({ name, type }) => ({
         id: createId(),
         userId,
-        name: categoryName,
-        type: "expense" as const,
+        name,
+        type,
         createdAt: new Date(),
       }));
+
       const categories = await tx
         .insert(categoryTable)
         .values(categoryInsertValues)
@@ -126,7 +143,10 @@ export async function importFromZaim(
         .where(
           and(
             eq(categoryTable.userId, userId),
-            inArray(categoryTable.name, uniqueCategories),
+            inArray(
+              categoryTable.name,
+              uniqueCategories.map(({ name }) => name),
+            ),
           ),
         );
       const existingTags = await tx
@@ -146,27 +166,39 @@ export async function importFromZaim(
         [...tags, ...existingTags].map((tag) => [tag.name, tag.id]),
       );
 
-      const transactionsWithTags = filteredResult.map((row) => ({
-        transaction: {
-          id: createId(),
-          userId,
-          date: new Date(row.日付),
-          amount: row.方法 === "income" ? row.収入 : row.支出,
-          type:
-            row.方法 === "income"
-              ? "income"
-              : ("expense" as "income" | "expense"),
-          description: row.お店,
-          categoryId: categoryMap.get(row.カテゴリ) ?? null,
-          createdAt: new Date(),
-        },
-        tagId: tagMap.get(row.カテゴリの内訳),
-      }));
+      const transactionsWithTags = filteredResult.map((row) => {
+        const categoryName =
+          row.カテゴリ === "その他"
+            ? `その他（${row.方法 === "income" ? "収入" : "支出"}）`
+            : row.カテゴリ;
+
+        return {
+          transaction: {
+            id: createId(),
+            userId,
+            date: new Date(row.日付),
+            amount: row.方法 === "income" ? row.収入 : row.支出,
+            type:
+              row.方法 === "income"
+                ? "income"
+                : ("expense" as "income" | "expense"),
+            description: row.お店,
+            categoryId:
+              row.カテゴリ !== "-"
+                ? (categoryMap.get(categoryName) ?? null)
+                : null,
+            createdAt: new Date(),
+          },
+          tagId:
+            row.カテゴリの内訳 !== "-" ? tagMap.get(row.カテゴリの内訳) : null,
+        };
+      });
 
       const transactions = await tx
         .insert(transactionTable)
         .values(transactionsWithTags.map((item) => item.transaction))
         .returning();
+      console.log({ transactions });
 
       const transactionTagInsertValues = transactionsWithTags
         .map((item, index) => {
