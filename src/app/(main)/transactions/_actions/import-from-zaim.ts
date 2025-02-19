@@ -4,13 +4,19 @@ import { auth } from "@clerk/nextjs/server";
 import { SubmissionResult } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { createId } from "@paralleldrive/cuid2";
+import { and, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Papa from "papaparse";
 import { z } from "zod";
 
 import { db } from "@/db";
-import { transactionTable } from "@/db/schema";
+import {
+  categoryTable,
+  tagTable,
+  transactionTable,
+  transactionTagTable,
+} from "@/db/schema";
 
 const schema = z.object({
   file: z.array(z.instanceof(File)),
@@ -79,19 +85,105 @@ export async function importFromZaim(
   const filteredResult = parsedResult.data
     .filter((row) => row.方法 !== "balance")
     .filter((row) => row.集計の設定 === "常に集計に含める");
-  const insertValues = filteredResult.map((row) => ({
-    id: createId(),
-    userId,
-    date: new Date(row.日付),
-    amount: row.方法 === "income" ? row.収入 : row.支出,
-    type:
-      row.方法 === "income" ? "income" : ("expense" as "income" | "expense"),
-    description: row.お店,
-    createdAt: new Date(),
-  }));
+
+  const uniqueCategories = [
+    ...new Set(filteredResult.map((row) => row.カテゴリ)),
+  ];
+  const uniqueTags = [
+    ...new Set(filteredResult.map((row) => row.カテゴリの内訳)),
+  ];
 
   try {
-    await db.insert(transactionTable).values(insertValues).returning();
+    await db.transaction(async (tx) => {
+      const categoryInsertValues = uniqueCategories.map((categoryName) => ({
+        id: createId(),
+        userId,
+        name: categoryName,
+        type: "expense" as const,
+        createdAt: new Date(),
+      }));
+      const categories = await tx
+        .insert(categoryTable)
+        .values(categoryInsertValues)
+        .onConflictDoNothing()
+        .returning();
+
+      const tagInsertValues = uniqueTags.map((tagName) => ({
+        id: createId(),
+        userId,
+        name: tagName,
+        createdAt: new Date(),
+      }));
+      const tags = await tx
+        .insert(tagTable)
+        .values(tagInsertValues)
+        .onConflictDoNothing()
+        .returning();
+
+      const existingCategories = await tx
+        .select()
+        .from(categoryTable)
+        .where(
+          and(
+            eq(categoryTable.userId, userId),
+            inArray(categoryTable.name, uniqueCategories),
+          ),
+        );
+      const existingTags = await tx
+        .select()
+        .from(tagTable)
+        .where(
+          and(eq(tagTable.userId, userId), inArray(tagTable.name, uniqueTags)),
+        );
+
+      const categoryMap = new Map(
+        [...categories, ...existingCategories].map((category) => [
+          category.name,
+          category.id,
+        ]),
+      );
+      const tagMap = new Map(
+        [...tags, ...existingTags].map((tag) => [tag.name, tag.id]),
+      );
+
+      const transactionsWithTags = filteredResult.map((row) => ({
+        transaction: {
+          id: createId(),
+          userId,
+          date: new Date(row.日付),
+          amount: row.方法 === "income" ? row.収入 : row.支出,
+          type:
+            row.方法 === "income"
+              ? "income"
+              : ("expense" as "income" | "expense"),
+          description: row.お店,
+          categoryId: categoryMap.get(row.カテゴリ) ?? null,
+          createdAt: new Date(),
+        },
+        tagId: tagMap.get(row.カテゴリの内訳),
+      }));
+
+      const transactions = await tx
+        .insert(transactionTable)
+        .values(transactionsWithTags.map((item) => item.transaction))
+        .returning();
+
+      const transactionTagInsertValues = transactionsWithTags
+        .map((item, index) => {
+          if (!item.tagId) return null;
+
+          return {
+            transactionId: transactions[index].id,
+            tagId: item.tagId,
+            createdAt: new Date(),
+          };
+        })
+        .filter((item): item is NonNullable<typeof item> => item !== null);
+
+      if (transactionTagInsertValues.length > 0) {
+        await tx.insert(transactionTagTable).values(transactionTagInsertValues);
+      }
+    });
 
     revalidatePath("/transactions");
 
@@ -100,7 +192,7 @@ export async function importFromZaim(
     console.error(error);
 
     return submission.reply({
-      formErrors: ["収支の作成に失敗しました"],
+      formErrors: ["データの作成に失敗しました"],
     });
   }
 }
