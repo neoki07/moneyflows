@@ -50,7 +50,7 @@ export function BulkActionBar({
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            className="fixed top-1 left-[45%] z-50 flex w-[30rem] items-center gap-6 rounded-xl border bg-white p-3 shadow-lg"
+            className="fixed top-5 left-1/2 z-50 flex w-full max-w-xl -translate-x-1/2 items-center gap-6 rounded-xl border bg-white p-3 shadow-lg"
           >
             <p className="flex-1 pl-2 text-sm font-medium text-slate-700">
               <span className="mr-0.5 font-semibold">{selectedCount}</span>
