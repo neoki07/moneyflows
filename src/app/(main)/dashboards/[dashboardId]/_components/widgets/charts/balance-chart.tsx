@@ -24,6 +24,7 @@ import {
 } from "@/lib/gridstack";
 import { api } from "@/lib/hono";
 
+import { useDateStore } from "../../../../_stores/use-date-store";
 import { ChartWidgetCard } from "../../chart-widget-card";
 
 const chartConfig = {
@@ -129,9 +130,27 @@ export function BalanceChartContent({ data }: BalanceChartContentProps) {
 export function BalanceChart() {
   const { widget } = useGridStackWidgetContext();
   const { removeWidget } = useGridStackContext();
+  const { date } = useDateStore();
 
   const fetcher = async () => {
-    const response = await api.transactions["monthly-balances"].$get();
+    if (!date) {
+      return { monthlyBalances: [] };
+    }
+
+    const formatYearMonth = (date: Date) => {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    };
+
+    const endMonth = new Date(date);
+    const startMonth = new Date(date);
+    startMonth.setMonth(startMonth.getMonth() - 11);
+
+    const response = await api.transactions["monthly-balances"].$get({
+      query: {
+        startMonth: formatYearMonth(startMonth),
+        endMonth: formatYearMonth(endMonth),
+      },
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch balance data");
     }
@@ -139,7 +158,7 @@ export function BalanceChart() {
   };
 
   const { data, isLoading } = useSWR<MonthlyBalanceResponse>(
-    widget.id,
+    [widget.id, date?.toISOString()],
     fetcher,
     {
       revalidateOnFocus: false,

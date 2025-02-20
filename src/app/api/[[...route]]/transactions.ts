@@ -14,6 +14,20 @@ export const transactions = new Hono()
       return c.json({ message: "ログインしてください" }, 401);
     }
 
+    const { startMonth, endMonth } = c.req.query();
+    if (!startMonth || !endMonth) {
+      return c.json({ message: "開始月と終了月を指定してください" }, 400);
+    }
+
+    // YYYY-MM形式のバリデーション
+    const yearMonthPattern = /^\d{4}-(?:0[1-9]|1[0-2])$/;
+    if (
+      !yearMonthPattern.test(startMonth) ||
+      !yearMonthPattern.test(endMonth)
+    ) {
+      return c.json({ message: "月の形式が正しくありません（YYYY-MM）" }, 400);
+    }
+
     const result = await db
       .select({
         month: sql`to_char(${transactionTable.date}, 'YYYY-MM')`.mapWith(
@@ -32,7 +46,8 @@ export const transactions = new Hono()
       .where(
         and(
           eq(transactionTable.userId, auth.userId),
-          sql`${transactionTable.date} >= date_trunc('month', current_date - interval '11 months')`,
+          sql`${transactionTable.date} >= to_date(${startMonth}, 'YYYY-MM')`,
+          sql`${transactionTable.date} < to_date(${endMonth}, 'YYYY-MM') + interval '1 month'`,
         ),
       )
       .groupBy(sql`to_char(${transactionTable.date}, 'YYYY-MM')`)
