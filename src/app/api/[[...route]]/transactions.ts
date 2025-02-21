@@ -14,12 +14,12 @@ export const transactions = new Hono()
       return c.json({ message: "ログインしてください" }, 401);
     }
 
-    const { startMonth, endMonth } = c.req.query();
+    const { startMonth, endMonth, incomeCategories, expenseCategories } =
+      c.req.query();
     if (!startMonth || !endMonth) {
       return c.json({ message: "開始月と終了月を指定してください" }, 400);
     }
 
-    // YYYY-MM形式のバリデーション
     const yearMonthPattern = /^\d{4}-(?:0[1-9]|1[0-2])$/;
     if (
       !yearMonthPattern.test(startMonth) ||
@@ -28,19 +28,28 @@ export const transactions = new Hono()
       return c.json({ message: "月の形式が正しくありません（YYYY-MM）" }, 400);
     }
 
+    const incomeCategoryIds = incomeCategories
+      ? incomeCategories.split(",").filter(Boolean)
+      : [];
+    const expenseCategoryIds = expenseCategories
+      ? expenseCategories.split(",").filter(Boolean)
+      : [];
+
     const result = await db
       .select({
         month: sql`to_char(${transactionTable.date}, 'YYYY-MM')`.mapWith(
           String,
         ),
-        income:
-          sql`sum(case when type = 'income' then amount else 0 end)`.mapWith(
-            Number,
-          ),
-        expense:
-          sql`sum(case when type = 'expense' then amount else 0 end)`.mapWith(
-            Number,
-          ),
+        income: sql`sum(case when type = 'income' ${
+          incomeCategoryIds.length > 0
+            ? sql`and category_id in (${sql.join(incomeCategoryIds, ",")})`
+            : sql``
+        } then amount else 0 end)`.mapWith(Number),
+        expense: sql`sum(case when type = 'expense' ${
+          expenseCategoryIds.length > 0
+            ? sql`and category_id in (${sql.join(expenseCategoryIds, ",")})`
+            : sql``
+        } then amount else 0 end)`.mapWith(Number),
       })
       .from(transactionTable)
       .where(

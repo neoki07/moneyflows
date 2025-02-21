@@ -53,6 +53,11 @@ type MonthlyBalanceResponse = {
   monthlyBalances: MonthlyBalance[];
 };
 
+type BalanceChartProps = {
+  incomeCategories?: string[];
+  expenseCategories?: string[];
+};
+
 function yAxisTickFormatter(value: number) {
   const formatter = new Intl.NumberFormat("ja-JP", {
     notation: "compact",
@@ -127,7 +132,10 @@ export function BalanceChartContent({ data }: BalanceChartContentProps) {
   );
 }
 
-export function BalanceChart() {
+export function BalanceChart({
+  incomeCategories = [],
+  expenseCategories = [],
+}: BalanceChartProps) {
   const { widget } = useGridStackWidgetContext();
   const { removeWidget } = useGridStackContext();
   const { date } = useDateStore();
@@ -149,6 +157,8 @@ export function BalanceChart() {
       query: {
         startMonth: formatYearMonth(startMonth),
         endMonth: formatYearMonth(endMonth),
+        incomeCategories: incomeCategories.join(","),
+        expenseCategories: expenseCategories.join(","),
       },
     });
     if (!response.ok) {
@@ -158,7 +168,12 @@ export function BalanceChart() {
   };
 
   const { data, isLoading } = useSWR<MonthlyBalanceResponse>(
-    [widget.id, date?.toISOString()],
+    [
+      widget.id,
+      date?.toISOString(),
+      incomeCategories.join(","),
+      expenseCategories.join(","),
+    ],
     fetcher,
     {
       revalidateOnFocus: false,
