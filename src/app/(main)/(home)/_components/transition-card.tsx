@@ -1,5 +1,6 @@
 "use client";
 
+import { format, subMonths } from "date-fns";
 import useSWR from "swr";
 
 import { BalanceChartContent } from "@/app/(main)/dashboards/[dashboardId]/_components/widgets/charts/balance-chart";
@@ -19,7 +20,16 @@ type MonthlyBalanceResponse = {
 
 export function TransitionCard() {
   const fetcher = async () => {
-    const response = await api.transactions["monthly-balances"].$get();
+    const now = new Date();
+    const startMonth = format(subMonths(now, 11), "yyyy-MM");
+    const endMonth = format(now, "yyyy-MM");
+
+    const response = await api.transactions["monthly-balances"].$get({
+      query: {
+        startMonth,
+        endMonth,
+      },
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch balance data");
     }
