@@ -30,6 +30,7 @@ export const AddTransactionDialog = ({
   }, [state, onOpenChange]);
 
   const handleAction = (formData: FormData) => {
+    console.log("formData.tags", formData.get("tags"));
     formAction(formData);
   };
 

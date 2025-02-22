@@ -20,19 +20,19 @@ export type MultiSelectOption = {
 };
 
 type MultiSelectProps = {
-  value?: MultiSelectOption[];
+  value?: string[];
   options: MultiSelectOption[];
   placeholder?: string;
   disabled?: boolean;
   className?: string;
   emptyIndicator?: React.ReactNode;
-  onChange?: (options: MultiSelectOption[]) => void;
+  onChange?: (values: string[]) => void;
   onCreate?: (inputValue: string) => Promise<MultiSelectOption>;
   isLoading?: boolean;
 };
 
 export type MultiSelectRef = {
-  selectedValue: MultiSelectOption[];
+  selectedValue: string[];
   input: HTMLInputElement;
   focus: () => void;
   reset: () => void;
@@ -57,9 +57,11 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
     const [open, setOpen] = React.useState(false);
 
     const [selected, setSelected] = React.useState<MultiSelectOption[]>(
-      value ?? [],
+      value ? options.filter((opt) => value.includes(opt.value)) : [],
     );
-    const selectedRef = React.useRef<MultiSelectOption[]>(value ?? []);
+    const selectedRef = React.useRef<MultiSelectOption[]>(
+      value ? options.filter((opt) => value.includes(opt.value)) : [],
+    );
     const [inputValue, setInputValue] = React.useState("");
 
     const updateSelected = (option?: MultiSelectOption) => {
@@ -71,9 +73,7 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
 
     React.useEffect(() => {
       if (value) {
-        const filtered = options.filter((opt) =>
-          value.some((v) => v.value === opt.value),
-        );
+        const filtered = options.filter((opt) => value.includes(opt.value));
         setSelected(filtered);
       }
     }, [value, options]);
@@ -81,7 +81,7 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
     React.useImperativeHandle(
       ref,
       () => ({
-        selectedValue: [...selected],
+        selectedValue: selected.map((opt) => opt.value),
         input: inputRef.current!,
         focus: () => inputRef?.current?.focus(),
         reset: () => setSelected([]),
@@ -94,7 +94,7 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
         const newOptions = selected.filter((s) => s.value !== option.value);
         selectedRef.current = newOptions;
         setSelected(newOptions);
-        onChange?.(newOptions);
+        onChange?.(newOptions.map((opt) => opt.value));
       },
       [onChange, selected],
     );
@@ -156,14 +156,14 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 const newOption = await onCreate(value);
                 const newOptions = [...selected, newOption];
                 setSelected(newOptions);
-                onChange?.(newOptions);
+                onChange?.(newOptions.map((opt) => opt.value));
               } catch (error) {
                 console.error("Failed to create option:", error);
               }
             } else {
               const newOptions = [...selected, { value, label: value }];
               setSelected(newOptions);
-              onChange?.(newOptions);
+              onChange?.(newOptions.map((opt) => opt.value));
             }
             setInputValue("");
           }}
@@ -277,7 +277,7 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                             const newOptions = [...selected, option];
                             setInputValue("");
                             updateSelected(option);
-                            onChange?.(newOptions);
+                            onChange?.(newOptions.map((opt) => opt.value));
                           }}
                           className="cursor-pointer"
                         >

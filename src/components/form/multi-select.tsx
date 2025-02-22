@@ -23,6 +23,7 @@ const FormMultiSelect = forwardRef<MultiSelectRef, FormMultiSelectProps>(
     const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputControl(field);
     const values = (control.value ?? []) as string[];
+    console.log("values", values);
 
     return (
       <div>
@@ -37,12 +38,12 @@ const FormMultiSelect = forwardRef<MultiSelectRef, FormMultiSelectProps>(
         <MultiSelect
           key={values.join(",")}
           ref={ref}
-          value={options.filter((opt) => values.includes(opt.value))}
+          value={values}
           options={options}
           isLoading={isLoading}
           onCreate={onCreate}
-          onChange={(selectedOptions) => {
-            control.change(selectedOptions?.map((opt) => opt.value) ?? []);
+          onChange={(selectedValues) => {
+            control.change(selectedValues);
           }}
           {...props}
         />
