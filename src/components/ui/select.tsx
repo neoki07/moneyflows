@@ -19,19 +19,19 @@ export type SelectOption = {
 };
 
 type SelectProps = {
-  value?: SelectOption;
+  value?: string;
   options: SelectOption[];
   placeholder?: string;
   disabled?: boolean;
   className?: string;
   emptyIndicator?: React.ReactNode;
-  onChange?: (option: SelectOption | undefined) => void;
+  onChange?: (value: string | undefined) => void;
   onCreate?: (value: string) => Promise<SelectOption>;
   isLoading?: boolean;
 };
 
 export type SelectRef = {
-  selectedValue: SelectOption | undefined;
+  selectedValue: string | undefined;
   input: HTMLInputElement;
   focus: () => void;
   reset: () => void;
@@ -55,24 +55,24 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [open, setOpen] = React.useState(false);
     const [selected, setSelected] = React.useState<SelectOption | undefined>(
-      value,
+      value ? options.find((opt) => opt.value === value) : undefined,
     );
-    const [inputValue, setInputValue] = React.useState(value?.label ?? "");
+    const [inputValue, setInputValue] = React.useState(selected?.label ?? "");
 
     React.useEffect(() => {
-      if (value?.value) {
-        const option = options.find((opt) => opt.value === value.value);
+      if (value) {
+        const option = options.find((opt) => opt.value === value);
         if (option) {
           setInputValue(option.label);
           setSelected(option);
         }
       }
-    }, [value?.value, options]);
+    }, [value, options]);
 
     React.useImperativeHandle(
       ref,
       () => ({
-        selectedValue: selected,
+        selectedValue: selected?.value,
         input: inputRef.current!,
         focus: () => inputRef?.current?.focus(),
         reset: () => setSelected(undefined),
@@ -110,14 +110,14 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
               try {
                 const newOption = await onCreate(value);
                 setSelected(newOption);
-                onChange?.(newOption);
+                onChange?.(newOption.value);
               } catch (error) {
                 console.error("Failed to create option:", error);
               }
             } else {
               const newOption = { value, label: value };
               setSelected(newOption);
-              onChange?.(newOption);
+              onChange?.(newOption.value);
             }
             setInputValue("");
             setOpen(false);
@@ -206,7 +206,7 @@ const Select = React.forwardRef<SelectRef, SelectProps>(
                           }}
                           onSelect={() => {
                             setSelected(option);
-                            onChange?.(option);
+                            onChange?.(option.value);
                             setInputValue("");
                             setOpen(false);
                           }}

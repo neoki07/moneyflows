@@ -22,26 +22,27 @@ const FormSelect = forwardRef<SelectRef, FormSelectProps>(
   ({ field, options, isLoading, onCreate, ...props }, ref) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputControl(field);
+    const value = (control.value ?? undefined) as string | undefined;
 
     return (
       <div>
         <input
           ref={inputRef}
           name={field.name}
-          value={control.value ?? ""}
+          value={value ?? ""}
           className="sr-only"
           tabIndex={-1}
           readOnly
         />
         <Select
-          key={control.value?.toString()}
+          key={value}
           ref={ref}
-          value={options.find((opt) => opt.value === control.value)}
+          value={value}
           options={options}
           isLoading={isLoading}
           onCreate={onCreate}
-          onChange={(option) => {
-            control.change(option?.value ?? "");
+          onChange={(value) => {
+            control.change(value ?? "");
           }}
           {...props}
         />
