@@ -13,7 +13,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc",
-    "test:e2e": "bun --env-file=.env.test playwright test",
+    "test:e2e": "bun --env-file=.env.e2e playwright test",
+    "test:e2e:up": "docker compose -f e2e/docker-compose.e2e.yml up -d",
+    "test:e2e:down": "docker compose -f e2e/docker-compose.e2e.yml down",
     "quality": "bun format:check && npm run lint && npm run typecheck",
     "postinstall": "lefthook install && playwright install"
   },
