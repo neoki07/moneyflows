@@ -23,7 +23,6 @@ const FormMultiSelect = forwardRef<MultiSelectRef, FormMultiSelectProps>(
     const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputControl(field);
     const values = (control.value ?? []) as string[];
-    console.log("values", values);
 
     return (
       <div>
