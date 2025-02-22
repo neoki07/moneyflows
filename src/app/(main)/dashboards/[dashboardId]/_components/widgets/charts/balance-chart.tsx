@@ -24,7 +24,7 @@ import {
 } from "@/lib/gridstack";
 import { api } from "@/lib/hono";
 
-import { useDateStore } from "../../../../_stores/use-date-store";
+import { useDateStore } from "../../../_stores/use-date-store";
 import { ChartWidgetCard } from "../../chart-widget-card";
 
 const chartConfig = {

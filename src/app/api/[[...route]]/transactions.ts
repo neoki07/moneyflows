@@ -1,10 +1,10 @@
 import { getAuth } from "@hono/clerk-auth";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { desc } from "drizzle-orm";
 import { Hono } from "hono";
 
 import { db } from "@/db";
-import { transactionTable } from "@/db/schema";
+import { categoryTable, transactionTable } from "@/db/schema";
 
 export const transactions = new Hono()
   .get("/monthly-balances", async (c) => {
@@ -19,6 +19,8 @@ export const transactions = new Hono()
     if (!startMonth || !endMonth) {
       return c.json({ message: "開始月と終了月を指定してください" }, 400);
     }
+
+    console.log({ startMonth, endMonth, incomeCategories, expenseCategories });
 
     const yearMonthPattern = /^\d{4}-(?:0[1-9]|1[0-2])$/;
     if (
@@ -35,21 +37,52 @@ export const transactions = new Hono()
       ? expenseCategories.split(",").filter(Boolean)
       : [];
 
+    const allIncomeCategories = await db
+      .select()
+      .from(categoryTable)
+      .where(
+        and(
+          eq(categoryTable.userId, auth.userId),
+          eq(categoryTable.type, "income"),
+        ),
+      );
+    const allIncomeCategoryIds = allIncomeCategories.map((row) => row.id);
+
+    const allExpenseCategories = await db
+      .select()
+      .from(categoryTable)
+      .where(
+        and(
+          eq(categoryTable.userId, auth.userId),
+          eq(categoryTable.type, "expense"),
+        ),
+      );
+    const allExpenseCategoryIds = allExpenseCategories.map((row) => row.id);
+
+    const categoryIds = [
+      ...(incomeCategoryIds.length > 0
+        ? incomeCategoryIds
+        : allIncomeCategoryIds),
+      ...(expenseCategoryIds.length > 0
+        ? expenseCategoryIds
+        : allExpenseCategoryIds),
+    ];
+
+    console.log({ allIncomeCategories, allExpenseCategories });
+
     const result = await db
       .select({
         month: sql`to_char(${transactionTable.date}, 'YYYY-MM')`.mapWith(
           String,
         ),
-        income: sql`sum(case when type = 'income' ${
-          incomeCategoryIds.length > 0
-            ? sql`and category_id in (${sql.join(incomeCategoryIds, ",")})`
-            : sql``
-        } then amount else 0 end)`.mapWith(Number),
-        expense: sql`sum(case when type = 'expense' ${
-          expenseCategoryIds.length > 0
-            ? sql`and category_id in (${sql.join(expenseCategoryIds, ",")})`
-            : sql``
-        } then amount else 0 end)`.mapWith(Number),
+        income:
+          sql`sum(case when type = 'income' then amount else 0 end)`.mapWith(
+            Number,
+          ),
+        expense:
+          sql`sum(case when type = 'expense' then amount else 0 end)`.mapWith(
+            Number,
+          ),
       })
       .from(transactionTable)
       .where(
@@ -57,6 +90,7 @@ export const transactions = new Hono()
           eq(transactionTable.userId, auth.userId),
           sql`${transactionTable.date} >= to_date(${startMonth}, 'YYYY-MM')`,
           sql`${transactionTable.date} < to_date(${endMonth}, 'YYYY-MM') + interval '1 month'`,
+          inArray(transactionTable.categoryId, categoryIds),
         ),
       )
       .groupBy(sql`to_char(${transactionTable.date}, 'YYYY-MM')`)

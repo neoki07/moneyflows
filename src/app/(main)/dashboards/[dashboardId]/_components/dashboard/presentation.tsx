@@ -13,9 +13,10 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-import { useDateStore } from "../../../_stores/use-date-store";
 import { getDashboard } from "../../_actions/get-dashboard";
 import { useDashboardStore } from "../../_stores/use-dashboard-store";
+import { useDateStore } from "../../_stores/use-date-store";
+import { useWidgetPropsStore } from "../../_stores/use-widget-props-store";
 import { EditButtons } from "../edit-buttons";
 import { EditDashboardPanel } from "../edit-dashboard-panel";
 import { WidgetList } from "../widget-list";
@@ -27,10 +28,19 @@ type PresentationProps = {
 export function DashboardPresenter({ dashboard }: PresentationProps) {
   const { isEditing, draft } = useDashboardStore();
   const { date, setDate } = useDateStore();
+  const { setWidgetProps } = useWidgetPropsStore();
 
   const displayName = isEditing
     ? (draft?.name ?? dashboard.name)
     : dashboard.name;
+
+  React.useEffect(() => {
+    dashboard.widgets.forEach((widget) => {
+      const _widget = widget as { id: string; content: string };
+      const { props } = JSON.parse(_widget.content) as { props: object };
+      setWidgetProps(_widget.id, props);
+    });
+  }, [dashboard.widgets, setWidgetProps]);
 
   return (
     <div className="flex">

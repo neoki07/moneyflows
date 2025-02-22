@@ -17,6 +17,7 @@ import {
 import { useGridStackContext } from "@/lib/gridstack";
 
 import { useDashboardStore } from "../../_stores/use-dashboard-store";
+import { useWidgetPropsStore } from "../../_stores/use-widget-props-store";
 import { WidgetAddBar } from "../widget-add-bar";
 import { WidgetListEmpty } from "../widget-list-empty";
 import { BalanceChart } from "../widgets/charts/balance-chart";
@@ -103,9 +104,19 @@ function StaticWidgetList({ widgets }: WidgetListProps) {
 }
 
 function EditableGridStackContent() {
-  const { saveOptions } = useGridStackContext();
+  const { setWidgetProps, saveOptions } = useGridStackContext();
   const { getCurrentWidgets, setGetCurrentLayout, setGetCurrentWidgets } =
     useDashboardStore();
+
+  useEffect(
+    () =>
+      useWidgetPropsStore.subscribe(({ allWidgetProps }) => {
+        Object.entries(allWidgetProps).forEach(([widgetId, props]) => {
+          setWidgetProps(widgetId, props);
+        });
+      }),
+    [setWidgetProps],
+  );
 
   const widgets = getCurrentWidgets?.() ?? [];
 

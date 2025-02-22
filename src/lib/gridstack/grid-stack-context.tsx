@@ -6,6 +6,8 @@ export const GridStackContext = createContext<{
   gridStack: GridStack | null;
   addWidget: (fn: (id: string) => Omit<GridStackWidget, "id">) => void;
   removeWidget: (id: string) => void;
+  getWidgetProps: (id: string) => object | undefined;
+  setWidgetProps: (id: string, props: object) => void;
   addSubGrid: (
     fn: (
       id: string,

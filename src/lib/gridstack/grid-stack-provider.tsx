@@ -89,6 +89,37 @@ export function GridStackProvider({
     [gridStack],
   );
 
+  const getWidgetProps = useCallback(
+    (id: string) => {
+      return rawWidgetMetaMap.get(id);
+    },
+    [rawWidgetMetaMap],
+  );
+
+  const setWidgetProps = useCallback(
+    (id: string, props: object) => {
+      const node = gridStack
+        ?.getGridItems()
+        ?.find((item) => item.gridstackNode?.id === id);
+
+      const widget = rawWidgetMetaMap.get(id);
+
+      if (node && widget?.content) {
+        const newContent = JSON.stringify({
+          ...JSON.parse(widget.content),
+          props,
+        });
+        gridStack?.update(node, { content: newContent });
+        setRawWidgetMetaMap((prev) => {
+          const newMap = new Map<string, GridStackWidget>(prev);
+          newMap.set(id, { ...newMap.get(id), content: newContent });
+          return newMap;
+        });
+      }
+    },
+    [gridStack, rawWidgetMetaMap],
+  );
+
   const saveOptions = useCallback(() => {
     return gridStack?.save(true, true, (_, widget) => widget);
   }, [gridStack]);
@@ -101,6 +132,8 @@ export function GridStackProvider({
 
         addWidget,
         removeWidget,
+        getWidgetProps,
+        setWidgetProps,
         addSubGrid,
         saveOptions,
 

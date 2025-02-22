@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useGridStackWidgetContext } from "@/lib/gridstack";
 import { cn } from "@/lib/utils";
 
-import { useSelectedWidgetStore } from "../../_stores/use-selected-widget-store";
 import { useDashboardStore } from "../_stores/use-dashboard-store";
+import { useSelectedWidgetStore } from "../_stores/use-selected-widget-store";
 
 type ChartWidgetCardProps = {
   title: string;
