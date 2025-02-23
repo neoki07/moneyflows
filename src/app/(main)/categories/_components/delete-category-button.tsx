@@ -49,6 +49,7 @@ export function DeleteCategoryButton({ category }: DeleteCategoryButtonProps) {
           disabled={isPending}
         >
           <IconTrashX className="h-4 w-4" />
+          <span className="sr-only">削除</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

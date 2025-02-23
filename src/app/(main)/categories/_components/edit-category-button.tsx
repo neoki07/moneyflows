@@ -44,6 +44,7 @@ export function EditCategoryButton({ category }: EditCategoryButtonProps) {
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" disabled={isPending}>
           <IconEdit className="h-4 w-4" />
+          <span className="sr-only">編集</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
