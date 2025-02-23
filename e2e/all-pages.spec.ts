@@ -33,17 +33,16 @@ test("all pages should be accessible", async ({ page }) => {
   await page.getByRole("button", { name: "保存" }).click();
   await expect(page.getByText("食費")).toBeVisible();
 
-  // // タグを編集
-  // await page.getByRole("button", { name: "編集" }).click();
-  // await expect(page.getByRole("heading", { name: "タグの編集" })).toBeVisible();
-  // await page.getByRole("textbox", { name: "名前" }).fill("食費（編集済み）");
-  // await page.getByRole("button", { name: "更新" }).click();
-  // await expect(page.getByText("食費（編集済み）")).toBeVisible();
+  // タグを編集
+  await page.getByRole("button", { name: "編集" }).click();
+  await expect(page.getByRole("heading", { name: "タグの編集" })).toBeVisible();
+  await page.getByRole("textbox", { name: "名前" }).fill("食費（編集済み）");
+  await page.getByRole("button", { name: "更新" }).click();
+  await expect(page.getByText("食費（編集済み）")).toBeVisible();
 
   // タグを削除
   await page.getByRole("button", { name: "削除" }).click();
   await expect(page.getByRole("heading", { name: "タグを削除" })).toBeVisible();
   await page.getByRole("button", { name: "削除" }).click();
-  await expect(page.getByText("食費（編集済み）")).not.toBeVisible();
   await expect(page.getByText("タグがありません")).toBeVisible();
 });
