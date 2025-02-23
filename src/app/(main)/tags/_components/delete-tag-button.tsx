@@ -47,6 +47,7 @@ export function DeleteTagButton({ tag }: DeleteTagButtonProps) {
         onClick={() => setIsOpen(true)}
       >
         <IconTrashX />
+        <span className="sr-only">削除</span>
       </Button>
 
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
