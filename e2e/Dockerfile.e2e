@@ -1,21 +1,18 @@
-FROM oven/bun:1 as base
+FROM oven/bun:1 AS base
 WORKDIR /app
 
-# 依存関係のインストール
-FROM base as deps
+FROM base AS deps
 RUN apt-get update && apt-get install -y git
 COPY package.json bun.lockb ./
 RUN bun install --frozen-lockfile --ignore-scripts --no-install-scripts
 
-# ビルダー
-FROM base as builder
+FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NODE_ENV=production
 RUN bun run build
 
-# 本番環境
-FROM base as production
+FROM base AS production
 ENV NODE_ENV=production
 ENV PORT=3000
 COPY --from=deps /app/node_modules ./node_modules
