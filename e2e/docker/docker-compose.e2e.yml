@@ -17,14 +17,14 @@ services:
 
   migrate:
     build:
-      context: ..
-      dockerfile: e2e/Dockerfile.e2e
+      context: ../..
+      dockerfile: e2e/docker/Dockerfile.e2e
       target: deps
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/moneyflows_test
     volumes:
-      - ../db:/app/db
-      - ../drizzle.config.ts:/app/drizzle.config.ts
+      - ../../db:/app/db
+      - ../../drizzle.config.ts:/app/drizzle.config.ts
     command: bun run db:migrate
     depends_on:
       db:
@@ -32,13 +32,13 @@ services:
 
   app:
     build:
-      context: ..
-      dockerfile: e2e/Dockerfile.e2e
+      context: ../..
+      dockerfile: e2e/docker/Dockerfile.e2e
       target: production
     ports:
       - "3000:3000"
     env_file:
-      - ../.env.e2e
+      - ../../.env.e2e
     depends_on:
       migrate:
         condition: service_completed_successfully
